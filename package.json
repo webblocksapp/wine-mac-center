@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "library-ui:dev": "pnpm --filter library-ui dev"
+  },
   "keywords": [],
   "author": "Mauricio Rivera",
   "license": "ISC"

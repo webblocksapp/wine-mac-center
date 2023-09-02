@@ -24,7 +24,7 @@ importers:
         version: 5.14.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
       '@reactjs-ui/core':
         specifier: ^0.0.0
-        version: 0.0.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.0)(@mui/material@5.14.0)
+        version: 0.0.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.0)(@mui/material@5.14.0)(react-router-dom@6.15.0)
       '@reactjs-ui/form-fields':
         specifier: ^0.0.0
         version: 0.0.0(@reactjs-ui/core@0.0.0)(react@18.2.0)
@@ -2795,18 +2795,20 @@ packages:
       '@babel/runtime': 7.22.6
     dev: true
 
-  /@reactjs-ui/core@0.0.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.0)(@mui/material@5.14.0):
-    resolution: {integrity: sha512-Tfl5RxDn1Hfs97f+Q6CBB5EzNc+tMneyyOb7Q/9NLJD90zq4IEeINUPM24koH+NL76eNSmzOYSbNmnvns487fg==}
+  /@reactjs-ui/core@0.0.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.0)(@mui/material@5.14.0)(react-router-dom@6.15.0):
+    resolution: {integrity: sha512-WCPsjvaLYtJxRAmRCvkyeccdmADP/DAXu5yzBOj4j36b6vqIdxt+muPzr2yhihs42hTyCJGVpGVVvtacarVltQ==}
     peerDependencies:
       '@emotion/react': ^11.11.1
       '@emotion/styled': ^11.11.0
       '@mui/icons-material': ^5.14.0
       '@mui/material': ^5.13.6
+      react-router-dom: ^6.15.0
     dependencies:
       '@emotion/react': 11.11.1(@types/react@18.2.14)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.14)(react@18.2.0)
       '@mui/icons-material': 5.14.0(@mui/material@5.14.0)(@types/react@18.2.14)(react@18.2.0)
       '@mui/material': 5.14.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
+      react-router-dom: 6.15.0(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /@reactjs-ui/form-fields@0.0.0(@reactjs-ui/core@0.0.0)(react@18.2.0):
@@ -2815,7 +2817,7 @@ packages:
       '@reactjs-ui/core': '*'
     dependencies:
       '@hookform/resolvers': 3.1.1(react-hook-form@7.45.2)
-      '@reactjs-ui/core': 0.0.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.0)(@mui/material@5.14.0)
+      '@reactjs-ui/core': 0.0.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.0)(@mui/material@5.14.0)(react-router-dom@6.15.0)
       react-hook-form: 7.45.2(react@18.2.0)
       yup: 1.2.0
     transitivePeerDependencies:

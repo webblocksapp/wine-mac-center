@@ -1,0 +1,15 @@
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+#root {
+  display: grid;
+}
+
+.base-route-nav-link,
+.base-route-nav-link:active,
+.base-route-nav-link:visited {
+  color: inherit;
+}

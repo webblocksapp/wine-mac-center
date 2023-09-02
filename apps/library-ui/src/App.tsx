@@ -1,11 +1,6 @@
-import { Button } from '@reactjs-ui/core';
-import { Select } from '@reactjs-ui/form-fields';
+import { routes } from '@routes';
+import { useRoutes } from 'react-router-dom';
 
 export const App = () => {
-  return (
-    <>
-      <Button>Hello World</Button>
-      <Select />
-    </>
-  );
+  return useRoutes(routes);
 };

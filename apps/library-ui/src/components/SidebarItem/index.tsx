@@ -12,21 +12,10 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
 }) => {
   return (
     <MenuItem sx={styles({ sx })} {...rest}>
-      {({ isActive }) => (
+      {() => (
         <>
-          {icon ? (
-            <Icon
-              color={`${isActive ? 'info.main' : 'text.secondary'}`}
-              pr={1}
-              render={icon}
-            />
-          ) : (
-            <></>
-          )}
-          <Body1
-            color={`${isActive ? 'text.primary' : 'text.secondary'}`}
-            fontWeight={500}
-          >
+          {icon ? <Icon color={'text.primary'} pr={1} render={icon} /> : <></>}
+          <Body1 color={'text.primary'} fontWeight={500}>
             {text}
           </Body1>
         </>

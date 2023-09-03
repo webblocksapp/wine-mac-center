@@ -12,8 +12,13 @@
     "enabled": true,
     "writeToLogFile": true
   },
-  "nativeAllowList": ["app.*", "os.*", "debug.log"],
-  "modes": {},
+  "nativeAllowList": [
+    "app.*",
+    "os.*",
+    "debug.log",
+    "filesystem.*",
+    "computer.*"
+  ],
   "cli": {
     "binaryName": "neu-wine-api",
     "resourcesPath": "/dist/",

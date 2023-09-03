@@ -4,14 +4,24 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm neu run",
-    "init-neu": "pnpm neu update",
-    "build": "tsc && vite build",
+    "dev": "pnpm vite",
+    "server": "pnpm neu run --frontend-lib-dev -- --window-enable-inspector",
+    "neu-setup": "pnpm neu update",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@neutralinojs/lib": "^3.11.0",
     "@neutralinojs/neu": "^9.6.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@vitejs/plugin-react": "^4.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.15.0",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-html": "^3.2.0",
+    "vite-tsconfig-paths": "^4.2.0"
   }
 }

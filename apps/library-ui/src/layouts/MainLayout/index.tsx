@@ -9,7 +9,7 @@ export const MainLayout: React.FC = () => {
       <Sidebar
         pt={2}
         pb={1}
-        px={1}
+        px={2}
         bgcolor="secondary.main"
         menu={SIDEBAR_MENU}
       />

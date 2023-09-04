@@ -27,8 +27,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ headerText, menu }) => {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr' }}>
         <div style={{ borderRight: '1px solid gray', padding: 10 }}>
-          {menu.map((item) => (
-            <NavLink to={item.route}>{item.text}</NavLink>
+          {menu.map((item, index) => (
+            <div style={{ paddingBottom: 10 }} key={index}>
+              <NavLink to={item.route}>{item.text}</NavLink>
+            </div>
           ))}
         </div>
         <div style={{ padding: 10 }}>

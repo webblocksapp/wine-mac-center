@@ -7,9 +7,9 @@
     "dev": "pnpm vite",
     "build": "vite build",
     "preview": "vite preview",
-    "neu-server": "pnpm neu run --frontend-lib-dev -- --window-enable-inspector",
+    "neu-server": "pnpm neu run -- --mode=cloud",
     "neu-setup": "pnpm neu update && pnpm build",
-    "neu-build": "pnpm build && pnpm neu build -- --window-enable-inspector"
+    "neu-build": "pnpm build && pnpm neu build"
   },
   "devDependencies": {
     "@neutralinojs/lib": "^3.11.0",

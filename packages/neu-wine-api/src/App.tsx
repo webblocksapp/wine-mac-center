@@ -1,6 +1,7 @@
 import { os } from '@neutralinojs/lib';
 import { useEffect, useState } from 'react';
 import { loadBashScripts } from './utils/loadBashScripts';
+import { getScript } from './utils/getScript';
 
 export const App = () => {
   const [text, setText] = useState('');
@@ -9,7 +10,7 @@ export const App = () => {
   const test = async () => {
     await loadBashScripts();
 
-    let result = await os.execCommand(`${NL_CWD}/src/bash/hello.sh 22`);
+    let result = await os.execCommand(`${getScript('winetricks.sh')} --help`);
     setText(result.stdOut);
     setError(result.stdErr);
   };
@@ -19,8 +20,10 @@ export const App = () => {
   }, []);
 
   return (
-    <>
-      Hello World {text} {error}
-    </>
+    <pre>
+      <code>
+        {text} {error}
+      </code>
+    </pre>
   );
 };

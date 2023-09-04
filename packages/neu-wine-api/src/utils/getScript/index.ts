@@ -5,7 +5,7 @@ export const getScript = (path: string) => {
 
   for (let key in BASH_SCRIPTS) {
     if (key.match(`/${path}`)) {
-      return BASH_SCRIPTS[key];
+      return `f(){\n${BASH_SCRIPTS[key]}\n}; f`;
     }
   }
 

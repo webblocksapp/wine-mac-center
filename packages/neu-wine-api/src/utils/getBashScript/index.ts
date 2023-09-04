@@ -1,6 +1,6 @@
 import { BASH_SCRIPTS } from '@constants';
 
-export const getScript = (path: string) => {
+export const getBashScript = (path: string) => {
   path = path.replace(/^\//, '');
 
   for (let key in BASH_SCRIPTS) {

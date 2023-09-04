@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     createHtmlPlugin({
-      entry: 'src/main.tsx',
+      entry: 'src/tests/main.tsx',
       template: 'index.html',
       inject: {
         data: {

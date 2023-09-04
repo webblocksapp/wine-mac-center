@@ -1,2 +1,2 @@
-export * from './getScript';
+export * from './getBashScript';
 export * from './loadBashScripts';

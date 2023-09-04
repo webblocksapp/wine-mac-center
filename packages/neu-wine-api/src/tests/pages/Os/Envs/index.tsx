@@ -1,15 +1,21 @@
-import { os } from '@neutralinojs/lib';
 import { useEnv } from '@utils';
 import { useEffect, useState } from 'react';
 
 export const Envs: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<Array<{ label: string; value: string }>>([]);
+  const [data, setData] = useState<
+    Array<{ label: string; value: { stdOut?: string; stdErr?: string } }>
+  >([]);
   const env = useEnv();
 
   useEffect(() => {
     (async () => {
-      setData([{ label: 'Current working dir', value: await env.cwd() }]);
+      setData([
+        {
+          label: 'Directory name',
+          value: { stdOut: env.dirname() },
+        },
+      ]);
       setLoading(false);
     })();
   }, []);
@@ -18,9 +24,18 @@ export const Envs: React.FC = () => {
     <>Loading...</>
   ) : (
     data.map((item, index) => (
-      <div key={index}>
+      <div key={index} style={{ paddingBottom: 17 }}>
         <label>{item.label}</label>
-        <input style={{ width: '100%' }} readOnly value={item.value || ''} />
+        <input
+          style={{ width: '100%' }}
+          readOnly
+          value={item.value.stdOut || ''}
+        />
+        {item.value.stdErr ? (
+          <small style={{ color: 'red' }}>{item.value.stdErr}</small>
+        ) : (
+          <></>
+        )}
       </div>
     ))
   );

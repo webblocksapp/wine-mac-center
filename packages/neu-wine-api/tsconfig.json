@@ -15,7 +15,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "baseUrl": "./",
     "paths": {
       "@api-clients": ["src/api-clients"],
@@ -38,5 +38,6 @@
       "@utils": ["src/utils"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

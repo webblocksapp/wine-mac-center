@@ -1,4 +1,4 @@
-import { os } from '@neutralinojs/lib';
+import { os, init as initNeutralino } from '@neutralinojs/lib';
 import { Env } from '@interfaces';
 import { loadBashScripts } from '@utils';
 
@@ -7,19 +7,28 @@ const ENV: Env = {};
 export const useEnv = () => {
   const get = () => ENV;
 
-  const cwd = async () => {
-    const { stdOut } = await os.execCommand('pwd');
-    return stdOut;
-  };
-
   const init = async () => {
-    const promises = [loadBashScripts()];
+    initNeutralino();
+    const promises = [initDirName(), loadBashScripts()];
     await Promise.allSettled(promises);
   };
 
+  const initDirName = async () => {
+    switch (process.env.NODE_ENV) {
+      case 'development':
+        ENV.DIRNAME = (await os.execCommand('pwd')).stdOut;
+        break;
+      default:
+        ENV.DIRNAME = NL_PATH;
+        break;
+    }
+  };
+
+  const dirname = () => ENV.DIRNAME;
+
   return {
+    dirname,
     get,
     init,
-    cwd,
   };
 };

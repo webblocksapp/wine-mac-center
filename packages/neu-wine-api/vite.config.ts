@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import EnvironmentPlugin from 'vite-plugin-environment';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,6 +21,21 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: {
+      path: 'rollup-plugin-node-polyfills/polyfills/path',
+    },
+  },
+  build: {
+    minify: false,
+    rollupOptions: {
+      plugins: [
+        // Enable rollup polyfills plugin
+        // used during production bundling
+        rollupNodePolyFill(),
+      ],
+    },
+  },
   server: {
     port: 3000,
   },

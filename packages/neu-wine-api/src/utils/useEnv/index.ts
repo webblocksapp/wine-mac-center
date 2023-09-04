@@ -39,6 +39,7 @@ export const useEnv = () => {
       default:
         ENV.DIRNAME = NL_PATH.trim();
         ENV.SCRIPTS_PATH = path.join(ENV.DIRNAME, '../Resources/bash');
+        ENV.WINE_APP_NAME = '"Needs to be assigned manually"';
         ENV.WINE_APP_PATH = `${ENV.HOME}/Wine/apps/test-app.app`;
         break;
     }

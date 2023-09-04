@@ -14,4 +14,5 @@ export type BashScript =
   | 'wineboot'
   | 'winecfg'
   | 'winefile'
-  | 'winetrick';
+  | 'winetrick'
+  | 'winetricks';

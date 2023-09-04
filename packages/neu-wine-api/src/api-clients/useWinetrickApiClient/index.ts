@@ -1,8 +1,9 @@
 import { Winetrick } from '@interfaces';
-import { os } from '@neutralinojs/lib';
-import { getBashScript } from '@utils';
+import { useWine } from '@utils';
 
 export const useWinetrickApiClient = () => {
+  const wine = useWine();
+
   const mapResponse = (data: string = ''): Winetrick[] => {
     const mappedData: Winetrick[] = [];
     const rows = data.split('\n');
@@ -18,16 +19,15 @@ export const useWinetrickApiClient = () => {
     return mappedData;
   };
 
-  const runScript = async (cmd: string) =>
-    await os.execCommand(`${getBashScript('winetricks.sh')} ${cmd}`);
+  const runScript = async (args: string) => wine.runScript('winetricks', args);
 
   const getWinetricks = async (cmd: string) => {
     const { stdOut, stdErr } = await runScript(cmd);
     return { stdOut: mapResponse(stdOut), stdErr: stdErr };
   };
 
-  const help = async () => {
-    return await runScript('--help');
+  const help = () => {
+    return runScript('--help');
   };
 
   const listApps = async () => {

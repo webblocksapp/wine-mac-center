@@ -15,6 +15,10 @@ export const Envs: React.FC = () => {
           label: 'Directory name',
           value: { stdOut: env.dirname() },
         },
+        {
+          label: 'Scripts path',
+          value: { stdOut: env.get().SCRIPTS_PATH },
+        },
       ]);
       setLoading(false);
     })();

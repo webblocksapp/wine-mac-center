@@ -18,28 +18,40 @@ export const useWinetrickApiClient = () => {
     return mappedData;
   };
 
+  const runBash = async (cmd: string) => {
+    const { stdOut } = await os.execCommand(
+      `${getBashScript('winetricks.sh')} ${cmd}`
+    );
+
+    return stdOut;
+  };
+
+  const getWinetricks = async (cmd: string) => {
+    return mapResponse(await runBash(cmd));
+  };
+
   const listApps = async () => {
-    return runWinetricks('apps list');
+    return getWinetricks('apps list');
   };
 
   const listBenchmarks = async () => {
-    return runWinetricks('benchmarks list');
+    return getWinetricks('benchmarks list');
   };
 
   const listDlls = async () => {
-    return runWinetricks('dlls list');
+    return getWinetricks('dlls list');
   };
 
   const listFonts = async () => {
-    return runWinetricks('fonts list');
+    return getWinetricks('fonts list');
   };
 
   const listGames = async () => {
-    return runWinetricks('games list');
+    return getWinetricks('games list');
   };
 
   const listSettings = () => {
-    return runWinetricks('settings list');
+    return getWinetricks('settings list');
   };
 
   const listAll = async () =>
@@ -53,14 +65,6 @@ export const useWinetrickApiClient = () => {
         listSettings(),
       ])
     ).flat();
-
-  const runWinetricks = async (cmd: string) => {
-    const { stdOut } = await os.execCommand(
-      `${getBashScript('winetricks.sh')} ${cmd}`
-    );
-
-    return mapResponse(stdOut);
-  };
 
   return {
     listApps,

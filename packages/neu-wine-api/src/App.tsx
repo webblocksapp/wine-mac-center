@@ -1,15 +1,26 @@
-import { computer } from '@neutralinojs/lib';
-import { useEffect } from 'react';
+import { os } from '@neutralinojs/lib';
+import { useEffect, useState } from 'react';
+import { loadBashScripts } from './utils/loadBashScripts';
 
 export const App = () => {
-  const getMemoryInfo = async () => {
-    let memoryInfo = await computer.getMemoryInfo();
-    console.log(memoryInfo);
+  const [text, setText] = useState('');
+  const [error, setError] = useState('');
+
+  const test = async () => {
+    await loadBashScripts();
+
+    let result = await os.execCommand(`${NL_CWD}/src/bash/hello.sh 22`);
+    setText(result.stdOut);
+    setError(result.stdErr);
   };
 
   useEffect(() => {
-    getMemoryInfo();
+    test();
   }, []);
 
-  return <>Hello World ssss</>;
+  return (
+    <>
+      Hello World {text} {error}
+    </>
+  );
 };

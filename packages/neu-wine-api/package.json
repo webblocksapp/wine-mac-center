@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm vite",
-    "server": "pnpm neu run --frontend-lib-dev -- --window-enable-inspector",
-    "neu-setup": "pnpm neu update && pnpm build",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "neu-server": "pnpm neu run --frontend-lib-dev -- --window-enable-inspector",
+    "neu-setup": "pnpm neu update && pnpm build",
+    "neu-build": "pnpm build && pnpm neu build -- --window-enable-inspector"
   },
   "devDependencies": {
     "@neutralinojs/lib": "^3.11.0",

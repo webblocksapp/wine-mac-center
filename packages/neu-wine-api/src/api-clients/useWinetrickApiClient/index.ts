@@ -18,16 +18,12 @@ export const useWinetrickApiClient = () => {
     return mappedData;
   };
 
-  const runScript = async (cmd: string) => {
-    const { stdOut } = await os.execCommand(
-      `${getBashScript('winetricks.sh')} ${cmd}`
-    );
-
-    return stdOut;
-  };
+  const runScript = async (cmd: string) =>
+    await os.execCommand(`${getBashScript('winetricks.sh')} ${cmd}`);
 
   const getWinetricks = async (cmd: string) => {
-    return mapResponse(await runScript(cmd));
+    const { stdOut, stdErr } = await runScript(cmd);
+    return { stdOut: mapResponse(stdOut), stdErr: stdErr };
   };
 
   const help = async () => {

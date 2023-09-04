@@ -1,0 +1,17 @@
+export type BashScript =
+  | 'buildAppPath'
+  | 'bundleApp'
+  | 'cmd'
+  | 'scaffoldApp'
+  | 'enableDxvk'
+  | 'extractWineEngine'
+  | 'listAppExecutables'
+  | 'loadDylibs'
+  | 'regedit'
+  | 'taskmgr'
+  | 'uninstaller'
+  | 'wine'
+  | 'wineboot'
+  | 'winecfg'
+  | 'winefile'
+  | 'winetrick';

@@ -3,11 +3,20 @@ import { App } from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import { init } from '@neutralinojs/lib';
 import './main.css';
+import { useEnv } from '@utils';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-);
+const main = async () => {
+  const env = useEnv();
 
-init();
+  await env.init();
+
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+
+  init();
+};
+
+main();

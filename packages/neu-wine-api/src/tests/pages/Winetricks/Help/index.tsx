@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 
 export const Help: React.FC = () => {
   const { help } = useWinetrickApiClient();
-  const [text, setText] = useState('');
+  const [data, setData] = useState({ stdOut: '', stdErr: '' });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      setText(await help());
+      setData(await help());
       setLoading(false);
     })();
   }, []);
@@ -17,7 +17,8 @@ export const Help: React.FC = () => {
     <>Loading...</>
   ) : (
     <pre>
-      <code>{text}</code>
+      <code>{data.stdOut}</code>
+      <code>{data.stdErr}</code>
     </pre>
   );
 };

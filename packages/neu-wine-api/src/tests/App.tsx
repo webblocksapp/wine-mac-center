@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { loadBashScripts } from '@utils';
 import { useWinetrickApiClient } from '@api-clients';
+import { useRoutes } from 'react-router-dom';
+import { routes } from './routes';
 
 export const App = () => {
   const [text, setText] = useState('');
@@ -9,10 +11,10 @@ export const App = () => {
 
   const test = async () => {
     await loadBashScripts();
-    const winetricks = await winetrickApiClient.listApps();
+    // const winetricks = await winetrickApiClient.listApps();
 
     try {
-      setText(JSON.stringify(winetricks, null, 2));
+      setText(await winetrickApiClient.help());
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -24,11 +26,5 @@ export const App = () => {
     test();
   }, []);
 
-  return (
-    <pre>
-      <code>
-        {text} {error}
-      </code>
-    </pre>
-  );
+  return useRoutes(routes);
 };

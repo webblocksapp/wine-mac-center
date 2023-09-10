@@ -14,6 +14,7 @@
   "devDependencies": {
     "@neutralinojs/lib": "^3.11.0",
     "@neutralinojs/neu": "^9.6.1",
+    "@types/node": "^20.6.0",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@vitejs/plugin-react": "^4.0.1",

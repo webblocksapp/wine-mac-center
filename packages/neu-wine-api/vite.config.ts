@@ -12,7 +12,7 @@ export default defineConfig({
     tsconfigPaths(),
     EnvironmentPlugin('all'),
     createHtmlPlugin({
-      entry: 'src/tests/main.tsx',
+      entry: 'tests/main.tsx',
       template: 'index.html',
       inject: {
         data: {

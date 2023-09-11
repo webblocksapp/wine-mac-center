@@ -4,14 +4,18 @@ import { Env } from '@interfaces';
  * Builds the env vars passed to the command.
  */
 export const buildEnvExports = (
-  env: Env,
+  env: Partial<Env>,
   filter?: (envName: string) => boolean
 ) => {
   let exports = '';
   for (const [VAR, VALUE] of Object.entries(env)) {
     if (filter && filter(VAR) === false) continue;
-    exports += `${VAR}=${VALUE}; `;
+    if (typeof VALUE === 'string') {
+      exports += `${VAR}="${VALUE}" `;
+    } else {
+      exports += `${VAR}=${VALUE} `;
+    }
   }
 
-  return exports;
+  return `export ${exports.trim()};`;
 };

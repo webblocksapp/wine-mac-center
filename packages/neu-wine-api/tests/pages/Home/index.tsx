@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 const menu = [
   { text: 'Os', route: 'os' },
   { text: 'Winetricks', route: 'winetricks' },
+  { text: 'Wine', route: 'wine' },
 ];
 
 export const Home: React.FC = () => (

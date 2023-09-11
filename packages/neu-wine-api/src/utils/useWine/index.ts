@@ -1,23 +1,89 @@
-import { BashScript } from '@interfaces';
+import { BashScript, SpawnProcessCallbacks, WineEnv } from '@interfaces';
 import { os } from '@neutralinojs/lib';
-import { useEnv } from '@utils';
-import { buildEnvExports } from '../buildEnvExports';
+import {
+  buildEnvExports,
+  spawnProcess as baseSpawnProcess,
+  useEnv,
+} from '@utils';
 
-export const useWine = () => {
+type UpdatableWineEnv = Pick<WineEnv, 'WINE_APP_NAME'>;
+
+export const useWine = (args?: { appConfig?: { name: string } }) => {
   const env = useEnv();
+  const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
+  let WINE_EXPORTS = '';
 
-  const runScript = (name: BashScript, args: string = '') =>
-    execCommand(`${env.get().SCRIPTS_PATH}/${name}.sh ${args}`);
-
-  const execCommand: typeof os.execCommand = (command, options) => {
-    const WINE_EXPORTS = buildEnvExports(env.get(), (envName) =>
-      Boolean(envName.match(/(^WINE)/gi)?.length)
-    );
-    return os.execCommand(`${WINE_EXPORTS} ${command}`, options);
+  const WINE_ENV = {
+    WINE_APP_NAME: args?.appConfig?.name || 'Test App',
+    get WINE_APP_PATH() {
+      return `${env.get().HOME}/Wine/apps/${WINE_ENV.WINE_APP_NAME}.app`;
+    },
+    get WINE_APP_CONTENTS_PATH() {
+      return `${WINE_ENV.WINE_APP_PATH}/Contents`;
+    },
+    get WINE_CONFIG_APP_NAME() {
+      return 'config-app';
+    },
+    get WINE_CONFIG_APP_PATH() {
+      return `${WINE_ENV.WINE_APP_PATH}/${WINE_ENV.WINE_CONFIG_APP_NAME}.app`;
+    },
+    get WINE_APP_SCRIPTS_PATH() {
+      return `${WINE_ENV.WINE_APP_CONTENTS_PATH}/Resources/bash`;
+    },
+    get WINE_APP_SHARED_SUPPORT_PATH() {
+      return `${WINE_ENV.WINE_APP_CONTENTS_PATH}/SharedSupport`;
+    },
+    get WINE_APP_PREFIX_PATH() {
+      return `${WINE_ENV.WINE_APP_SHARED_SUPPORT_PATH}/prefix`;
+    },
   };
 
+  const updateWineEnv = (wineEnv: UpdatableWineEnv) => {
+    for (let [key, value] of Object.entries(wineEnv)) {
+      WINE_ENV[key as keyof UpdatableWineEnv] = value;
+    }
+
+    buildWineEnvExports();
+  };
+
+  /**
+   * Build wine environment variables exports.
+   */
+  const buildWineEnvExports = () =>
+    (WINE_EXPORTS = buildEnvExports(WINE_ENV, (envName) =>
+      Boolean(envName.match(/(^WINE)/gi)?.length)
+    ));
+
+  /**
+   * Logic for creating the wine application structure.
+   */
+  const scaffoldApp = async (callbacks?: SpawnProcessCallbacks) => {
+    const { stdOut, stdErr } = await execScript('buildUniqueAppName');
+    if (stdErr) throw new Error(stdErr);
+    updateWineEnv({ WINE_APP_NAME: stdOut });
+    return spawnScript('scaffoldApp', '', callbacks);
+  };
+
+  const execScript = (name: BashScript, args: string = '') =>
+    execCommand(`${SCRIPTS_PATH}/${name}.sh ${args}`);
+
+  const spawnScript = (
+    name: BashScript,
+    args: string = '',
+    callbacks?: SpawnProcessCallbacks
+  ) => spawnProcess(`${SCRIPTS_PATH}/${name}.sh ${args}`, callbacks);
+
+  const execCommand: typeof os.execCommand = (command, options) =>
+    os.execCommand(`${WINE_EXPORTS} ${command}`, options);
+
+  const spawnProcess: typeof baseSpawnProcess = (command, options) =>
+    baseSpawnProcess(`${WINE_EXPORTS} ${command}`, options);
+
   return {
-    runScript,
     execCommand,
+    execScript,
+    scaffoldApp,
+    spawnProcess,
+    spawnScript,
   };
 };

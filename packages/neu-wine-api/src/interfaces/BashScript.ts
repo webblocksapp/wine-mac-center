@@ -1,5 +1,5 @@
 export type BashScript =
-  | 'buildAppPath'
+  | 'buildUniqueAppName'
   | 'bundleApp'
   | 'cmd'
   | 'scaffoldApp'

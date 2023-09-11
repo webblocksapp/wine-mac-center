@@ -8,13 +8,13 @@ import {
 
 type UpdatableWineEnv = Pick<WineEnv, 'WINE_APP_NAME'>;
 
-export const useWine = (args?: { appConfig?: { name: string } }) => {
+export const useWine = () => {
   const env = useEnv();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
   let WINE_EXPORTS = '';
 
   const WINE_ENV = {
-    WINE_APP_NAME: args?.appConfig?.name || 'Test App',
+    WINE_APP_NAME: 'Test App',
     get WINE_APP_PATH() {
       return `${env.get().HOME}/Wine/apps/${WINE_ENV.WINE_APP_NAME}.app`;
     },
@@ -38,7 +38,9 @@ export const useWine = (args?: { appConfig?: { name: string } }) => {
     },
   };
 
-  const updateWineEnv = (wineEnv: UpdatableWineEnv) => {
+  const updateWineEnv = (wineEnv?: UpdatableWineEnv) => {
+    if (wineEnv === undefined) return;
+
     for (let [key, value] of Object.entries(wineEnv)) {
       WINE_ENV[key as keyof UpdatableWineEnv] = value;
     }
@@ -49,10 +51,11 @@ export const useWine = (args?: { appConfig?: { name: string } }) => {
   /**
    * Build wine environment variables exports.
    */
-  const buildWineEnvExports = () =>
-    (WINE_EXPORTS = buildEnvExports(WINE_ENV, (envName) =>
+  const buildWineEnvExports = () => {
+    WINE_EXPORTS = buildEnvExports(WINE_ENV, (envName) =>
       Boolean(envName.match(/(^WINE)/gi)?.length)
-    ));
+    );
+  };
 
   /**
    * Initializes wine env exports.
@@ -62,7 +65,12 @@ export const useWine = (args?: { appConfig?: { name: string } }) => {
   /**
    * Logic for creating the wine application structure.
    */
-  const scaffoldApp = async (callbacks?: SpawnProcessCallbacks) => {
+  const scaffoldApp = async (
+    callbacks?: SpawnProcessCallbacks,
+    options?: { env?: UpdatableWineEnv }
+  ) => {
+    options?.env && updateWineEnv(options.env);
+
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
     updateWineEnv({ WINE_APP_NAME: stdOut });
@@ -81,7 +89,7 @@ export const useWine = (args?: { appConfig?: { name: string } }) => {
   const execCommand: typeof os.execCommand = (command, options) =>
     os.execCommand(`${WINE_EXPORTS} ${command}`, options);
 
-  const spawnProcess: typeof baseSpawnProcess = (command, options) =>
+  const spawnProcess = (command: string, options?: SpawnProcessCallbacks) =>
     baseSpawnProcess(`${WINE_EXPORTS} ${command}`, options);
 
   const getWineEnv = () => WINE_ENV;

@@ -1,12 +1,9 @@
+import { SpawnProcessCallbacks } from '@interfaces';
 import { events, os } from '@neutralinojs/lib';
 
 export const spawnProcess = async (
   command: string,
-  callbacks?: {
-    onStdOut?: (data: any) => void;
-    onStdErr?: (data: any) => void;
-    onExit?: (data: any) => void;
-  }
+  callbacks?: SpawnProcessCallbacks
 ): Promise<void> => {
   const { id } = await os.spawnProcess(command);
   return new Promise((resolve) => {

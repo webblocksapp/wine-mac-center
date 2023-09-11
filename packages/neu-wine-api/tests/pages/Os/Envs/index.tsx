@@ -1,6 +1,7 @@
-import { useWine } from '@utils';
+import { useWine } from '@@utils';
 import { useEffect, useState } from 'react';
 import { useEnv } from 'neu-wine-api';
+import { Input } from '@@components';
 
 export const Envs: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -70,19 +71,14 @@ export const Envs: React.FC = () => {
     <>Loading...</>
   ) : (
     data.map((item, index) => (
-      <div key={index} style={{ paddingBottom: 17 }}>
-        <label>{item.label}</label>
-        <input
-          style={{ width: '100%' }}
-          readOnly
-          value={item.value.stdOut || ''}
-        />
-        {item.value.stdErr ? (
-          <small style={{ color: 'red' }}>{item.value.stdErr}</small>
-        ) : (
-          <></>
-        )}
-      </div>
+      <Input
+        key={index}
+        readOnly
+        label={item.label}
+        value={item.value.stdOut || ''}
+        error={Boolean(item.value.stdErr)}
+        errorMessage={item.value.stdErr}
+      />
     ))
   );
 };

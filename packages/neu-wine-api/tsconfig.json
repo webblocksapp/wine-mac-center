@@ -21,6 +21,7 @@
       "@api-clients": ["src/api-clients"],
       "@assets/*": ["src/assets/*"],
       "@components": ["src/components"],
+      "@@components": ["tests/components"],
       "@constants": ["src/constants"],
       "@hocs": ["src/hocs"],
       "@icons/*": ["src/assets/icons/*"],
@@ -28,14 +29,19 @@
       "@i18n": ["src/i18n"],
       "@i18n/*": ["src/i18n/*"],
       "@layouts": ["src/layouts"],
+      "@@layouts": ["tests/layouts"],
       "@mocks/*": ["src/mocks/*"],
       "@models": ["src/models"],
       "@pages": ["src/pages"],
+      "@@pages": ["tests/pages"],
       "@routes": ["src/routes"],
+      "@@routes": ["tests/routes"],
       "@states": ["src/states"],
       "@store": ["src/store"],
       "@themes": ["src/themes"],
-      "@utils": ["src/utils"]
+      "@utils": ["src/utils"],
+      "@@utils": ["tests/utils"],
+      "neu-wine-api": ["src"]
     }
   },
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -1,8 +1,7 @@
-import { useWine } from '@utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ScaffoldApp } from './ScaffoldApp';
 
 export const Wine: React.FC = () => {
-  const wine = useMemo(() => useWine(), []);
   const [counter, setCounter] = useState(0);
 
   const scaffoldApp = async () => {
@@ -22,9 +21,9 @@ export const Wine: React.FC = () => {
   }, []);
 
   return (
-    <>
-      Wine Works{' '}
+    <div>
+      <ScaffoldApp />
       <button onClick={() => setCounter(counter + 1)}>{counter}</button>
-    </>
+    </div>
   );
 };

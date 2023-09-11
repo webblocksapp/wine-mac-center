@@ -7,12 +7,14 @@ export const ScaffoldApp: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
 
-  const scaffoldApp = () => {
-    wine.scaffoldApp({
+  const scaffoldApp = async () => {
+    setLoading(true);
+    await wine.scaffoldApp({
       onStdOut: (data) => {
         setData(data);
       },
     });
+    setLoading(false);
   };
 
   return (
@@ -23,6 +25,12 @@ export const ScaffoldApp: React.FC = () => {
         disabled={loading}
         label="Application path"
         value={wine.getWineEnv().WINE_APP_PATH}
+      />
+      <Input
+        readOnly
+        disabled={loading}
+        label="Application Contents path"
+        value={wine.getWineEnv().WINE_APP_CONTENTS_PATH}
       />
       <button disabled={loading} onClick={scaffoldApp}>
         {loading ? 'Scaffolding' : 'Scaffold'} App

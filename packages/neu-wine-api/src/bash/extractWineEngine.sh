@@ -1,3 +1,0 @@
-tar -xf $WINE_ENGINES_PATH/$WINE_ENGINE_VERSION.tar.7z -C $WINE_APP_PATH;
-mv $WINE_APP_PATH/wswine.bundle/* $WINE_APP_ENGINE_PATH;
-rm -r $WINE_APP_PATH/wswine.bundle;

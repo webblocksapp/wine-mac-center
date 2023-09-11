@@ -1,4 +1,4 @@
-import { useWinetrickApiClient } from '@api-clients';
+import { useWinetrickApiClient } from 'neu-wine-api';
 import { useEffect, useState } from 'react';
 
 export const ListGames: React.FC = () => {

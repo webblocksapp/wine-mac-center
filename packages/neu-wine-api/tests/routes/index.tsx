@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
-import { MainLayout } from '../layouts';
-import { Envs, Help, Home, ListGames, Wine } from '../pages';
+import { MainLayout } from '@layouts';
+import { Envs, Help, Home, ListGames, Wine } from '@pages';
 
 export const routes: RouteObject[] = [
   {

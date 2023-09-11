@@ -17,7 +17,7 @@ export const useEnv = () => {
     switch (process.env.NODE_ENV) {
       case 'development':
         ENV.DIRNAME = (await os.execCommand('pwd')).stdOut.trim();
-        ENV.SCRIPTS_PATH = path.join(ENV.DIRNAME, 'src/bash');
+        ENV.SCRIPTS_PATH = path.join(ENV.DIRNAME, 'Contents/Resources/bash');
         break;
       default:
         ENV.DIRNAME = NL_PATH.trim();

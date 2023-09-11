@@ -55,6 +55,11 @@ export const useWine = (args?: { appConfig?: { name: string } }) => {
     ));
 
   /**
+   * Initializes wine env exports.
+   */
+  buildWineEnvExports();
+
+  /**
    * Logic for creating the wine application structure.
    */
   const scaffoldApp = async (callbacks?: SpawnProcessCallbacks) => {
@@ -79,9 +84,12 @@ export const useWine = (args?: { appConfig?: { name: string } }) => {
   const spawnProcess: typeof baseSpawnProcess = (command, options) =>
     baseSpawnProcess(`${WINE_EXPORTS} ${command}`, options);
 
+  const getWineEnv = () => WINE_ENV;
+
   return {
     execCommand,
     execScript,
+    getWineEnv,
     scaffoldApp,
     spawnProcess,
     spawnScript,

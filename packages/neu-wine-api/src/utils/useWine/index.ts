@@ -12,6 +12,7 @@ export const useWine = () => {
   const env = useEnv();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
   let WINE_EXPORTS = '';
+  let ENV_EXPORTS = env.getEnvExports();
 
   const WINE_ENV = {
     WINE_APP_NAME: 'Test App',
@@ -22,13 +23,13 @@ export const useWine = () => {
       return `${WINE_ENV.WINE_APP_PATH}/Contents`;
     },
     get WINE_CONFIG_APP_NAME() {
-      return 'config-app';
+      return 'Config';
     },
     get WINE_CONFIG_APP_PATH() {
       return `${WINE_ENV.WINE_APP_PATH}/${WINE_ENV.WINE_CONFIG_APP_NAME}.app`;
     },
     get WINE_APP_SCRIPTS_PATH() {
-      return `${WINE_ENV.WINE_APP_CONTENTS_PATH}/Resources/bash`;
+      return `${WINE_ENV.WINE_CONFIG_APP_PATH}/Resources/bash`;
     },
     get WINE_APP_SHARED_SUPPORT_PATH() {
       return `${WINE_ENV.WINE_APP_CONTENTS_PATH}/SharedSupport`;
@@ -87,10 +88,10 @@ export const useWine = () => {
   ) => spawnProcess(`${SCRIPTS_PATH}/${name}.sh ${args}`, callbacks);
 
   const execCommand: typeof os.execCommand = (command, options) =>
-    os.execCommand(`${WINE_EXPORTS} ${command}`, options);
+    os.execCommand(`${ENV_EXPORTS} ${WINE_EXPORTS} ${command}`, options);
 
   const spawnProcess = (command: string, options?: SpawnProcessCallbacks) =>
-    baseSpawnProcess(`${WINE_EXPORTS} ${command}`, options);
+    baseSpawnProcess(`${ENV_EXPORTS} ${WINE_EXPORTS} ${command}`, options);
 
   const getWineEnv = () => WINE_ENV;
 

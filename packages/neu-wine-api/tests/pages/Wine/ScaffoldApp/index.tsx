@@ -6,20 +6,29 @@ export const ScaffoldApp: React.FC = () => {
   const wine = useWine();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
+  const [appName, setAppName] = useState('');
 
   const scaffoldApp = async () => {
     setLoading(true);
-    await wine.scaffoldApp({
-      onStdOut: (data) => {
-        setData(data);
+    await wine.scaffoldApp(
+      {
+        onStdOut: (data) => {
+          console.log(data);
+          setData(data);
+        },
       },
-    });
+      { env: { WINE_APP_NAME: appName } }
+    );
     setLoading(false);
   };
 
   return (
     <div>
-      <Input disabled={loading} label="Application name" />
+      <Input
+        disabled={loading}
+        label="Application name"
+        onInput={(event) => setAppName(event.currentTarget.value)}
+      />
       <Input
         readOnly
         disabled={loading}

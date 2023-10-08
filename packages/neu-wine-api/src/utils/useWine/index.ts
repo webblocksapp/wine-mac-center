@@ -73,7 +73,7 @@ export const useWine = () => {
 
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
-    updateWineEnv({ WINE_APP_NAME: stdOut });
+    updateWineEnv({ WINE_APP_NAME: stdOut.trim() });
     return spawnScript('scaffoldApp', '', callbacks);
   };
 

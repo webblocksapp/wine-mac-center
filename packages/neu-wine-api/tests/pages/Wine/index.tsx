@@ -1,29 +1,31 @@
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { ScaffoldApp } from './ScaffoldApp';
+import { useWine } from '@@utils';
+import { ExtractEngine } from './ExtractEngine';
+
+export const WineContext = createContext<{
+  wine: ReturnType<typeof useWine>;
+  appName: string;
+  setAppName: React.Dispatch<React.SetStateAction<string>>;
+  engine: string;
+  setEngine: React.Dispatch<React.SetStateAction<string>>;
+}>({} as any);
+
+export const useWineContext = () => useContext(WineContext);
 
 export const Wine: React.FC = () => {
-  const [counter, setCounter] = useState(0);
-
-  const scaffoldApp = async () => {
-    // await wine.scaffoldApp({
-    //   onStdOut: (data) => {
-    //     console.log(data);
-    //   },
-    //   onStdErr: (data) => {
-    //     console.log(data);
-    //   },
-    // });
-    // console.log('=======>');
-  };
-
-  useEffect(() => {
-    scaffoldApp();
-  }, []);
+  const [appName, setAppName] = useState('Test App');
+  const [engine, setEngine] = useState('');
+  const wine = useWine();
 
   return (
-    <div>
-      <ScaffoldApp />
-      <button onClick={() => setCounter(counter + 1)}>{counter}</button>
-    </div>
+    <WineContext.Provider
+      value={{ appName, setAppName, wine, engine, setEngine }}
+    >
+      <div>
+        <ScaffoldApp />
+        <ExtractEngine />
+      </div>
+    </WineContext.Provider>
   );
 };

@@ -6,8 +6,7 @@ mkdir -p "$WINE_APP_CONTENTS_PATH"
 cp -R "$INTERNAL_APPS_PATH/$WINE_CONFIG_APP_NAME.app" "$WINE_APP_PATH"
 cp -R "$SCRIPTS_PATH" "$WINE_APP_SCRIPTS_PATH"
 
-# Loads env from Config.app/Resources/bash/env.sh
-source "$WINE_APP_SCRIPTS_PATH/env.sh"
+source "$SCRIPTS_PATH/env.sh"
 
 # Creates the initial folder structure
 mkdir -p "$WINE_APP_LOGS_PATH"

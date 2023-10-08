@@ -1,12 +1,14 @@
 import { BashScript, SpawnProcessCallbacks, WineEnv } from '@interfaces';
-import { os } from '@neutralinojs/lib';
+import { os, filesystem } from '@neutralinojs/lib';
 import {
   buildEnvExports,
   spawnProcess as baseSpawnProcess,
   useEnv,
 } from '@utils';
 
-type UpdatableWineEnv = Pick<WineEnv, 'WINE_APP_NAME'>;
+type UpdatableWineEnv = Partial<
+  Pick<WineEnv, 'WINE_APP_NAME' | 'WINE_ENGINE_VERSION'>
+>;
 
 export const useWine = () => {
   const env = useEnv();
@@ -16,8 +18,12 @@ export const useWine = () => {
 
   const WINE_ENV = {
     WINE_APP_NAME: 'Test App',
+    WINE_ENGINE_VERSION: '',
     get WINE_APP_PATH() {
       return `${env.get().HOME}/Wine/apps/${WINE_ENV.WINE_APP_NAME}.app`;
+    },
+    get WINE_ENGINES_PATH() {
+      return `${env.get().HOME}/Wine/engines`;
     },
     get WINE_APP_CONTENTS_PATH() {
       return `${WINE_ENV.WINE_APP_PATH}/Contents`;
@@ -43,7 +49,7 @@ export const useWine = () => {
     if (wineEnv === undefined) return;
 
     for (let [key, value] of Object.entries(wineEnv)) {
-      WINE_ENV[key as keyof UpdatableWineEnv] = value;
+      WINE_ENV[key as keyof UpdatableWineEnv] = value.trim();
     }
 
     buildWineEnvExports();
@@ -64,19 +70,40 @@ export const useWine = () => {
   buildWineEnvExports();
 
   /**
+   * List the available wine engines.
+   */
+  const listWineEngines = async () =>
+    filesystem.readDirectory(WINE_ENV.WINE_ENGINES_PATH);
+
+  /**
    * Logic for creating the wine application structure.
    */
   const scaffoldApp = async (
-    callbacks?: SpawnProcessCallbacks,
-    options?: { env?: UpdatableWineEnv }
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
+    callbacks?: SpawnProcessCallbacks
   ) => {
-    options?.env && updateWineEnv(options.env);
-
+    updateWineEnv(options);
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
-    updateWineEnv({ WINE_APP_NAME: stdOut.trim() });
+    updateWineEnv({ WINE_APP_NAME: stdOut });
     return spawnScript('scaffoldApp', '', callbacks);
   };
+
+  /**
+   * Logic for extracting the wine engine.
+   */
+  const extractEngine = async (
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME' | 'WINE_ENGINE_VERSION'>,
+    callbacks?: SpawnProcessCallbacks
+  ) => {
+    updateWineEnv(options);
+    return spawnScript('extractWineEngine', '', callbacks);
+  };
+
+  /**
+   * Builds the wine env source by using the env.sh script.
+   */
+  const wineEnvSource = () => `source ${SCRIPTS_PATH}/env.sh;`;
 
   const execScript = (name: BashScript, args: string = '') =>
     execCommand(`${SCRIPTS_PATH}/${name}.sh ${args}`);
@@ -88,10 +115,18 @@ export const useWine = () => {
   ) => spawnProcess(`${SCRIPTS_PATH}/${name}.sh ${args}`, callbacks);
 
   const execCommand: typeof os.execCommand = (command, options) =>
-    os.execCommand(`${ENV_EXPORTS} ${WINE_EXPORTS} ${command}`, options);
+    os.execCommand(
+      `${ENV_EXPORTS} ${wineEnvSource()} ${WINE_EXPORTS} ${command}`,
+      options
+    );
 
-  const spawnProcess = (command: string, options?: SpawnProcessCallbacks) =>
-    baseSpawnProcess(`${ENV_EXPORTS} ${WINE_EXPORTS} ${command}`, options);
+  const spawnProcess = (command: string, options?: SpawnProcessCallbacks) => {
+    console.log(`${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${command}`);
+    baseSpawnProcess(
+      `${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${command}`,
+      options
+    );
+  };
 
   const getWineEnv = () => WINE_ENV;
 
@@ -102,5 +137,7 @@ export const useWine = () => {
     scaffoldApp,
     spawnProcess,
     spawnScript,
+    listWineEngines,
+    extractEngine,
   };
 };

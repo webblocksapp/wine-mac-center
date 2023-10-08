@@ -1,16 +1,16 @@
 import { Code, Input } from '@@components';
-import { useWine } from '@@utils';
 import { useState } from 'react';
+import { useWineContext } from '..';
 
 export const ScaffoldApp: React.FC = () => {
-  const wine = useWine();
+  const { wine, appName, setAppName } = useWineContext();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
-  const [appName, setAppName] = useState('Test App');
 
   const scaffoldApp = async () => {
     setLoading(true);
     await wine.scaffoldApp(
+      { WINE_APP_NAME: appName },
       {
         onStdOut: (data) => {
           setData(data);
@@ -18,14 +18,18 @@ export const ScaffoldApp: React.FC = () => {
         onStdErr: (data) => {
           setData(data);
         },
-      },
-      { env: { WINE_APP_NAME: appName } }
+      }
     );
+    setAppName(wine.getWineEnv().WINE_APP_NAME);
     setLoading(false);
   };
 
   return (
     <div>
+      <div style={{ marginBottom: 10 }}>
+        <h3>Scaffold App</h3>
+        <hr />
+      </div>
       <Input
         disabled={loading}
         label="Application name"

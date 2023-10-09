@@ -150,6 +150,18 @@ export const useWine = () => {
   };
 
   /**
+   * Run executable with wine
+   */
+  const runExe = (
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
+    args: string,
+    callbacks?: SpawnProcessCallbacks
+  ) => {
+    updateWineEnv(options);
+    return spawnScript('wine', args, callbacks);
+  };
+
+  /**
    * Transform winetricks options into flags.
    */
   const winetricksOptionsToFlags = (options?: WinetricksOptions) => {
@@ -196,5 +208,6 @@ export const useWine = () => {
     wineboot,
     enableDxvk,
     winetrick,
+    runExe,
   };
 };

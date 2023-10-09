@@ -5,6 +5,7 @@ import { ExtractEngine } from './ExtractEngine';
 import { Wineboot } from './Wineboot';
 import { EnableDxvk } from './EnableDxvk';
 import { Winetrick } from './Winetrick';
+import { RunExe } from './RunExe';
 
 export const WineContext = createContext<{
   wine: ReturnType<typeof useWine>;
@@ -31,6 +32,7 @@ export const Wine: React.FC = () => {
         <Wineboot />
         <EnableDxvk />
         <Winetrick />
+        <RunExe />
       </div>
     </WineContext.Provider>
   );

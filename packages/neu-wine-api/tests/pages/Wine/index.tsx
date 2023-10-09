@@ -3,6 +3,7 @@ import { ScaffoldApp } from './ScaffoldApp';
 import { ExtractEngine } from './ExtractEngine';
 import { Wineboot } from './Wineboot';
 import { useWine } from '@@utils';
+import { EnableDxvk } from './EnableDxvk';
 
 export const WineContext = createContext<{
   wine: ReturnType<typeof useWine>;
@@ -27,6 +28,7 @@ export const Wine: React.FC = () => {
         <ScaffoldApp />
         <ExtractEngine />
         <Wineboot />
+        <EnableDxvk />
       </div>
     </WineContext.Provider>
   );

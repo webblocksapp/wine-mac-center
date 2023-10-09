@@ -25,6 +25,9 @@ export const useWine = () => {
     get WINE_ENGINES_PATH() {
       return `${env.get().HOME}/Wine/engines`;
     },
+    get WINE_LIBS_PATH() {
+      return `${env.get().HOME}/Wine/libs`;
+    },
     get WINE_APP_CONTENTS_PATH() {
       return `${WINE_ENV.WINE_APP_PATH}/Contents`;
     },
@@ -116,6 +119,17 @@ export const useWine = () => {
    */
   const wineEnvSource = () => `source ${SCRIPTS_PATH}/env.sh;`;
 
+  /**
+   * Enable DXVK
+   */
+  const enableDxvk = (
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
+    callbacks?: SpawnProcessCallbacks
+  ) => {
+    updateWineEnv(options);
+    return spawnScript('enableDxvk', '', callbacks);
+  };
+
   const execScript = (name: BashScript, args: string = '') =>
     execCommand(`${SCRIPTS_PATH}/${name}.sh ${args}`);
 
@@ -149,5 +163,6 @@ export const useWine = () => {
     listWineEngines,
     extractEngine,
     wineboot,
+    enableDxvk,
   };
 };

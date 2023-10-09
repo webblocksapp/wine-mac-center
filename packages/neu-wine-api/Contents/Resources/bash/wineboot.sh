@@ -1,2 +1,2 @@
 #!/bin/bash
-$WINE_APP_SCRIPTS_PATH/wine.sh wineboot
+"$WINE_APP_SCRIPTS_PATH/wine.sh" wineboot

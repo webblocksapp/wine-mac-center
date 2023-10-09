@@ -101,6 +101,17 @@ export const useWine = () => {
   };
 
   /**
+   * Initializes the wine prefix.
+   */
+  const wineboot = async (
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
+    callbacks?: SpawnProcessCallbacks
+  ) => {
+    updateWineEnv(options);
+    return spawnScript('wineboot', '', callbacks);
+  };
+
+  /**
    * Builds the wine env source by using the env.sh script.
    */
   const wineEnvSource = () => `source ${SCRIPTS_PATH}/env.sh;`;
@@ -120,13 +131,11 @@ export const useWine = () => {
       options
     );
 
-  const spawnProcess = (command: string, options?: SpawnProcessCallbacks) => {
-    console.log(`${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${command}`);
+  const spawnProcess = (command: string, options?: SpawnProcessCallbacks) =>
     baseSpawnProcess(
       `${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${command}`,
       options
     );
-  };
 
   const getWineEnv = () => WINE_ENV;
 
@@ -139,5 +148,6 @@ export const useWine = () => {
     spawnScript,
     listWineEngines,
     extractEngine,
+    wineboot,
   };
 };

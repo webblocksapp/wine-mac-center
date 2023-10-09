@@ -1,7 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 import { ScaffoldApp } from './ScaffoldApp';
-import { useWine } from '@@utils';
 import { ExtractEngine } from './ExtractEngine';
+import { Wineboot } from './Wineboot';
+import { useWine } from '@@utils';
 
 export const WineContext = createContext<{
   wine: ReturnType<typeof useWine>;
@@ -25,6 +26,7 @@ export const Wine: React.FC = () => {
       <div>
         <ScaffoldApp />
         <ExtractEngine />
+        <Wineboot />
       </div>
     </WineContext.Provider>
   );

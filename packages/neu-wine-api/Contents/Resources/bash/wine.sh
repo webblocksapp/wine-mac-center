@@ -6,7 +6,7 @@ wine() {
     WINE_ARCH=wine64
   fi
 
-  $WINE_APP_SCRIPTS_PATH/wineEnv.sh $WINE_ARCH "$@"
+  "$WINE_APP_SCRIPTS_PATH/wineEnv.sh" $WINE_ARCH "$@"
 }
 
 wine "$@"

@@ -19,6 +19,7 @@ export const spawnProcess = async (
             break;
           case 'exit':
             callbacks?.onExit?.(evt.detail.data);
+            if (callbacks) callbacks = {}; //Callback is cleaned from subscription
             resolve(undefined);
             break;
         }

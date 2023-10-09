@@ -1,4 +1,9 @@
-import { BashScript, SpawnProcessCallbacks, WineEnv } from '@interfaces';
+import {
+  BashScript,
+  SpawnProcessCallbacks,
+  WineEnv,
+  WinetricksOptions,
+} from '@interfaces';
 import { os, filesystem } from '@neutralinojs/lib';
 import {
   buildEnvExports,
@@ -130,6 +135,32 @@ export const useWine = () => {
     return spawnScript('enableDxvk', '', callbacks);
   };
 
+  /**
+   * Winetrick
+   */
+  const winetrick = (
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'> & WinetricksOptions,
+    args: string,
+    callbacks?: SpawnProcessCallbacks
+  ) => {
+    const { WINE_APP_NAME, ...rest } = options;
+    const flags = winetricksOptionsToFlags(rest);
+    updateWineEnv({ WINE_APP_NAME });
+    return spawnScript('winetrick', `${flags} ${args}`, callbacks);
+  };
+
+  /**
+   * Transform winetricks options into flags.
+   */
+  const winetricksOptionsToFlags = (options?: WinetricksOptions) => {
+    options = { unattended: true, force: true, ...options };
+    let flags = '';
+    if (options?.unattended) flags += '--unattended ';
+    if (options?.force) flags += '--force ';
+
+    return `"${flags}"`;
+  };
+
   const execScript = (name: BashScript, args: string = '') =>
     execCommand(`${SCRIPTS_PATH}/${name}.sh ${args}`);
 
@@ -164,5 +195,6 @@ export const useWine = () => {
     extractEngine,
     wineboot,
     enableDxvk,
+    winetrick,
   };
 };

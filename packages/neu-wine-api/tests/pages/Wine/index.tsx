@@ -1,9 +1,10 @@
 import { createContext, useContext, useState } from 'react';
+import { useWine } from '@@utils';
 import { ScaffoldApp } from './ScaffoldApp';
 import { ExtractEngine } from './ExtractEngine';
 import { Wineboot } from './Wineboot';
-import { useWine } from '@@utils';
 import { EnableDxvk } from './EnableDxvk';
+import { Winetrick } from './Winetrick';
 
 export const WineContext = createContext<{
   wine: ReturnType<typeof useWine>;
@@ -29,6 +30,7 @@ export const Wine: React.FC = () => {
         <ExtractEngine />
         <Wineboot />
         <EnableDxvk />
+        <Winetrick />
       </div>
     </WineContext.Provider>
   );

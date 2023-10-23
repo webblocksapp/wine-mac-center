@@ -5,6 +5,7 @@ import {
   WinetricksOptions,
 } from '@interfaces';
 import { os, filesystem } from '@neutralinojs/lib';
+import plist from 'plist';
 import {
   buildEnvExports,
   spawnProcess as baseSpawnProcess,
@@ -162,6 +163,24 @@ export const useWine = () => {
   };
 
   /**
+   * Run executable with wine
+   */
+  const bundleApp = (
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
+    callbacks?: SpawnProcessCallbacks
+  ) => {
+    updateWineEnv(options);
+    const xml = plist.build([
+      'metadata',
+      {
+        CFBundleExecutable: 'winemacapp',
+        CFBundleIconFile: 'winemacapp.ics',
+      },
+    ]);
+    console.log(xml);
+  };
+
+  /**
    * Transform winetricks options into flags.
    */
   const winetricksOptionsToFlags = (options?: WinetricksOptions) => {
@@ -209,5 +228,6 @@ export const useWine = () => {
     enableDxvk,
     winetrick,
     runExe,
+    bundleApp,
   };
 };

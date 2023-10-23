@@ -12,9 +12,11 @@
     "neu-build": "pnpm build && pnpm neu build"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@neutralinojs/lib": "^3.11.0",
     "@neutralinojs/neu": "^9.6.1",
     "@types/node": "^20.6.0",
+    "@types/plist": "^3.0.4",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@vitejs/plugin-react": "^4.0.1",
@@ -29,6 +31,7 @@
     "vite-tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "plist": "^3.1.0"
   }
 }

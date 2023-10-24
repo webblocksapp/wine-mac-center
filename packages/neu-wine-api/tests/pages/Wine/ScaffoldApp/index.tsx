@@ -13,9 +13,11 @@ export const ScaffoldApp: React.FC = () => {
       { WINE_APP_NAME: appName },
       {
         onStdOut: (data) => {
+          console.log('====>', data);
           setData(data);
         },
         onStdErr: (data) => {
+          console.log('====>', data);
           setData(data);
         },
       }

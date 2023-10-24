@@ -1,6 +1,6 @@
 import {
   BashScript,
-  SpawnProcessCallbacks,
+  SpawnProcessArgs,
   WineEnv,
   WinetricksOptions,
 } from '@interfaces';
@@ -92,13 +92,13 @@ export const useWine = () => {
    */
   const scaffoldApp = async (
     options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
-    callbacks?: SpawnProcessCallbacks
+    args?: SpawnProcessArgs
   ) => {
     updateWineEnv(options);
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
     updateWineEnv({ WINE_APP_NAME: stdOut });
-    return spawnScript('scaffoldApp', '', callbacks);
+    return spawnScript('scaffoldApp', '', args);
   };
 
   /**
@@ -106,10 +106,10 @@ export const useWine = () => {
    */
   const extractEngine = async (
     options: Pick<UpdatableWineEnv, 'WINE_APP_NAME' | 'WINE_ENGINE_VERSION'>,
-    callbacks?: SpawnProcessCallbacks
+    args?: SpawnProcessArgs
   ) => {
     updateWineEnv(options);
-    return spawnScript('extractWineEngine', '', callbacks);
+    return spawnScript('extractWineEngine', '', args);
   };
 
   /**
@@ -117,10 +117,10 @@ export const useWine = () => {
    */
   const wineboot = async (
     options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
-    callbacks?: SpawnProcessCallbacks
+    args?: SpawnProcessArgs
   ) => {
     updateWineEnv(options);
-    return spawnScript('wineboot', '', callbacks);
+    return spawnScript('wineboot', '', args);
   };
 
   /**
@@ -133,10 +133,10 @@ export const useWine = () => {
    */
   const enableDxvk = (
     options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
-    callbacks?: SpawnProcessCallbacks
+    args?: SpawnProcessArgs
   ) => {
     updateWineEnv(options);
-    return spawnScript('enableDxvk', '', callbacks);
+    return spawnScript('enableDxvk', '', args);
   };
 
   /**
@@ -145,12 +145,12 @@ export const useWine = () => {
   const winetrick = (
     options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'> & WinetricksOptions,
     args: string,
-    callbacks?: SpawnProcessCallbacks
+    processArgs?: SpawnProcessArgs
   ) => {
     const { WINE_APP_NAME, ...rest } = options;
     const flags = winetricksOptionsToFlags(rest);
     updateWineEnv({ WINE_APP_NAME });
-    return spawnScript('winetrick', `${flags} ${args}`, callbacks);
+    return spawnScript('winetrick', `${flags} ${args}`, processArgs);
   };
 
   /**
@@ -159,28 +159,40 @@ export const useWine = () => {
   const runExe = (
     options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
     args: string,
-    callbacks?: SpawnProcessCallbacks
+    processArgs?: SpawnProcessArgs
   ) => {
     updateWineEnv(options);
-    return spawnScript('wine', args, callbacks);
+    return spawnScript('wine', args, processArgs);
   };
 
   /**
    * Run executable with wine
    */
   const bundleApp = (
-    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>,
-    callbacks?: SpawnProcessCallbacks
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'> & { exePath: string },
+    args?: SpawnProcessArgs
   ) => {
     updateWineEnv(options);
-    const xml = plist.build([
-      'metadata',
-      {
-        CFBundleExecutable: 'winemacapp',
-        CFBundleIconFile: 'winemacapp.ics',
+    const infoPlistXML = plist
+      .build([
+        'metadata',
+        {
+          CFBundleExecutable: 'winemacapp',
+          CFBundleIconFile: 'winemacapp.ics',
+        },
+      ])
+      .replace(/\n/gi, '');
+
+    const jsonString = 'AAAAA'.replace(/\n/gi, '');
+    const exePath = options.exePath.replace(/\n/gi, '');
+
+    return spawnScript('bundleApp', '', {
+      ...args,
+      action: {
+        type: 'stdIn',
+        data: `${infoPlistXML}\n ${jsonString}\n ${exePath}\n`,
       },
-    ]);
-    console.log(xml);
+    });
   };
 
   /**
@@ -190,8 +202,14 @@ export const useWine = () => {
     options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>
   ) => {
     updateWineEnv(options);
-    const { stdOut, stdErr } = await execScript('listAppExecutables');
-    console.log(stdOut, stdErr);
+    const { stdOut } = await execScript('listAppExecutables');
+
+    return (
+      stdOut.split('\n').map((item) => ({
+        path: item.split('SharedSupport/prefix').pop() || '',
+        name: item.split('/').pop() || '',
+      })) || []
+    );
   };
 
   /**
@@ -217,15 +235,15 @@ export const useWine = () => {
 
   const spawnScript = (
     name: BashScript,
-    args: string = '',
-    callbacks?: SpawnProcessCallbacks
-  ) => spawnProcess(s(`${SCRIPTS_PATH}/${name}.sh ${args}`), callbacks);
+    scriptArgs: string = '',
+    processArgs?: SpawnProcessArgs
+  ) => spawnProcess(s(`${SCRIPTS_PATH}/${name}.sh ${scriptArgs}`), processArgs);
 
   const execCommand: typeof os.execCommand = (command, options) =>
     os.execCommand(s(command), options);
 
-  const spawnProcess = (command: string, options?: SpawnProcessCallbacks) =>
-    baseSpawnProcess(s(command), options);
+  const spawnProcess = (command: string, args?: SpawnProcessArgs) =>
+    baseSpawnProcess(s(command), args);
 
   const getWineEnv = () => WINE_ENV;
 

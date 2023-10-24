@@ -67,18 +67,22 @@ export const Envs: React.FC = () => {
     })();
   }, []);
 
-  return loading ? (
-    <>Loading...</>
-  ) : (
-    data.map((item, index) => (
-      <Input
-        key={index}
-        readOnly
-        label={item.label}
-        value={item.value.stdOut || ''}
-        error={Boolean(item.value.stdErr)}
-        errorMessage={item.value.stdErr}
-      />
-    ))
+  return (
+    <>
+      {loading ? (
+        <>Loading...</>
+      ) : (
+        data.map((item, index) => (
+          <Input
+            key={index}
+            readOnly
+            label={item.label}
+            value={item.value.stdOut || ''}
+            error={Boolean(item.value.stdErr)}
+            errorMessage={item.value.stdErr}
+          />
+        ))
+      )}
+    </>
   );
 };

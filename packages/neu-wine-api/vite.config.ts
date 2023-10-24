@@ -1,15 +1,20 @@
-import { defineConfig } from 'vite';
+import { defineConfig, PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import EnvironmentPlugin from 'vite-plugin-environment';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
+import checker from 'vite-plugin-checker';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    checker({
+      typescript: true,
+      overlay: false,
+    }),
     tsconfigPaths(),
     EnvironmentPlugin('all'),
     createHtmlPlugin({
@@ -44,11 +49,7 @@ export default defineConfig({
   build: {
     minify: false,
     rollupOptions: {
-      plugins: [
-        // Enable rollup polyfills plugin
-        // used during production bundling
-        rollupNodePolyFill(),
-      ],
+      plugins: [rollupNodePolyFill() as PluginOption],
     },
   },
   server: {

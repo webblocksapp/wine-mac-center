@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useWineContext } from '..';
 import { Code } from '@@components';
 
@@ -22,6 +22,14 @@ export const BundleApp: React.FC = () => {
     );
     setLoading(false);
   };
+
+  const listAppExecutables = async () => {
+    console.log(await wine.listAppExecutables({ WINE_APP_NAME: appName }));
+  };
+
+  useEffect(() => {
+    listAppExecutables();
+  }, []);
 
   return (
     <div>

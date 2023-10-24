@@ -52,6 +52,9 @@ export const useWine = () => {
     get WINE_APP_PREFIX_PATH() {
       return `${WINE_ENV.WINE_APP_SHARED_SUPPORT_PATH}/prefix`;
     },
+    get WINE_APP_DRIVE_C_PATH() {
+      return `${WINE_ENV.WINE_APP_PREFIX_PATH}/drive_c`;
+    },
   };
 
   const updateWineEnv = (wineEnv?: UpdatableWineEnv) => {
@@ -181,6 +184,17 @@ export const useWine = () => {
   };
 
   /**
+   * List app executables
+   */
+  const listAppExecutables = async (
+    options: Pick<UpdatableWineEnv, 'WINE_APP_NAME'>
+  ) => {
+    updateWineEnv(options);
+    const { stdOut, stdErr } = await execScript('listAppExecutables');
+    console.log(stdOut, stdErr);
+  };
+
+  /**
    * Transform winetricks options into flags.
    */
   const winetricksOptionsToFlags = (options?: WinetricksOptions) => {
@@ -192,26 +206,26 @@ export const useWine = () => {
     return `"${flags}"`;
   };
 
+  /**
+   * Bash scripts source.
+   */
+  const s = (cmd: string) =>
+    `${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${cmd}`;
+
   const execScript = (name: BashScript, args: string = '') =>
-    execCommand(`${SCRIPTS_PATH}/${name}.sh ${args}`);
+    execCommand(s(`${SCRIPTS_PATH}/${name}.sh ${args}`));
 
   const spawnScript = (
     name: BashScript,
     args: string = '',
     callbacks?: SpawnProcessCallbacks
-  ) => spawnProcess(`${SCRIPTS_PATH}/${name}.sh ${args}`, callbacks);
+  ) => spawnProcess(s(`${SCRIPTS_PATH}/${name}.sh ${args}`), callbacks);
 
   const execCommand: typeof os.execCommand = (command, options) =>
-    os.execCommand(
-      `${ENV_EXPORTS} ${wineEnvSource()} ${WINE_EXPORTS} ${command}`,
-      options
-    );
+    os.execCommand(s(command), options);
 
   const spawnProcess = (command: string, options?: SpawnProcessCallbacks) =>
-    baseSpawnProcess(
-      `${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${command}`,
-      options
-    );
+    baseSpawnProcess(s(command), options);
 
   const getWineEnv = () => WINE_ENV;
 
@@ -229,5 +243,6 @@ export const useWine = () => {
     winetrick,
     runExe,
     bundleApp,
+    listAppExecutables,
   };
 };

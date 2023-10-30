@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-import { useWine } from '@@utils';
+import { createContext, useContext, useMemo, useState } from 'react';
+import { createWine } from 'neu-wine-api';
 import { ScaffoldApp } from './ScaffoldApp';
 import { ExtractEngine } from './ExtractEngine';
 import { Wineboot } from './Wineboot';
@@ -9,7 +9,7 @@ import { RunExe } from './RunExe';
 import { BundleApp } from './BundleApp';
 
 export const WineContext = createContext<{
-  wine: ReturnType<typeof useWine>;
+  wine: ReturnType<typeof createWine>;
   appName: string;
   setAppName: React.Dispatch<React.SetStateAction<string>>;
   engine: string;
@@ -21,7 +21,7 @@ export const useWineContext = () => useContext(WineContext);
 export const Wine: React.FC = () => {
   const [appName, setAppName] = useState('Test App');
   const [engine, setEngine] = useState('');
-  const wine = useWine();
+  const wine = useMemo(() => createWine(), []);
 
   return (
     <WineContext.Provider

@@ -1,7 +1,7 @@
-import { useWine } from '@@utils';
 import { useEffect, useState } from 'react';
 import { useEnv } from 'neu-wine-api';
 import { Input } from '@@components';
+import { useWineContext } from '@@pages';
 
 export const Envs: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -9,7 +9,7 @@ export const Envs: React.FC = () => {
     Array<{ label: string; value: { stdOut?: string; stdErr?: string } }>
   >([]);
   const env = useEnv();
-  const wine = useWine();
+  const { wine } = useWineContext();
 
   useEffect(() => {
     (async () => {

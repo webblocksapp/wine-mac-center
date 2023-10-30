@@ -1,8 +1,9 @@
 import { Winetrick } from '@interfaces';
-import { useWine } from '@utils';
+import { createWine } from '@utils';
+import { useMemo } from 'react';
 
 export const useWinetrickApiClient = () => {
-  const wine = useWine();
+  const wine = useMemo(() => createWine(), []);
 
   const mapResponse = (data: string = ''): Winetrick[] => {
     const mappedData: Winetrick[] = [];

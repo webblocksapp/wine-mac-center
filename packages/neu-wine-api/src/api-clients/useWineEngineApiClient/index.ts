@@ -1,8 +1,9 @@
 import { filesystem } from '@neutralinojs/lib';
-import { useWine } from '@utils';
+import { createWine } from '@utils';
+import { useMemo } from 'react';
 
 export const useWineEngineApiClient = () => {
-  const wine = useWine();
+  const wine = useMemo(() => createWine(), []);
   const mapResponse = (response: filesystem.DirectoryEntry[]) => {
     return response
       .filter((item) => item.type === 'FILE' && item.entry !== '.DS_Store')

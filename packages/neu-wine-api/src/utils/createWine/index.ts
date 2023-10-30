@@ -16,7 +16,7 @@ type UpdatableWineEnv = Partial<
   Pick<WineEnv, 'WINE_APP_NAME' | 'WINE_ENGINE_VERSION'>
 >;
 
-export const useWine = () => {
+export const createWine = () => {
   const env = useEnv();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
   let WINE_EXPORTS = '';

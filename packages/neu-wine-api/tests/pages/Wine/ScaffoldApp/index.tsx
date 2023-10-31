@@ -1,6 +1,5 @@
-import { Code, Input } from '@@components';
+import { Code, Input, useWineContext } from '@@components';
 import { useState } from 'react';
-import { useWineContext } from '..';
 
 export const ScaffoldApp: React.FC = () => {
   const { wine, appName, setAppName } = useWineContext();

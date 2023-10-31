@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useWineContext } from '..';
-import { Code, WineEnginesSelect } from '@@components';
+import { Code, WineEnginesSelect, useWineContext } from '@@components';
 
 export const ExtractEngine: React.FC = () => {
   const { wine, appName, engine, setEngine } = useWineContext();

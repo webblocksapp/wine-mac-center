@@ -3,6 +3,7 @@ import { App } from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import './main.css';
 import { useEnv } from 'neu-wine-api';
+import { WineProvider } from '@@components';
 
 const main = async () => {
   const env = useEnv();
@@ -10,7 +11,9 @@ const main = async () => {
 
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
-      <App />
+      <WineProvider>
+        <App />
+      </WineProvider>
     </BrowserRouter>
   );
 };

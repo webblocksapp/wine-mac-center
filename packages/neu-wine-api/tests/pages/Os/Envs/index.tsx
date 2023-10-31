@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useEnv } from 'neu-wine-api';
-import { Input } from '@@components';
-import { useWineContext } from '@@pages';
+import { Input, useWineContext } from '@@components';
 
 export const Envs: React.FC = () => {
   const [loading, setLoading] = useState(false);

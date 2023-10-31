@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useWineContext } from '..';
-import { Code, Select } from '@@components';
+import { Code, Select, useWineContext } from '@@components';
 
 export const BundleApp: React.FC = () => {
   const { wine, appName } = useWineContext();

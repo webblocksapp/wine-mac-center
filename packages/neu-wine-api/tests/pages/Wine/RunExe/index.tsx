@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useWineContext } from '..';
-import { Code, Input } from '@@components';
+import { Code, Input, useWineContext } from '@@components';
 
 export const RunExe: React.FC = () => {
   const { wine, appName, setAppName } = useWineContext();

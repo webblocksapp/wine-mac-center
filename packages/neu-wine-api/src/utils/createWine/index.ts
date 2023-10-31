@@ -84,8 +84,12 @@ export const createWine = () => {
   /**
    * List the available wine engines.
    */
-  const listWineEngines = async () =>
-    filesystem.readDirectory(WINE_ENV.WINE_ENGINES_PATH);
+  const listWineEngines = async () => {
+    const engines = await filesystem.readDirectory(WINE_ENV.WINE_ENGINES_PATH);
+    return engines
+      .filter((item) => item.type === 'FILE' && item.entry !== '.DS_Store')
+      .map((item) => item.entry.replace(/.tar.7z$/, ''));
+  };
 
   /**
    * Logic for creating the wine application structure.

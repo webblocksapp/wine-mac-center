@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useWineContext } from '..';
-import { Code } from '@@components';
+import { Code, useWineContext } from '@@components';
 
 export const EnableDxvk: React.FC = () => {
   const { wine, appName, setAppName } = useWineContext();

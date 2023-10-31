@@ -1,10 +1,9 @@
 import { Winetrick } from '@interfaces';
-import { createWine } from '@utils';
-import { useMemo } from 'react';
+import { os } from '@neutralinojs/lib';
+import { useEnv } from '@utils';
 
 export const useWinetrickApiClient = () => {
-  const wine = useMemo(() => createWine(), []);
-
+  const env = useEnv();
   const mapResponse = (data: string = ''): Winetrick[] => {
     const mappedData: Winetrick[] = [];
     const rows = data.split('\n');
@@ -21,7 +20,7 @@ export const useWinetrickApiClient = () => {
   };
 
   const execScript = async (args: string) =>
-    wine.execScript('winetricks', args);
+    os.execCommand(`${env.get().SCRIPTS_PATH}/winetricks.sh ${args}`);
 
   const getWinetricks = async (cmd: string) => {
     const { stdOut, stdErr } = await execScript(cmd);

@@ -1,15 +1,15 @@
-import { Code, Input, useWineContext } from '@@components';
+import { Code, Input } from '@@components';
 import { useState } from 'react';
+import { useWineAppContext } from '..';
 
 export const ScaffoldApp: React.FC = () => {
-  const { wine } = useWineContext();
-  const [appName, setAppName] = useState(wine.getWineEnv().WINE_APP_NAME);
+  const { wineApp } = useWineAppContext();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
 
   const scaffoldApp = async () => {
     setLoading(true);
-    await wine.scaffoldApp(appName, {
+    await wineApp.scaffold({
       onStdOut: (data) => {
         setData(data);
       },
@@ -17,7 +17,7 @@ export const ScaffoldApp: React.FC = () => {
         setData(data);
       },
     });
-    setAppName(wine.getAppConfig().name);
+
     setLoading(false);
   };
 
@@ -28,22 +28,19 @@ export const ScaffoldApp: React.FC = () => {
         <hr />
       </div>
       <Input
-        disabled={loading}
+        readOnly
         label="Application name"
-        value={appName}
-        onInput={(event) => setAppName(event.currentTarget.value)}
+        value={wineApp.getAppConfig().name}
       />
       <Input
         readOnly
-        disabled={loading}
         label="Application path"
-        value={wine.getWineEnv().WINE_APP_PATH}
+        value={wineApp.getWineEnv().WINE_APP_PATH}
       />
       <Input
         readOnly
-        disabled={loading}
         label="Application Contents path"
-        value={wine.getWineEnv().WINE_APP_CONTENTS_PATH}
+        value={wineApp.getWineEnv().WINE_APP_CONTENTS_PATH}
       />
       <button disabled={loading} onClick={scaffoldApp}>
         {loading ? 'Scaffolding' : 'Scaffold'} App

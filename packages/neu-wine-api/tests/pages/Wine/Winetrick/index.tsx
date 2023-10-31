@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { Code, Input, useWineContext } from '@@components';
+import { Code, Input } from '@@components';
+import { useWineAppContext } from '..';
 
 export const Winetrick: React.FC = () => {
-  const { wine } = useWineContext();
+  const { wineApp } = useWineAppContext();
   const [loading, setLoading] = useState(false);
   const [trick, setTrick] = useState('');
   const [data, setData] = useState<any>();
 
   const winetrick = async () => {
     setLoading(true);
-    await wine.winetrick(trick, {
+    await wineApp.winetrick(trick, {
       onStdOut: (data) => {
         setData(data);
       },

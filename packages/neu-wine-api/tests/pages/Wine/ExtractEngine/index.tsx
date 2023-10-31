@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { Code, WineEnginesSelect, useWineContext } from '@@components';
+import { Code, WineEnginesSelect } from '@@components';
+import { useWineAppContext } from '..';
 
 export const ExtractEngine: React.FC = () => {
-  const { wine } = useWineContext();
+  const { wineApp } = useWineAppContext();
   const [engineVersion, setEngineVersion] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
 
   const extractEngine = async () => {
     setLoading(true);
-    await wine.extractEngine(engineVersion, {
+    await wineApp.extractEngine(engineVersion, {
       onStdOut: (data) => {
         console.log(data);
         setData(data);
@@ -29,6 +30,7 @@ export const ExtractEngine: React.FC = () => {
         <hr />
       </div>
       <WineEnginesSelect
+        wineApp={wineApp}
         disabled={loading}
         value={engineVersion}
         onInput={(event) => setEngineVersion(event.currentTarget.value)}

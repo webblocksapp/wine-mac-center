@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Code, useWineContext } from '@@components';
+import { Code } from '@@components';
+import { useWineAppContext } from '..';
 
 export const Wineboot: React.FC = () => {
-  const { wine } = useWineContext();
+  const { wineApp } = useWineAppContext();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
 
   const wineboot = async () => {
     setLoading(true);
-    await wine.wineboot({
+    await wineApp.wineboot({
       onStdOut: (data) => {
         setData(data);
       },

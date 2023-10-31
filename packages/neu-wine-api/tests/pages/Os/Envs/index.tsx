@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useEnv } from 'neu-wine-api';
-import { Input, useWineContext } from '@@components';
+import { Input } from '@@components';
 
 export const Envs: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -8,7 +8,6 @@ export const Envs: React.FC = () => {
     Array<{ label: string; value: { stdOut?: string; stdErr?: string } }>
   >([]);
   const env = useEnv();
-  const { wine } = useWineContext();
 
   useEffect(() => {
     (async () => {
@@ -24,42 +23,6 @@ export const Envs: React.FC = () => {
         {
           label: 'Scripts path',
           value: { stdOut: env.get().SCRIPTS_PATH },
-        },
-        {
-          label: 'WINE_APP_NAME',
-          value: await wine.execCommand('echo $WINE_APP_NAME'),
-        },
-        {
-          label: 'WINE_ENGINE_VERSION',
-          value: await wine.execCommand('echo $WINE_ENGINE_VERSION'),
-        },
-        {
-          label: 'WINE_APP_PATH',
-          value: await wine.execCommand('echo $WINE_APP_PATH'),
-        },
-        {
-          label: 'WINE_APP_CONTENTS_PATH',
-          value: await wine.execCommand('echo $WINE_APP_CONTENTS_PATH'),
-        },
-        {
-          label: 'WINE_CONFIG_APP_NAME',
-          value: await wine.execCommand('echo $WINE_CONFIG_APP_NAME'),
-        },
-        {
-          label: 'WINE_CONFIG_APP_PATH',
-          value: await wine.execCommand('echo $WINE_CONFIG_APP_PATH'),
-        },
-        {
-          label: 'WINE_APP_SCRIPTS_PATH',
-          value: await wine.execCommand('echo $WINE_APP_SCRIPTS_PATH'),
-        },
-        {
-          label: 'WINE_APP_SHARED_SUPPORT_PATH',
-          value: await wine.execCommand('echo $WINE_APP_SHARED_SUPPORT_PATH'),
-        },
-        {
-          label: 'WINE_APP_PREFIX_PATH',
-          value: await wine.execCommand('echo $WINE_APP_PREFIX_PATH'),
         },
       ]);
       setLoading(false);

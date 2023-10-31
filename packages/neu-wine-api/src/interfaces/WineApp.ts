@@ -1,11 +1,3 @@
-import { WineAppExecutable, WinetricksOptions } from '@interfaces';
+import { createWineApp } from '@utils';
 
-export type WineApp = {
-  id?: string;
-  name: string;
-  engineVersion: string;
-  setupExecutablePath: string;
-  winetricks?: { verbs: string[]; options: WinetricksOptions };
-  dxvkEnabled: boolean;
-  executables?: Array<WineAppExecutable>;
-};
+export type WineApp = Awaited<ReturnType<typeof createWineApp>>;

@@ -25,6 +25,7 @@ export const useEnv = () => {
     }
 
     ENV.HOME = (await os.execCommand('echo $HOME')).stdOut.trim();
+    ENV.WINE_APPS_PATH = `${ENV.HOME}/Wine/apps`;
     ENV.SCRIPTS_PATH = `${ENV.RESOURCES_PATH}/bash`;
     ENV.INTERNAL_APPS_PATH = `${ENV.RESOURCES_PATH}/apps`;
     ENV.COMPRESSED_PATH = `${ENV.RESOURCES_PATH}/compressed`;

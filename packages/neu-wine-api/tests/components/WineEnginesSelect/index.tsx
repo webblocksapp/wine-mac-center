@@ -1,15 +1,19 @@
 import { Select, SelectProps } from '@@components';
-import { useWineContext } from '@@components';
+import { WineApp } from '@interfaces';
 import { useEffect, useState } from 'react';
 
-export interface WineEnginesSelectProps extends Omit<SelectProps, 'options'> {}
+export interface WineEnginesSelectProps extends Omit<SelectProps, 'options'> {
+  wineApp: WineApp;
+}
 
-export const WineEnginesSelect: React.FC<WineEnginesSelectProps> = (props) => {
-  const { wine } = useWineContext();
+export const WineEnginesSelect: React.FC<WineEnginesSelectProps> = ({
+  wineApp,
+  ...rest
+}) => {
   const [options, setOptions] = useState<Array<{ value: string }>>([]);
 
   const initOptions = async () => {
-    const options = (await wine.listWineEngines()).map((item) => ({
+    const options = (await wineApp.listWineEngines()).map((item) => ({
       value: item,
     }));
     setOptions(options);
@@ -19,5 +23,5 @@ export const WineEnginesSelect: React.FC<WineEnginesSelectProps> = (props) => {
     initOptions();
   }, []);
 
-  return <Select {...props} options={options} />;
+  return <Select {...rest} options={options} />;
 };

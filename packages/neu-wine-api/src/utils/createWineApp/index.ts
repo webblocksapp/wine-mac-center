@@ -1,7 +1,7 @@
 import {
   BashScript,
   SpawnProcessArgs,
-  WineApp,
+  WineAppConfig,
   WinetricksOptions,
 } from '@interfaces';
 import { os, filesystem } from '@neutralinojs/lib';
@@ -12,11 +12,11 @@ import {
   useEnv,
 } from '@utils';
 
-export const createWine = () => {
+export const createWineApp = async (appName: string) => {
   const env = useEnv();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
-  let appConfig: WineApp = {
-    name: '',
+  let appConfig: WineAppConfig = {
+    name: appName,
     engineVersion: '',
     setupExecutablePath: '',
     dxvkEnabled: false,
@@ -27,7 +27,7 @@ export const createWine = () => {
 
   const WINE_ENV = {
     get WINE_APP_NAME() {
-      return appConfig.name || 'Test App';
+      return appConfig.name;
     },
     get WINE_ENGINE_VERSION() {
       return appConfig.engineVersion || '';
@@ -53,6 +53,9 @@ export const createWine = () => {
     get WINE_APP_SCRIPTS_PATH() {
       return `${WINE_ENV.WINE_CONFIG_APP_PATH}/Resources/bash`;
     },
+    get WINE_APP_DATA_PATH() {
+      return `${WINE_ENV.WINE_CONFIG_APP_PATH}/Resources/data`;
+    },
     get WINE_APP_SHARED_SUPPORT_PATH() {
       return `${WINE_ENV.WINE_APP_CONTENTS_PATH}/SharedSupport`;
     },
@@ -66,7 +69,7 @@ export const createWine = () => {
 
   const getAppConfig = () => appConfig;
 
-  const updateAppConfig = (data: Partial<WineApp>) => {
+  const updateAppConfig = (data: Partial<WineAppConfig>) => {
     appConfig = { ...appConfig, ...data };
     buildWineEnvExports();
   };
@@ -81,11 +84,6 @@ export const createWine = () => {
   };
 
   /**
-   * Initializes wine env exports.
-   */
-  buildWineEnvExports();
-
-  /**
    * List the available wine engines.
    */
   const listWineEngines = async () => {
@@ -98,7 +96,7 @@ export const createWine = () => {
   /**
    * Logic for creating the wine application structure.
    */
-  const scaffoldApp = async (appName: string, args?: SpawnProcessArgs) => {
+  const scaffold = async (args?: SpawnProcessArgs) => {
     updateAppConfig({ name: appName });
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
@@ -151,6 +149,24 @@ export const createWine = () => {
    */
   const runExe = (args: string, processArgs?: SpawnProcessArgs) => {
     return spawnScript('wine', args, processArgs);
+  };
+
+  /**
+   * Initializes app config
+   */
+  const initAppConfig = async () => {
+    let str: string | undefined;
+
+    try {
+      str = await filesystem.readFile(
+        `${WINE_ENV.WINE_APP_DATA_PATH}/config.json`
+      );
+      appConfig = JSON.parse(str) as unknown as WineAppConfig;
+    } catch (error) {
+      error;
+    } finally {
+      appConfig;
+    }
   };
 
   /**
@@ -210,10 +226,8 @@ export const createWine = () => {
   /**
    * Bash scripts source.
    */
-  const s = (cmd: string) => {
-    console.log(getAppConfig());
-    return `${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${cmd}`;
-  };
+  const s = (cmd: string) =>
+    `${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${cmd}`;
 
   const execScript = (name: BashScript, args: string = '') =>
     execCommand(s(`${SCRIPTS_PATH}/${name}.sh ${args}`));
@@ -232,11 +246,21 @@ export const createWine = () => {
 
   const getWineEnv = () => WINE_ENV;
 
+  /**
+   * Initializes wine env exports.
+   */
+  buildWineEnvExports();
+
+  /**
+   * Initializes app config.
+   */
+  await initAppConfig();
+
   return {
     execCommand,
     execScript,
     getWineEnv,
-    scaffoldApp,
+    scaffold,
     spawnProcess,
     spawnScript,
     listWineEngines,

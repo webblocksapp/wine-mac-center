@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Code, Input, useWineContext } from '@@components';
 
 export const RunExe: React.FC = () => {
-  const { wine, appName, setAppName } = useWineContext();
+  const { wine } = useWineContext();
   const [loading, setLoading] = useState(false);
   const [exePath, setExePath] = useState('');
   const [data, setData] = useState<any>();
 
   const runExe = async () => {
     setLoading(true);
-    await wine.runExe({ WINE_APP_NAME: appName }, exePath, {
+    await wine.runExe(exePath, {
       onStdOut: (data) => {
         setData(data);
       },
@@ -17,7 +17,6 @@ export const RunExe: React.FC = () => {
         setData(data);
       },
     });
-    setAppName(wine.getWineEnv().WINE_APP_NAME);
     setLoading(false);
   };
 

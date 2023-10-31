@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Code, Select, useWineContext } from '@@components';
 
 export const BundleApp: React.FC = () => {
-  const { wine, appName } = useWineContext();
+  const { wine } = useWineContext();
   const [executables, setExecutables] = useState<
     Array<{ value: string; label: string }>
   >([]);
@@ -13,7 +13,7 @@ export const BundleApp: React.FC = () => {
   const bundleApp = async () => {
     setLoading(true);
     await wine.bundleApp(
-      { WINE_APP_NAME: appName, exePath },
+      { exePath },
       {
         onStdOut: (data) => {
           setData(data);
@@ -28,9 +28,10 @@ export const BundleApp: React.FC = () => {
 
   const listAppExecutables = async () => {
     setExecutables(
-      (await wine.listAppExecutables({ WINE_APP_NAME: appName })).map(
-        (item) => ({ value: item.path, label: item.name })
-      )
+      (await wine.listAppExecutables()).map((item) => ({
+        value: item.path,
+        label: item.name,
+      }))
     );
   };
 

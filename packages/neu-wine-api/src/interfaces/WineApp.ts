@@ -1,11 +1,11 @@
-import { WineAppExecutable, WineEngine, WinetricksOptions } from '@interfaces';
+import { WineAppExecutable, WinetricksOptions } from '@interfaces';
 
 export type WineApp = {
   id?: string;
   name: string;
-  engine: WineEngine;
+  engineVersion: string;
   setupExecutablePath: string;
-  winetricks: { verbs: string[]; options: WinetricksOptions };
+  winetricks?: { verbs: string[]; options: WinetricksOptions };
   dxvkEnabled: boolean;
-  executables: Array<WineAppExecutable>;
+  executables?: Array<WineAppExecutable>;
 };

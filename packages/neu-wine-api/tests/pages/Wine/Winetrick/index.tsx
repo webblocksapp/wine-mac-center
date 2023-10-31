@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Code, Input, useWineContext } from '@@components';
 
 export const Winetrick: React.FC = () => {
-  const { wine, appName, setAppName } = useWineContext();
+  const { wine } = useWineContext();
   const [loading, setLoading] = useState(false);
   const [trick, setTrick] = useState('');
   const [data, setData] = useState<any>();
 
   const winetrick = async () => {
     setLoading(true);
-    await wine.winetrick({ WINE_APP_NAME: appName }, trick, {
+    await wine.winetrick(trick, {
       onStdOut: (data) => {
         setData(data);
       },
@@ -17,7 +17,6 @@ export const Winetrick: React.FC = () => {
         setData(data);
       },
     });
-    setAppName(wine.getWineEnv().WINE_APP_NAME);
     setLoading(false);
   };
 

@@ -2,26 +2,22 @@ import { Code, Input, useWineContext } from '@@components';
 import { useState } from 'react';
 
 export const ScaffoldApp: React.FC = () => {
-  const { wine, appName, setAppName } = useWineContext();
+  const { wine } = useWineContext();
+  const [appName, setAppName] = useState(wine.getWineEnv().WINE_APP_NAME);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
 
   const scaffoldApp = async () => {
     setLoading(true);
-    await wine.scaffoldApp(
-      { WINE_APP_NAME: appName },
-      {
-        onStdOut: (data) => {
-          console.log('====>', data);
-          setData(data);
-        },
-        onStdErr: (data) => {
-          console.log('====>', data);
-          setData(data);
-        },
-      }
-    );
-    setAppName(wine.getWineEnv().WINE_APP_NAME);
+    await wine.scaffoldApp(appName, {
+      onStdOut: (data) => {
+        setData(data);
+      },
+      onStdErr: (data) => {
+        setData(data);
+      },
+    });
+    setAppName(wine.getAppConfig().name);
     setLoading(false);
   };
 

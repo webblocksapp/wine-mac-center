@@ -2,24 +2,20 @@ import { useState } from 'react';
 import { Code, useWineContext } from '@@components';
 
 export const EnableDxvk: React.FC = () => {
-  const { wine, appName, setAppName } = useWineContext();
+  const { wine } = useWineContext();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>();
 
   const enableDxvk = async () => {
     setLoading(true);
-    await wine.enableDxvk(
-      { WINE_APP_NAME: appName },
-      {
-        onStdOut: (data) => {
-          setData(data);
-        },
-        onStdErr: (data) => {
-          setData(data);
-        },
-      }
-    );
-    setAppName(wine.getWineEnv().WINE_APP_NAME);
+    await wine.enableDxvk({
+      onStdOut: (data) => {
+        setData(data);
+      },
+      onStdErr: (data) => {
+        setData(data);
+      },
+    });
     setLoading(false);
   };
 

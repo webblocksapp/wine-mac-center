@@ -9,7 +9,6 @@ export * from './ScriptOptions';
 export * from './SpawnProcessArgs';
 export * from './WineApp';
 export * from './WineAppExecutable';
-export * from './WineEngine';
 export * from './WineEnv';
 export * from './Winetrick';
 export * from './WinetricksOptions';

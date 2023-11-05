@@ -13,17 +13,17 @@ export const spawnProcess = async (
   args?.action && updateProcess(args.action.type, args.action.data);
 
   return new Promise((resolve) => {
-    events.on('spawnedProcess', (evt) => {
+    events.on('spawnedProcess', async (evt) => {
       if (id == evt.detail.id) {
         switch (evt.detail.action) {
           case 'stdOut':
-            args?.onStdOut?.(evt.detail.data, updateProcess);
+            await args?.onStdOut?.(evt.detail.data, updateProcess);
             break;
           case 'stdErr':
-            args?.onStdErr?.(evt.detail.data, updateProcess);
+            await args?.onStdErr?.(evt.detail.data, updateProcess);
             break;
           case 'exit':
-            args?.onExit?.(evt.detail.data);
+            await args?.onExit?.(evt.detail.data);
             if (args) args = {}; //Callback is cleaned from subscription
             resolve(undefined);
             break;

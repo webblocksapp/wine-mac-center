@@ -10,18 +10,20 @@ import {
   buildEnvExports,
   spawnProcess as baseSpawnProcess,
   useEnv,
+  fileExists,
+  writeFile,
 } from '@utils';
 
 export const createWineApp = async (appName: string) => {
   const env = useEnv();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
+
   let appConfig: WineAppConfig = {
     name: appName,
     engineVersion: '',
     setupExecutablePath: '',
     dxvkEnabled: false,
   };
-
   let WINE_EXPORTS = '';
   let ENV_EXPORTS = env.getEnvExports();
 
@@ -56,6 +58,9 @@ export const createWineApp = async (appName: string) => {
     get WINE_APP_DATA_PATH() {
       return `${WINE_ENV.WINE_CONFIG_APP_PATH}/Resources/data`;
     },
+    get WINE_APP_CONFIG_JSON_PATH() {
+      return `${WINE_ENV.WINE_APP_DATA_PATH}/config.json`;
+    },
     get WINE_APP_SHARED_SUPPORT_PATH() {
       return `${WINE_ENV.WINE_APP_CONTENTS_PATH}/SharedSupport`;
     },
@@ -67,10 +72,24 @@ export const createWineApp = async (appName: string) => {
     },
   };
 
+  /**
+   * Read app config file.
+   */
+  const readAppConfig = async (): Promise<WineAppConfig> => {
+    const path = WINE_ENV.WINE_APP_CONFIG_JSON_PATH;
+
+    if (await fileExists(path)) {
+      return JSON.parse(await filesystem.readFile(path)) as WineAppConfig;
+    } else {
+      return appConfig;
+    }
+  };
+
   const getAppConfig = () => appConfig;
 
-  const updateAppConfig = (data: Partial<WineAppConfig>) => {
+  const updateAppConfig = async (data: Partial<WineAppConfig>) => {
     appConfig = { ...appConfig, ...data };
+    await writeAppConfig(appConfig);
     buildWineEnvExports();
   };
 
@@ -97,18 +116,25 @@ export const createWineApp = async (appName: string) => {
    * Logic for creating the wine application structure.
    */
   const scaffold = async (args?: SpawnProcessArgs) => {
-    updateAppConfig({ name: appName });
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
-    if (appName != stdOut) updateAppConfig({ name: stdOut.trim() });
-    return spawnScript('scaffoldApp', '', args);
+    if (appName != stdOut) appName = stdOut.trim();
+    return spawnScript('scaffoldApp', '', {
+      ...args,
+      onExit: async (data) => {
+        await Promise.all([
+          args?.onExit?.(data),
+          updateAppConfig({ name: appName }),
+        ]);
+      },
+    });
   };
 
   /**
    * Logic for extracting the wine engine.
    */
   const extractEngine = async (version: string, args?: SpawnProcessArgs) => {
-    updateAppConfig({ engineVersion: version });
+    await updateAppConfig({ engineVersion: version });
     return spawnScript('extractWineEngine', '', args);
   };
 
@@ -127,8 +153,8 @@ export const createWineApp = async (appName: string) => {
   /**
    * Enable DXVK
    */
-  const enableDxvk = (args?: SpawnProcessArgs) => {
-    updateAppConfig({ dxvkEnabled: true });
+  const enableDxvk = async (args?: SpawnProcessArgs) => {
+    await updateAppConfig({ dxvkEnabled: true });
     return spawnScript('enableDxvk', '', args);
   };
 
@@ -145,35 +171,33 @@ export const createWineApp = async (appName: string) => {
   };
 
   /**
-   * Run executable with wine
+   * Run executable with wine.
    */
   const runExe = (args: string, processArgs?: SpawnProcessArgs) => {
     return spawnScript('wine', args, processArgs);
   };
 
   /**
-   * Initializes app config
+   * Write app config.json in disk.
    */
-  const initAppConfig = async () => {
-    let str: string | undefined;
-
-    try {
-      str = await filesystem.readFile(
-        `${WINE_ENV.WINE_APP_DATA_PATH}/config.json`
-      );
-      appConfig = JSON.parse(str) as unknown as WineAppConfig;
-    } catch (error) {
-      error;
-    } finally {
-      appConfig;
-    }
+  const writeAppConfig = async (appConfig: Partial<WineAppConfig>) => {
+    const updatedAppConfig = { ...(await readAppConfig()), ...appConfig };
+    await writeFile(
+      WINE_ENV.WINE_APP_CONFIG_JSON_PATH,
+      JSON.stringify(updatedAppConfig)
+    );
   };
 
   /**
    * Run executable with wine
    */
-  const bundleApp = (options: { exePath: string }, args?: SpawnProcessArgs) => {
-    updateAppConfig({ executables: [{ main: true, path: options.exePath }] });
+  const bundleApp = async (
+    options: { exePath: string },
+    args?: SpawnProcessArgs
+  ) => {
+    await updateAppConfig({
+      executables: [{ main: true, path: options.exePath }],
+    });
 
     const infoPlistXML = plist
       .build([
@@ -247,14 +271,14 @@ export const createWineApp = async (appName: string) => {
   const getWineEnv = () => WINE_ENV;
 
   /**
-   * Initializes wine env exports.
+   * Initialize wine env exports.
    */
   buildWineEnvExports();
 
   /**
-   * Initializes app config.
+   * Initialize app config.
    */
-  await initAppConfig();
+  appConfig = await readAppConfig();
 
   return {
     execCommand,

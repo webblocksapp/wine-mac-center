@@ -52,11 +52,14 @@ export const createWineApp = async (appName: string) => {
     get WINE_CONFIG_APP_PATH() {
       return `${WINE_ENV.WINE_APP_PATH}/${WINE_ENV.WINE_CONFIG_APP_NAME}.app`;
     },
+    get WINE_CONFIG_APP_RESOURCES_PATH() {
+      return `${WINE_ENV.WINE_CONFIG_APP_PATH}/Contents/Resources`;
+    },
     get WINE_APP_SCRIPTS_PATH() {
-      return `${WINE_ENV.WINE_CONFIG_APP_PATH}/Resources/bash`;
+      return `${WINE_ENV.WINE_CONFIG_APP_RESOURCES_PATH}/bash`;
     },
     get WINE_APP_DATA_PATH() {
-      return `${WINE_ENV.WINE_CONFIG_APP_PATH}/Resources/data`;
+      return `${WINE_ENV.WINE_CONFIG_APP_RESOURCES_PATH}/data`;
     },
     get WINE_APP_CONFIG_JSON_PATH() {
       return `${WINE_ENV.WINE_APP_DATA_PATH}/config.json`;
@@ -200,23 +203,19 @@ export const createWineApp = async (appName: string) => {
     });
 
     const infoPlistXML = plist
-      .build([
-        'metadata',
-        {
-          CFBundleExecutable: 'winemacapp',
-          CFBundleIconFile: 'winemacapp.ics',
-        },
-      ])
+      .build({
+        CFBundleExecutable: 'winemacapp',
+        CFBundleIconFile: 'winemacapp.ics',
+      })
       .replace(/\n/gi, '');
 
-    const jsonString = 'AAAAA'.replace(/\n/gi, '');
     const exePath = options.exePath.replace(/\n/gi, '');
 
     return spawnScript('bundleApp', '', {
       ...args,
       action: {
         type: 'stdIn',
-        data: `${infoPlistXML}\n ${jsonString}\n ${exePath}\n`,
+        data: `${infoPlistXML}\n ${exePath}\n`,
       },
     });
   };

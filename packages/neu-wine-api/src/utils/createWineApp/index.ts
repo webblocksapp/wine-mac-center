@@ -195,11 +195,13 @@ export const createWineApp = async (appName: string) => {
    * Run executable with wine
    */
   const bundleApp = async (
-    options: { exePath: string },
+    options: { exePath: string; flags?: string },
     args?: SpawnProcessArgs
   ) => {
     await updateAppConfig({
-      executables: [{ main: true, path: options.exePath }],
+      executables: [
+        { main: true, path: options.exePath, flags: options.flags },
+      ],
     });
 
     const infoPlistXML = plist

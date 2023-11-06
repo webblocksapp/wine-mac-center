@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Code, Select } from '@@components';
+import { Code, Input, Select } from '@@components';
 import { useWineAppContext } from '..';
 
 export const BundleApp: React.FC = () => {
@@ -9,12 +9,13 @@ export const BundleApp: React.FC = () => {
   >([]);
   const [loading, setLoading] = useState(false);
   const [exePath, setExePath] = useState('');
+  const [flags, setFlags] = useState('');
   const [data, setData] = useState<any>();
 
   const bundleApp = async () => {
     setLoading(true);
     await wineApp.bundleApp(
-      { exePath },
+      { exePath, flags },
       {
         onStdOut: (data) => {
           setData(data);
@@ -50,6 +51,7 @@ export const BundleApp: React.FC = () => {
         options={executables}
         onChange={(event) => setExePath(event.currentTarget.value)}
       />
+      <Input onInput={(event) => setFlags(event.currentTarget.value)} />
       <button disabled={loading} onClick={bundleApp}>
         Bundle App
       </button>

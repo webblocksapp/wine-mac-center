@@ -144,8 +144,8 @@ export const createWineApp = async (appName: string) => {
   /**
    * Initializes the wine prefix.
    */
-  const wineboot = async (args?: SpawnProcessArgs) => {
-    return spawnScript('wineboot', '', args);
+  const wineboot = async (flags = '', args?: SpawnProcessArgs) => {
+    return spawnScript('wineboot', flags, args);
   };
 
   /**
@@ -178,6 +178,13 @@ export const createWineApp = async (appName: string) => {
    */
   const runExe = (args: string, processArgs?: SpawnProcessArgs) => {
     return spawnScript('wine', args, processArgs);
+  };
+
+  /**
+   * Run winecfg.
+   */
+  const winecfg = (processArgs?: SpawnProcessArgs) => {
+    return spawnScript('winecfg', '', processArgs);
   };
 
   /**
@@ -279,7 +286,7 @@ export const createWineApp = async (appName: string) => {
   /**
    * Initialize app config.
    */
-  appConfig = await readAppConfig();
+  appConfig = { ...(await readAppConfig()), name: appName };
 
   return {
     execCommand,
@@ -291,6 +298,7 @@ export const createWineApp = async (appName: string) => {
     listWineEngines,
     extractEngine,
     wineboot,
+    winecfg,
     enableDxvk,
     winetrick,
     runExe,

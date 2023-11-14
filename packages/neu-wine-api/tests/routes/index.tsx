@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
 import { MainLayout } from '@@layouts';
-import { Envs, Help, Home, ListGames, Wine } from '@@pages';
+import { Envs, Help, Home, ListGames, Wine, ListDlls } from '@@pages';
 
 export const routes: RouteObject[] = [
   {
@@ -30,6 +30,7 @@ export const routes: RouteObject[] = [
         menu={[
           { text: 'Help', route: 'help' },
           { text: 'List Games', route: 'list-games' },
+          { text: 'List Dlls', route: 'list-dlls' },
         ]}
       />
     ),
@@ -45,6 +46,10 @@ export const routes: RouteObject[] = [
       {
         path: 'list-games',
         element: <ListGames />,
+      },
+      {
+        path: 'list-dlls',
+        element: <ListDlls />,
       },
     ],
   },

@@ -14,6 +14,7 @@ import {
 } from 'react';
 import { WineApp } from '@interfaces';
 import { InitApp } from './InitApp';
+import { WineCfg } from './WineCfg';
 
 export const WineAppContext = createContext<{
   wineApp: WineApp;
@@ -37,6 +38,7 @@ export const Wine: React.FC = () => {
             <Winetrick />
             <RunExe />
             <BundleApp />
+            <WineCfg />
           </>
         ) : (
           <InitApp />

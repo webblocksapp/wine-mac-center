@@ -1,2 +1,6 @@
 #!/bin/bash
-"$WINE_APP_SCRIPTS_PATH/wine.sh" wineboot
+run() {
+  "$WINE_APP_SCRIPTS_PATH/wine.sh" wineboot "$@"
+}
+
+run "$@"

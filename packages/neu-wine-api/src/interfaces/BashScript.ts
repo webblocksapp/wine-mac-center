@@ -3,7 +3,6 @@ export type BashScript =
   | 'bundleApp'
   | 'cmd'
   | 'scaffoldApp'
-  | 'enableDxvk'
   | 'extractWineEngine'
   | 'listAppExecutables'
   | 'loadDylibs'

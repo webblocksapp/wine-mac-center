@@ -9,7 +9,7 @@ export const EnableDxvk: React.FC = () => {
 
   const enableDxvk = async () => {
     setLoading(true);
-    await wineApp.enableDxvk({
+    await wineApp.winetrick('dxvk1102', {
       onStdOut: (data) => {
         setData(data);
       },

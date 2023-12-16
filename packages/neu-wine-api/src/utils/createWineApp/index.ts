@@ -154,14 +154,6 @@ export const createWineApp = async (appName: string) => {
   const wineEnvSource = () => `source ${SCRIPTS_PATH}/env.sh;`;
 
   /**
-   * Enable DXVK
-   */
-  const enableDxvk = async (args?: SpawnProcessArgs) => {
-    await updateAppConfig({ dxvkEnabled: true });
-    return spawnScript('enableDxvk', '', args);
-  };
-
-  /**
    * Winetrick
    */
   const winetrick = (
@@ -299,7 +291,6 @@ export const createWineApp = async (appName: string) => {
     extractEngine,
     wineboot,
     winecfg,
-    enableDxvk,
     winetrick,
     runExe,
     bundleApp,

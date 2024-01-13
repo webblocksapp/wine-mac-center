@@ -90,9 +90,12 @@ export const createWineApp = async (appName: string) => {
 
   const getAppConfig = () => appConfig;
 
-  const updateAppConfig = async (data: Partial<WineAppConfig>) => {
+  const updateAppConfig = async (
+    data: Partial<WineAppConfig>,
+    options = { writeAppConfig: true }
+  ) => {
     appConfig = { ...appConfig, ...data };
-    await writeAppConfig(appConfig);
+    options.writeAppConfig && (await writeAppConfig(appConfig));
     buildWineEnvExports();
   };
 
@@ -121,14 +124,15 @@ export const createWineApp = async (appName: string) => {
   const scaffold = async (args?: SpawnProcessArgs) => {
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
-    if (appName != stdOut) appName = stdOut.trim();
+    if (appName != stdOut) {
+      appName = stdOut.trim();
+      await updateAppConfig({ name: appName }, { writeAppConfig: false });
+    }
     return spawnScript('scaffoldApp', '', {
       ...args,
       onExit: async (data) => {
-        await Promise.all([
-          args?.onExit?.(data),
-          updateAppConfig({ name: appName }),
-        ]);
+        await args?.onExit?.(data);
+        await updateAppConfig({ name: appName });
       },
     });
   };

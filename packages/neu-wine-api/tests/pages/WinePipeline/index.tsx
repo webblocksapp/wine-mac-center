@@ -17,8 +17,7 @@ export const WinePipeline: React.FC = () => {
     });
 
     pipeline.onUpdate?.((x) => {
-      console.log(x);
-      setJobs(x);
+      setJobs([...x]);
     });
 
     pipeline.run();
@@ -31,9 +30,22 @@ export const WinePipeline: React.FC = () => {
       <div style={{ margin: '17px 0px' }}>
         <button onClick={buildApp}>Build App</button>
       </div>
-      <pre>
-        <code>{JSON.stringify(jobs, null, 2)}</code>
-      </pre>
+      <div>
+        <pre>
+          <code
+            style={{
+              wordBreak: 'normal',
+              wordWrap: 'break-word',
+              width: '600px',
+              background: 'yellow',
+              border: '1px solid black',
+              display: 'block',
+            }}
+          >
+            {JSON.stringify(jobs, null, 2)}
+          </code>
+        </pre>
+      </div>
     </div>
   );
 };

@@ -10,6 +10,8 @@ export * from './SpawnProcessArgs';
 export * from './WineApp';
 export * from './WineAppConfig';
 export * from './WineAppExecutable';
+export * from './WineAppJob';
+export * from './WineAppPipeline';
 export * from './WineEnv';
 export * from './Winetrick';
 export * from './WinetricksOptions';

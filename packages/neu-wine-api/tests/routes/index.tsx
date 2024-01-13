@@ -1,6 +1,14 @@
 import { RouteObject } from 'react-router-dom';
 import { MainLayout } from '@@layouts';
-import { Envs, Help, Home, ListGames, Wine, ListDlls } from '@@pages';
+import {
+  Envs,
+  Help,
+  Home,
+  ListGames,
+  Wine,
+  ListDlls,
+  WinePipeline,
+} from '@@pages';
 
 export const routes: RouteObject[] = [
   {
@@ -58,13 +66,24 @@ export const routes: RouteObject[] = [
     element: (
       <MainLayout
         headerText="Wine"
-        menu={[{ text: 'Overview', route: 'overview' }]}
+        menu={[
+          { text: 'Overview', route: 'overview' },
+          { text: 'Pipeline', route: 'pipeline' },
+        ]}
       />
     ),
     children: [
       {
         index: true,
         element: <Wine />,
+      },
+      {
+        path: 'overview',
+        element: <Wine />,
+      },
+      {
+        path: 'pipeline',
+        element: <WinePipeline />,
       },
     ],
   },

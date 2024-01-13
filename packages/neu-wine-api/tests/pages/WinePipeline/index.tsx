@@ -36,10 +36,8 @@ export const WinePipeline: React.FC = () => {
             style={{
               wordBreak: 'normal',
               wordWrap: 'break-word',
-              width: '600px',
-              background: 'yellow',
-              border: '1px solid black',
               display: 'block',
+              whiteSpace: 'pre-wrap',
             }}
           >
             {JSON.stringify(jobs, null, 2)}

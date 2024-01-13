@@ -9,9 +9,8 @@ import { createWineApp } from '@utils';
 export const createWineAppPipeline = async (options: {
   appConfig: WineAppConfig;
 }) => {
-  const { name, engineVersion, dxvkEnabled, winetricks } = options.appConfig;
-
-  const getTime = () => new Date().getTime();
+  const { name, engineVersion, dxvkEnabled, winetricks, setupExecutablePath } =
+    options.appConfig;
 
   const buildWinetricksSteps = () => {
     const steps: WineAppJob['steps'] = [];
@@ -35,6 +34,10 @@ export const createWineAppPipeline = async (options: {
 
   const wineApp = await createWineApp(name);
   const pipeline: WineAppPipeline = {
+    _: {},
+    onUpdate(fn) {
+      this._.onUpdate = (currentJobs) => fn(currentJobs);
+    },
     jobs: [
       {
         name: 'Create wine app',
@@ -72,11 +75,8 @@ export const createWineAppPipeline = async (options: {
           ...buildWinetricksSteps(),
           {
             name: 'Running setup executable',
-            script: (args: SpawnProcessArgs) => {
-              const exePath =
-                window.prompt('Type the setup executable path') || '';
-              return wineApp.runExe(exePath, args);
-            },
+            script: (args: SpawnProcessArgs) =>
+              wineApp.runExe(setupExecutablePath, args),
             status: 'pending',
             output: '',
           },
@@ -98,19 +98,19 @@ export const createWineAppPipeline = async (options: {
         for (const step of job.steps) {
           await step.script({
             onStdOut: (data) => {
-              console.log('stdOut', data);
+              //console.log('stdOut', data);
               step.output = concatDataToOutput(data, step.output);
-              this.onUpdate?.(getTime());
+              this._.onUpdate?.(pipeline.jobs);
             },
             onStdErr: (data) => {
-              console.log('stdErr', data);
+              //console.log('stdErr', data);
               step.output = concatDataToOutput(data, step.output);
-              this.onUpdate?.(getTime());
+              this._.onUpdate?.(pipeline.jobs);
             },
             onExit: (data) => {
-              console.log('exit', data);
+              //console.log('exit', data);
               step.output = concatDataToOutput(data, step.output);
-              this.onUpdate?.(getTime());
+              this._.onUpdate?.(pipeline.jobs);
             },
           });
         }
@@ -118,7 +118,5 @@ export const createWineAppPipeline = async (options: {
     },
   };
 
-  return {
-    pipeline,
-  };
+  return pipeline;
 };

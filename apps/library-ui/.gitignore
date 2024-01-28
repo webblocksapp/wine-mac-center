@@ -34,3 +34,7 @@ neutralino.js
 .storage
 *.log
 .tmp
+
+# Wine related files
+
+Contents

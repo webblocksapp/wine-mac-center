@@ -2,8 +2,13 @@ import { WinetrickActionType } from '@constants';
 import { WinetrickAction, WinetrickState } from '@interfaces';
 import { listAll, loaders } from './handlers';
 
+const initialState: WinetrickState = {
+  winetricks: [],
+  loaders: { listingAll: false },
+};
+
 export const winetrickState = (
-  state: WinetrickState,
+  state: WinetrickState = initialState,
   action: WinetrickAction
 ) => {
   switch (action.type) {

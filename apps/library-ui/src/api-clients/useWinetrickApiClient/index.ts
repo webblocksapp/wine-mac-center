@@ -5,6 +5,7 @@ export const useWinetrickApiClient = () => {
 
   const listAll = async () => {
     const result = await baseWinetrickApiClient.listAll();
+    console.log(result);
     return result.map((item) => item.stdOut);
   };
 

@@ -3,8 +3,23 @@ import { WinetrickAction, WinetrickState } from '@interfaces';
 import { listAll, loaders } from './handlers';
 
 const initialState: WinetrickState = {
-  winetricks: [],
-  loaders: { listingAll: false },
+  winetricks: {
+    apps: [],
+    benchmarks: [],
+    dlls: [],
+    fonts: [],
+    games: [],
+    settings: [],
+  },
+  loaders: {
+    listingAll: false,
+    listingApps: false,
+    listingBenchmarks: false,
+    listingDlls: false,
+    listingFonts: false,
+    listingGames: false,
+    listingSettings: false,
+  },
 };
 
 export const winetrickState = (
@@ -12,7 +27,7 @@ export const winetrickState = (
   action: WinetrickAction
 ) => {
   switch (action.type) {
-    case WinetrickActionType.LIST_ALL:
+    case WinetrickActionType.LIST:
       return listAll(action.winetricks, state);
     case WinetrickActionType.LOADING:
       return loaders(action.loaders, state);

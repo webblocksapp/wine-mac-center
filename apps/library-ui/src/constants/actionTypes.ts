@@ -1,4 +1,4 @@
 export enum WinetrickActionType {
-  LIST_ALL = 'WINETRICK:LIST_ALL',
+  LIST = 'WINETRICK:LIST',
   LOADING = 'WINETRICK:LOADING',
 }

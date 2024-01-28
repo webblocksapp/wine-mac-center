@@ -1,10 +1,10 @@
 import { WinetrickState } from '@interfaces';
 
 export const listAll = (
-  winetricks: WinetrickState['winetricks'],
+  winetricks: Partial<WinetrickState['winetricks']>,
   state: WinetrickState
 ) => {
-  return { ...state, winetricks };
+  return { ...state, winetricks: { ...state.winetricks, ...winetricks } };
 };
 
 export const loaders = (

@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { defineConfig, PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
@@ -6,53 +7,90 @@ import EnvironmentPlugin from 'vite-plugin-environment';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 import checker from 'vite-plugin-checker';
+import dts from 'vite-plugin-dts';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    checker({
-      typescript: true,
-      overlay: false,
-    }),
-    tsconfigPaths(),
-    EnvironmentPlugin('all'),
-    createHtmlPlugin({
-      entry: 'tests/main.tsx',
-      template: 'index.html',
-      inject: {
-        data: {
-          neutralinoScript: `<script src="./neutralino.js"></script>`,
-        },
-      },
-    }),
-  ],
-  resolve: {
-    alias: {
-      path: 'rollup-plugin-node-polyfills/polyfills/path',
+const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
+const { devDependencies } = packageJson;
+const external = [...Object.keys(devDependencies), '/public/.*'];
+
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development';
+  const isProd = mode === 'production';
+
+  return {
+    ...(isProd ? { publicDir: 'none' } : {}),
+    plugins: [
+      react(),
+      checker({
+        typescript: true,
+        overlay: false,
+      }),
+      dts({ include: 'src' }),
+      tsconfigPaths(),
+      EnvironmentPlugin('all'),
+      ...(isDev
+        ? [
+            createHtmlPlugin({
+              entry: 'tests/main.tsx',
+              template: 'index.html',
+              inject: {
+                data: {
+                  neutralinoScript: `<script src="./neutralino.js"></script>`,
+                },
+              },
+            }),
+          ]
+        : []),
+    ],
+    ...(isDev
+      ? {
+          resolve: {
+            alias: {
+              path: 'rollup-plugin-node-polyfills/polyfills/path',
+            },
+          },
+          optimizeDeps: {
+            esbuildOptions: {
+              // Node.js global to browser globalThis
+              define: {
+                global: 'globalThis',
+              },
+              // Enable esbuild polyfill plugins
+              plugins: [
+                NodeGlobalsPolyfillPlugin({
+                  buffer: true,
+                }),
+              ],
+            },
+          },
+        }
+      : {}),
+    build: {
+      minify: false,
+      ...(isDev
+        ? {
+            rollupOptions: {
+              plugins: [rollupNodePolyFill() as PluginOption],
+            },
+          }
+        : {}),
+      ...(isProd
+        ? {
+            lib: {
+              entry: 'src/index.ts',
+              fileName: (format: string) => {
+                return `${format}/index.js`;
+              },
+              formats: ['es', 'cjs'],
+            },
+            rollupOptions: {
+              external,
+            },
+          }
+        : {}),
     },
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      // Node.js global to browser globalThis
-      define: {
-        global: 'globalThis',
-      },
-      // Enable esbuild polyfill plugins
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          buffer: true,
-        }),
-      ],
+    server: {
+      port: 3001,
     },
-  },
-  build: {
-    minify: false,
-    rollupOptions: {
-      plugins: [rollupNodePolyFill() as PluginOption],
-    },
-  },
-  server: {
-    port: 3001,
-  },
+  };
 });

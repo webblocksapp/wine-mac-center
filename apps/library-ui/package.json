@@ -30,6 +30,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@neutralinojs/lib": "^3.11.0",
     "@neutralinojs/neu": "^9.6.1",
+    "neu-wine-api": "workspace:*",
     "@storybook/addon-essentials": "^7.4.0",
     "@storybook/addon-interactions": "^7.4.0",
     "@storybook/addon-links": "^7.4.0",

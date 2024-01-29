@@ -1,4 +1,4 @@
-import { useWinetrickModel } from '@models';
+import { useWineEngineModel, useWinetrickModel } from '@models';
 import { useEffect } from 'react';
 
 export interface AppSetupProps {
@@ -7,9 +7,10 @@ export interface AppSetupProps {
 
 export const AppSetup: React.FC<AppSetupProps> = ({ children }) => {
   const winetrickModel = useWinetrickModel();
+  const wineEngineModel = useWineEngineModel();
 
   const asyncSetup = () => {
-    Promise.allSettled([winetrickModel.listAll()]);
+    Promise.allSettled([wineEngineModel.list(), winetrickModel.listAll()]);
   };
 
   useEffect(() => {

@@ -1,0 +1,5 @@
+{
+  "name": "Steam",
+  "winetricks": { "verbs": ["steam"] },
+  "dxvkEnabled": true
+}

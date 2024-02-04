@@ -6,14 +6,14 @@ import path from 'path';
 export const useEnv = () => {
   const get = () => ENV;
 
-  const init = async () => {
+  const init = async (mode = process.env.NODE_ENV) => {
     initNeutralino();
-    const promises = [initEnv()];
+    const promises = [initEnv(mode)];
     await Promise.allSettled(promises);
   };
 
-  const initEnv = async () => {
-    switch (process.env.NODE_ENV) {
+  const initEnv = async (mode: string | undefined) => {
+    switch (mode) {
       case 'development':
         ENV.DIRNAME = (await os.execCommand('pwd')).stdOut.trim();
         ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, 'Contents/Resources');
@@ -26,6 +26,8 @@ export const useEnv = () => {
 
     ENV.HOME = (await os.execCommand('echo $HOME')).stdOut.trim();
     ENV.WINE_APPS_PATH = `${ENV.HOME}/Wine/apps`;
+    ENV.WINE_ENGINES_PATH = `${ENV.HOME}/Wine/engines`;
+    ENV.WINE_LIBS_PATH = `${ENV.HOME}/Wine/libs`;
     ENV.SCRIPTS_PATH = `${ENV.RESOURCES_PATH}/bash`;
     ENV.INTERNAL_APPS_PATH = `${ENV.RESOURCES_PATH}/apps`;
     ENV.COMPRESSED_PATH = `${ENV.RESOURCES_PATH}/compressed`;

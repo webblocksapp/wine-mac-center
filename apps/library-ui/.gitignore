@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Neutralinojs binaries and builds
+/bin
+/dist
+
+# Neutralinojs client (minified)
+neutralino.js
+
+# Neutralinojs related files
+.storage
+*.log
+.tmp
+
+# Wine related files
+
+Contents

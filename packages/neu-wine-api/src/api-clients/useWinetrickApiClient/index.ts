@@ -24,7 +24,8 @@ export const useWinetrickApiClient = () => {
 
   const getWinetricks = async (cmd: string) => {
     const { stdOut, stdErr } = await execScript(cmd);
-    return { stdOut: mapResponse(stdOut), stdErr: stdErr };
+    if (stdErr) throw new Error(stdErr);
+    return mapResponse(stdOut);
   };
 
   const help = () => {
@@ -55,18 +56,6 @@ export const useWinetrickApiClient = () => {
     return getWinetricks('settings list');
   };
 
-  const listAll = async () =>
-    (
-      await Promise.all([
-        listApps(),
-        listBenchmarks(),
-        listDlls(),
-        listFonts(),
-        listGames(),
-        listSettings(),
-      ])
-    ).flat();
-
   return {
     help,
     listApps,
@@ -75,6 +64,5 @@ export const useWinetrickApiClient = () => {
     listFonts,
     listGames,
     listSettings,
-    listAll,
   };
 };

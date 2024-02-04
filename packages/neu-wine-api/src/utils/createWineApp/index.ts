@@ -9,13 +9,15 @@ import plist from 'plist';
 import {
   buildEnvExports,
   spawnProcess as baseSpawnProcess,
-  useEnv,
   fileExists,
   writeFile,
+  useEnv,
 } from '@utils';
+import { useWineEngineApiClient } from '@api-clients';
 
 export const createWineApp = async (appName: string) => {
   const env = useEnv();
+  const wineEngineApiClient = useWineEngineApiClient();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
 
   let appConfig: WineAppConfig = {
@@ -38,10 +40,10 @@ export const createWineApp = async (appName: string) => {
       return `${env.get().HOME}/Wine/apps/${WINE_ENV.WINE_APP_NAME}.app`;
     },
     get WINE_ENGINES_PATH() {
-      return `${env.get().HOME}/Wine/engines`;
+      return env.get().WINE_ENGINES_PATH;
     },
     get WINE_LIBS_PATH() {
-      return `${env.get().HOME}/Wine/libs`;
+      return env.get().WINE_LIBS_PATH;
     },
     get WINE_APP_CONTENTS_PATH() {
       return `${WINE_ENV.WINE_APP_PATH}/Contents`;
@@ -106,16 +108,6 @@ export const createWineApp = async (appName: string) => {
     WINE_EXPORTS = buildEnvExports(WINE_ENV, (envName) =>
       Boolean(envName.match(/(^WINE)/gi)?.length)
     );
-  };
-
-  /**
-   * List the available wine engines.
-   */
-  const listWineEngines = async () => {
-    const engines = await filesystem.readDirectory(WINE_ENV.WINE_ENGINES_PATH);
-    return engines
-      .filter((item) => item.type === 'FILE' && item.entry !== '.DS_Store')
-      .map((item) => item.entry.replace(/.tar.7z$/, ''));
   };
 
   /**
@@ -291,7 +283,7 @@ export const createWineApp = async (appName: string) => {
     scaffold,
     spawnProcess,
     spawnScript,
-    listWineEngines,
+    listWineEngines: wineEngineApiClient.list,
     extractEngine,
     wineboot,
     winecfg,

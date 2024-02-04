@@ -3,6 +3,22 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/cjs/index.js",
+  "main": "./dist/es/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/es/index.js",
+      "require": "./dist/cjs/index.js",
+      "node": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
     "dev": "pnpm vite",
     "build": "vite build",
@@ -33,6 +49,7 @@
   },
   "dependencies": {
     "path": "^0.12.7",
-    "plist": "^3.1.0"
+    "plist": "^3.1.0",
+    "vite-plugin-dts": "^3.7.2"
   }
 }

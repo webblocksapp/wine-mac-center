@@ -8,6 +8,10 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
   ],
+  previewHead: (head) => `
+    ${head}
+    <script src="http://localhost:3002/neutralino.js"></script>
+  `,
   framework: {
     name: '@storybook/react-vite',
     options: {},

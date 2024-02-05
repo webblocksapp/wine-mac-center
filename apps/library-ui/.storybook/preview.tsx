@@ -1,3 +1,5 @@
+import { EnvProvider } from '@components';
+import { ThemeProvider } from '@reactjs-ui/core';
 import type { Preview } from '@storybook/react';
 
 const preview: Preview = {
@@ -10,6 +12,15 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <ThemeProvider>
+        <EnvProvider>
+          <Story />
+        </EnvProvider>
+      </ThemeProvider>
+    ),
+  ],
 };
 
 export default preview;

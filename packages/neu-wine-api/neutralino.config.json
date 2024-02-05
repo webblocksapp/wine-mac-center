@@ -34,7 +34,6 @@
     "binaryName": "neu-wine-api",
     "resourcesPath": "/dist/",
     "extensionsPath": "/extensions/",
-    "clientLibrary": "/public/neutralino.js",
     "binaryVersion": "4.13.0",
     "clientVersion": "3.11.0",
     "frontendLibrary": {

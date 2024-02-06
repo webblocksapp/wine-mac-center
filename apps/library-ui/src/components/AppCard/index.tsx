@@ -1,9 +1,11 @@
 import { Box, Card, CardProps, Image } from '@reactjs-ui/core';
 import { InstallAppButton } from '@components';
 
-export interface AppCardProps extends CardProps {}
+export interface AppCardProps extends CardProps {
+  appId?: string;
+}
 
-export const AppCard: React.FC<CardProps> = ({ ...rest }) => {
+export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
   return (
     <Card sx={{ width: 200, height: 280, borderRadius: 2 }} {...rest}>
       <Box

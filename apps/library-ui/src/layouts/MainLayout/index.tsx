@@ -13,7 +13,7 @@ export const MainLayout: React.FC = () => {
         bgcolor="secondary.main"
         menu={SIDEBAR_MENU}
       />
-      <Box p={1}>
+      <Box display="grid">
         <Outlet />
       </Box>
     </Box>

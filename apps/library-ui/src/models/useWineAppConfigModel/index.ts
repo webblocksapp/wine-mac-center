@@ -1,8 +1,12 @@
 import { useWineAppConfigApiClient } from '@api-clients';
 import { WineAppConfigActionType as ActionType } from '@constants';
-import { WineAppConfigAction, WineAppConfigState } from '@interfaces';
+import {
+  RootState,
+  WineAppConfigAction,
+  WineAppConfigState,
+} from '@interfaces';
 import { useAppModel } from '@models';
-import { Dispatch } from '@reduxjs/toolkit';
+import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 export const useWineAppConfigModel = () => {
@@ -27,7 +31,16 @@ export const useWineAppConfigModel = () => {
   const dispatchLoader = (loaders: Partial<WineAppConfigState['loaders']>) =>
     dispatch({ type: ActionType.LOADING, loaders });
 
+  const selectWineAppConfigState = (state: RootState) =>
+    state.wineAppConfigState;
+  const selectWineAppsConfigs = createSelector(
+    [selectWineAppConfigState],
+    (wineAppConfigState) => wineAppConfigState.wineAppsConfigs
+  );
+
   return {
     listAll,
+    selectWineAppConfigState,
+    selectWineAppsConfigs,
   };
 };

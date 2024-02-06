@@ -9,7 +9,13 @@ export const useWineAppConfigApiClient = () => {
     return data;
   };
 
+  const read = async (scriptUrl: string) => {
+    const { data } = await axiosWineAppsConfigs.get<WineAppConfig>(scriptUrl);
+    return data;
+  };
+
   return {
     listAll,
+    read,
   };
 };

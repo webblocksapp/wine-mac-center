@@ -1,5 +1,6 @@
 export * from './AppAction';
 export * from './AppState';
+export * from './EntityState';
 export * from './MenuItem';
 export * from './RootState';
 export * from './WineAppConfig';

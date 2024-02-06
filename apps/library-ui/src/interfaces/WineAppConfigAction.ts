@@ -7,6 +7,11 @@ export type WineAppConfigAction =
       wineAppsConfigs: WineAppConfigState['wineAppsConfigs'];
     }
   | {
+      type: ActionType.PATCH;
+      id: string | undefined;
+      wineAppConfig: Partial<WineAppConfigState['wineAppsConfigs'][0]>;
+    }
+  | {
       type: ActionType.LOADING;
       loaders: Partial<WineAppConfigState['loaders']>;
     };

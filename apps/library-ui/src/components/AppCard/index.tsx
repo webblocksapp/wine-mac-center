@@ -1,16 +1,17 @@
-import { Box, Button, Card, CardProps, Image } from '@reactjs-ui/core';
+import { Box, Card, CardProps, Image } from '@reactjs-ui/core';
+import { InstallAppButton } from '@components';
 
 export interface AppCardProps extends CardProps {}
 
 export const AppCard: React.FC<CardProps> = ({ ...rest }) => {
   return (
-    <Card sx={{ width: 200, height: 280 }} {...rest}>
+    <Card sx={{ width: 200, height: 280, borderRadius: 2 }} {...rest}>
       <Box
         height="100%"
         width="100%"
         p={1}
         display="grid"
-        gridTemplateRows="1fr 30px"
+        gridTemplateRows="1fr 40px"
         rowGap={'10px'}
       >
         <Image
@@ -22,10 +23,8 @@ export const AppCard: React.FC<CardProps> = ({ ...rest }) => {
             borderRadius: 4,
           }}
         />
-        <Box>
-          <Button sx={{ width: 20 }} color="secondary">
-            A
-          </Button>
+        <Box display="flex" justifyContent="end">
+          <InstallAppButton />
         </Box>
       </Box>
     </Card>

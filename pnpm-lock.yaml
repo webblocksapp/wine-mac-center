@@ -3328,7 +3328,7 @@ packages:
     dev: true
 
   /@reactjs-ui/core@0.0.0(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.15.7)(@mui/material@5.15.7)(react-router-dom@6.22.0):
-    resolution: {integrity: sha512-R5rYl3hf04RZlcoDzol7NrKAQQt9c/PxrR+rosYaNZ0S1z1Ox043FpQaUPU18IBQlFhBIXIbh/q/dn0pD5YCXA==}
+    resolution: {integrity: sha512-qfJH0pWGtNpa7ThcXXbrW8wV8zHVeegT3Mz4uzPJ6A3yNlCQ047TPyiC9G7u6Ry/Dqm7OdLT4Kuq4rKuDLzMMg==}
     peerDependencies:
       '@emotion/react': ^11.11.1
       '@emotion/styled': ^11.11.0

@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
 import { WinetrickActionType as ActionType } from '@constants';
 import { WinetrickAction, WinetrickState } from '@interfaces';
+import { useAppModel } from '@models';
 
 export const useWinetrickModel = () => {
+  const appModel = useAppModel();
   const winetrickApiClient = useWinetrickApiClient();
   const dispatch = useDispatch<Dispatch<WinetrickAction>>();
 
@@ -15,6 +17,7 @@ export const useWinetrickModel = () => {
         apps: await winetrickApiClient.listApps(),
       });
     } catch (error) {
+      appModel.dispatchError(error);
     } finally {
       dispatchLoader({ listingApps: false });
     }
@@ -27,6 +30,7 @@ export const useWinetrickModel = () => {
         benchmarks: await winetrickApiClient.listBenchmarks(),
       });
     } catch (error) {
+      appModel.dispatchError(error);
     } finally {
       dispatchLoader({ listingBenchmarks: false });
     }
@@ -39,6 +43,7 @@ export const useWinetrickModel = () => {
         dlls: await winetrickApiClient.listDlls(),
       });
     } catch (error) {
+      appModel.dispatchError(error);
     } finally {
       dispatchLoader({ listingDlls: false });
     }
@@ -51,6 +56,7 @@ export const useWinetrickModel = () => {
         fonts: await winetrickApiClient.listFonts(),
       });
     } catch (error) {
+      appModel.dispatchError(error);
     } finally {
       dispatchLoader({ listingFonts: false });
     }
@@ -63,6 +69,7 @@ export const useWinetrickModel = () => {
         games: await winetrickApiClient.listGames(),
       });
     } catch (error) {
+      appModel.dispatchError(error);
     } finally {
       dispatchLoader({ listingGames: false });
     }
@@ -75,6 +82,7 @@ export const useWinetrickModel = () => {
         settings: await winetrickApiClient.listSettings(),
       });
     } catch (error) {
+      appModel.dispatchError(error);
     } finally {
       dispatchLoader({ listingSettings: false });
     }

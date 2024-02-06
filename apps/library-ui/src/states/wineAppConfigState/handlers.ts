@@ -8,7 +8,7 @@ export const listAll = (
 };
 
 export const patch = (
-  id: string,
+  id: string | undefined,
   wineAppConfig: WineAppConfigState['wineAppsConfigs'][0],
   state: WineAppConfigState
 ): WineAppConfigState => {
@@ -16,6 +16,7 @@ export const patch = (
     if (item.id == id) {
       return {
         ...item,
+        ...wineAppConfig,
         entityState: { ...item.entityState, ...wineAppConfig.entityState },
       };
     }

@@ -1,5 +1,5 @@
 {
-  "name": "c&c3",
+  "id": "c&c3",
   "winetricks": { "verbs": ["steam"] },
   "dxvkEnabled": true,
   "executables": [

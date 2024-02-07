@@ -12,6 +12,8 @@ export * from './WineAppConfig';
 export * from './WineAppExecutable';
 export * from './WineAppJob';
 export * from './WineAppPipeline';
+export * from './WineAppStep';
+export * from './WineAppUpdatedJob';
 export * from './WineEnv';
 export * from './Winetrick';
 export * from './WinetricksOptions';

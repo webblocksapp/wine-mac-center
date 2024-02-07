@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { defineConfig, PluginOption } from 'vite';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import EnvironmentPlugin from 'vite-plugin-environment';
@@ -34,7 +35,7 @@ export default defineConfig(({ mode }) => {
               template: 'index.html',
               inject: {
                 data: {
-                  neutralinoScript: `<script src="./neutralino.js"></script>`,
+                  neutralinoScript: `<script src="http://localhost:3000/neutralino.js"></script>`,
                 },
               },
             }),
@@ -58,6 +59,20 @@ export default defineConfig(({ mode }) => {
           },
         }
       : {}),
+    optimizeDeps: {
+      esbuildOptions: {
+        // Node.js global to browser globalThis
+        define: {
+          global: 'globalThis',
+        },
+        // Enable esbuild polyfill plugins
+        plugins: [
+          NodeGlobalsPolyfillPlugin({
+            buffer: true,
+          }) as any,
+        ],
+      },
+    },
     build: {
       minify: false,
       ...(isDev
@@ -65,6 +80,7 @@ export default defineConfig(({ mode }) => {
             rollupOptions: {
               plugins: [rollupNodePolyFill() as PluginOption],
             },
+            outDir: 'dev-dist',
           }
         : {}),
       ...(isProd

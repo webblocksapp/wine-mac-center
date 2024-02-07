@@ -1,4 +1,4 @@
-import { WineAppConfig } from 'neu-wine-api';
+import { WineAppConfig } from '@interfaces';
 
 export type WineAppConfigState = {
   wineAppsConfigs: Array<WineAppConfig>;

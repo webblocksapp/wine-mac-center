@@ -22,9 +22,10 @@
   "scripts": {
     "dev": "pnpm vite",
     "build": "vite build",
+    "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "neu-server": "pnpm neu run -- --mode=cloud",
-    "neu-setup": "pnpm neu update && pnpm build",
+    "neu-setup": "pnpm neu update && pnpm build:dev",
     "neu-build": "pnpm build && pnpm neu build"
   },
   "devDependencies": {

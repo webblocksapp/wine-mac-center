@@ -33,6 +33,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@neutralinojs/lib": "^3.11.0",
     "@neutralinojs/neu": "^9.6.1",
     "@storybook/addon-essentials": "^7.6.12",

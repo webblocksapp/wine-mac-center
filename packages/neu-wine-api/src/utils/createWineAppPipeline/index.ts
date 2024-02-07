@@ -3,8 +3,9 @@ import {
   WineAppConfig,
   WineAppJob,
   WineAppPipeline,
+  WineAppUpdatedJob,
 } from '@interfaces';
-import { createWineApp } from '@utils';
+import { clone, createWineApp } from '@utils';
 
 export const createWineAppPipeline = async (options: {
   appConfig: WineAppConfig;
@@ -27,6 +28,15 @@ export const createWineAppPipeline = async (options: {
     }
 
     return steps;
+  };
+
+  const cleanJobNoSerializableData = (jobs: WineAppJob[]) => {
+    return jobs.map((job) => {
+      (job as WineAppUpdatedJob).steps = job.steps.map(
+        ({ script: _, ...step }) => step
+      );
+      return job;
+    }) as WineAppUpdatedJob[];
   };
 
   const concatDataToOutput = (data: string, output = '') =>
@@ -100,17 +110,23 @@ export const createWineAppPipeline = async (options: {
             onStdOut: (data) => {
               //console.log('stdOut', data);
               step.output = concatDataToOutput(data, step.output);
-              this._.onUpdate?.(pipeline.jobs);
+              this._.onUpdate?.(
+                cleanJobNoSerializableData(clone(pipeline.jobs))
+              );
             },
             onStdErr: (data) => {
               //console.log('stdErr', data);
               step.output = concatDataToOutput(data, step.output);
-              this._.onUpdate?.(pipeline.jobs);
+              this._.onUpdate?.(
+                cleanJobNoSerializableData(clone(pipeline.jobs))
+              );
             },
             onExit: (data) => {
               //console.log('exit', data);
               step.output = concatDataToOutput(data, step.output);
-              this._.onUpdate?.(pipeline.jobs);
+              this._.onUpdate?.(
+                cleanJobNoSerializableData(clone(pipeline.jobs))
+              );
             },
           });
         }

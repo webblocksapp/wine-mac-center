@@ -1,5 +1,5 @@
-import { WineAppJob } from 'neu-wine-api';
+import { WineAppUpdatedJob } from 'neu-wine-api';
 
 export type WineAppPipelineState = {
-  pipelines: Array<{ id: string; jobs: WineAppJob[] }>;
+  pipelines: Array<{ id: string; jobs: WineAppUpdatedJob[] }>;
 };

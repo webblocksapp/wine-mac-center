@@ -4,6 +4,7 @@ export * from './MenuItem';
 export * from './RootState';
 export * from './WineApp';
 export * from './WineAppAction';
+export * from './WineAppConfig';
 export * from './WineAppConfigAction';
 export * from './WineAppConfigState';
 export * from './WineAppPipelineAction';

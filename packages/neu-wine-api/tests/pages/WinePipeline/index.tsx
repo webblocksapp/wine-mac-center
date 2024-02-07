@@ -1,9 +1,9 @@
-import { WineAppJob } from '@interfaces';
+import { WineAppUpdatedJob } from '@interfaces';
 import { createWineAppPipeline } from '@utils';
 import { useState } from 'react';
 
 export const WinePipeline: React.FC = () => {
-  const [jobs, setJobs] = useState<Array<WineAppJob>>([]);
+  const [jobs, setJobs] = useState<Array<WineAppUpdatedJob>>([]);
 
   const buildApp = async () => {
     const pipeline = await createWineAppPipeline({
@@ -18,7 +18,7 @@ export const WinePipeline: React.FC = () => {
     });
 
     pipeline.onUpdate?.((x) => {
-      setJobs([...x]);
+      setJobs(x);
     });
 
     pipeline.run();

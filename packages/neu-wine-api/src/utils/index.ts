@@ -1,4 +1,5 @@
 export * from './buildEnvExports';
+export * from './clone';
 export * from './createWineApp';
 export * from './createWineAppPipeline';
 export * from './fileExists';

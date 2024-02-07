@@ -1,7 +1,7 @@
-import { WineAppPipelineAction } from '@interfaces';
+import { RootState, WineAppPipelineAction } from '@interfaces';
 import { useWineAppPipeline } from '@components';
 import { useDispatch } from 'react-redux';
-import { Dispatch } from '@reduxjs/toolkit';
+import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { WineAppPipelineActionType as ActionType } from '@constants';
 import { store } from '@store';
 import { useAppModel, useWineAppConfigModel, useWineAppModel } from '@models';
@@ -16,7 +16,7 @@ export const useWineAppPipelineModel = () => {
   const runWineAppPipeline = async (appId?: string) => {
     try {
       const wineApp = wineAppModel.selectWineApp(store.getState(), appId);
-      const wineAppConfig = wineAppConfigModel.selectWineAppConfig(
+      let wineAppConfig = wineAppConfigModel.selectWineAppConfig(
         store.getState(),
         appId
       );
@@ -24,12 +24,17 @@ export const useWineAppPipelineModel = () => {
       if (wineApp === undefined || wineAppConfig === undefined)
         throw Error('Wine application config not found.');
 
+      //TODO: define automatic executable download.
+      wineAppConfig = {
+        ...wineAppConfig,
+        setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',
+      };
+
       const pipeline = await createWineAppPipeline({
         ...wineAppConfig,
         name: wineApp.name,
       });
       pipeline.onUpdate((jobs) => {
-        console.log(jobs);
         dispatch({
           type: ActionType.PATCH,
           pipeline: { id: pipeline.id, jobs },
@@ -42,7 +47,15 @@ export const useWineAppPipelineModel = () => {
     }
   };
 
+  const selectWineAppPipelineState = (state: RootState) =>
+    state.wineAppPipelineState;
+  const selectWineAppPipelines = createSelector(
+    [selectWineAppPipelineState],
+    (wineAppPipelineState) => wineAppPipelineState.pipelines
+  );
+
   return {
     runWineAppPipeline,
+    selectWineAppPipelines,
   };
 };

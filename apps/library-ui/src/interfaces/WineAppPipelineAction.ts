@@ -3,5 +3,5 @@ import { WineAppPipelineState } from '@interfaces';
 
 export type WineAppPipelineAction = {
   type: ActionType.PATCH;
-  pipeline: WineAppPipelineState['pipelines'][0];
+  pipelineStatus: WineAppPipelineState['pipelines'][0];
 };

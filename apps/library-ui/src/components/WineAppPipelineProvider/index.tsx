@@ -1,5 +1,4 @@
 import { createContext, useContext, useRef } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   WineAppConfig,
   WineAppPipeline,
@@ -21,14 +20,13 @@ export const WineAppPipelineProvider: React.FC<
   WineAppPipelineProviderProps
 > = ({ children }) => {
   const store = useRef<{
-    pipelines: Array<{ id: string; content: WineAppPipeline }>;
+    pipelines: Array<WineAppPipeline>;
   }>({ pipelines: [] });
 
   const createWineAppPipeline = async (appConfig: WineAppConfig) => {
     const pipeline = await baseCreateWineAppPipeline({ appConfig });
-    const id = uuid();
-    store.current.pipelines.push({ id, content: pipeline });
-    return { id, ...pipeline };
+    store.current.pipelines.push(pipeline);
+    return pipeline;
   };
 
   return (

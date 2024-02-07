@@ -1,15 +1,17 @@
 import { WineAppPipelineState } from '@interfaces';
 
 export const patch = (
-  pipeline: WineAppPipelineState['pipelines'][0],
+  pipelineStatus: WineAppPipelineState['pipelines'][0],
   state: WineAppPipelineState
 ): WineAppPipelineState => {
-  if (state.pipelines.some((item) => item.id == pipeline.id)) {
+  if (
+    state.pipelines.some((item) => item.pipelineId == pipelineStatus.pipelineId)
+  ) {
     return {
       ...state,
       pipelines: state.pipelines.map((item) => {
-        if (item.id === pipeline.id) {
-          return { ...item, ...pipeline };
+        if (item.pipelineId === pipelineStatus.pipelineId) {
+          return { ...item, ...pipelineStatus };
         }
         return item;
       }),
@@ -17,7 +19,7 @@ export const patch = (
   } else {
     return {
       ...state,
-      pipelines: [...state.pipelines, pipeline],
+      pipelines: [...state.pipelines, pipelineStatus],
     };
   }
 };

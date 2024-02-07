@@ -34,10 +34,10 @@ export const useWineAppPipelineModel = () => {
         ...wineAppConfig,
         name: wineApp.name,
       });
-      pipeline.onUpdate((jobs) => {
+      pipeline.onUpdate((pipelineStatus) => {
         dispatch({
           type: ActionType.PATCH,
-          pipeline: { id: pipeline.id, jobs },
+          pipelineStatus,
         });
         pipeline;
       });

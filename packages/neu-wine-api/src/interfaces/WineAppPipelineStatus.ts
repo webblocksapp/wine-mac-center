@@ -2,7 +2,7 @@ import { ProcessStatus } from '@interfaces';
 import { WineAppJob } from 'dev-dist';
 
 export type WineAppPipelineStatus = {
-  id: string;
+  pipelineId: string;
   status: ProcessStatus;
   jobs: WineAppJob[];
 };

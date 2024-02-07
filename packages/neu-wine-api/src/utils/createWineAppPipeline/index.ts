@@ -62,7 +62,7 @@ export const createWineAppPipeline = async (options: {
     status: ProcessStatus;
   }) => {
     return clone({
-      id,
+      pipelineId: id,
       jobs: cleanJobNoSerializableData(data.jobs),
       status: data.status,
     });
@@ -74,6 +74,7 @@ export const createWineAppPipeline = async (options: {
     onUpdate(fn) {
       this._.onUpdate = (currentJobs) => fn(currentJobs);
     },
+    id,
     jobs: [
       {
         name: 'Create wine app',

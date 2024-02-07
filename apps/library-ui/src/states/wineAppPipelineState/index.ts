@@ -12,7 +12,7 @@ export const wineAppPipelineState = (
 ) => {
   switch (action.type) {
     case WineAppPipelineActionType.PATCH:
-      return patch(action.pipeline, state);
+      return patch(action.pipelineStatus, state);
     default:
       return state;
   }

@@ -1,20 +1,35 @@
 import {
+  ProcessStatus,
   SpawnProcessArgs,
   WineAppConfig,
   WineAppJob,
+  WineAppJobWithScript,
   WineAppPipeline,
-  WineAppUpdatedJob,
 } from '@interfaces';
 import { clone, createWineApp } from '@utils';
+import { v4 as uuid } from 'uuid';
 
 export const createWineAppPipeline = async (options: {
   appConfig: WineAppConfig;
+  debug?: boolean;
+  outputEveryMs?: number;
 }) => {
+  const id = uuid();
+  let outputEnabled = true;
+
   const { name, engineVersion, dxvkEnabled, winetricks, setupExecutablePath } =
     options.appConfig;
 
+  const handleOutput = (callbackFn: Function) => {
+    outputEnabled && callbackFn();
+    outputEnabled = false;
+    setTimeout(() => {
+      outputEnabled = true;
+    }, options.outputEveryMs || 100);
+  };
+
   const buildWinetricksSteps = () => {
-    const steps: WineAppJob['steps'] = [];
+    const steps = [];
     const verbs = winetricks?.verbs || [];
 
     for (let verb of verbs) {
@@ -30,17 +45,28 @@ export const createWineAppPipeline = async (options: {
     return steps;
   };
 
-  const cleanJobNoSerializableData = (jobs: WineAppJob[]) => {
+  const cleanJobNoSerializableData = (jobs: WineAppJobWithScript[]) => {
     return jobs.map((job) => {
-      (job as WineAppUpdatedJob).steps = job.steps.map(
+      (job as WineAppJob).steps = job.steps.map(
         ({ script: _, ...step }) => step
       );
       return job;
-    }) as WineAppUpdatedJob[];
+    }) as WineAppJob[];
   };
 
   const concatDataToOutput = (data: string, output = '') =>
     `${output || ''}\n${data}`;
+
+  const buildPipelineStatus = (data: {
+    jobs: WineAppJobWithScript[];
+    status: ProcessStatus;
+  }) => {
+    return clone({
+      id,
+      jobs: cleanJobNoSerializableData(data.jobs),
+      status: data.status,
+    });
+  };
 
   const wineApp = await createWineApp(name);
   const pipeline: WineAppPipeline = {
@@ -108,25 +134,40 @@ export const createWineAppPipeline = async (options: {
         for (const step of job.steps) {
           await step.script({
             onStdOut: (data) => {
-              //console.log('stdOut', data);
+              options.debug && console.log('stdOut', data);
               step.output = concatDataToOutput(data, step.output);
-              this._.onUpdate?.(
-                cleanJobNoSerializableData(clone(pipeline.jobs))
-              );
+              handleOutput(() => {
+                this._.onUpdate?.(
+                  buildPipelineStatus({
+                    jobs: pipeline.jobs,
+                    status: 'inProgress',
+                  })
+                );
+              });
             },
             onStdErr: (data) => {
-              //console.log('stdErr', data);
+              options.debug && console.log('stdErr', data);
               step.output = concatDataToOutput(data, step.output);
-              this._.onUpdate?.(
-                cleanJobNoSerializableData(clone(pipeline.jobs))
-              );
+              handleOutput(() => {
+                this._.onUpdate?.(
+                  buildPipelineStatus({
+                    jobs: pipeline.jobs,
+                    status: 'inProgress',
+                  })
+                );
+              });
             },
             onExit: (data) => {
-              //console.log('exit', data);
+              options.debug && console.log('exit', data);
               step.output = concatDataToOutput(data, step.output);
-              this._.onUpdate?.(
-                cleanJobNoSerializableData(clone(pipeline.jobs))
-              );
+              handleOutput(() => {
+                this._.onUpdate?.(
+                  buildPipelineStatus({
+                    jobs: pipeline.jobs,
+                    status: 'inProgress',
+                  })
+                );
+              });
             },
           });
         }

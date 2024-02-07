@@ -1,10 +1,10 @@
-import { WineAppJob, WineAppUpdatedJob } from '@interfaces';
+import { WineAppJobWithScript, WineAppPipelineStatus } from '@interfaces';
 
 export type WineAppPipeline = {
   _: {
-    onUpdate?: (currentJobs: Array<WineAppUpdatedJob>) => void;
+    onUpdate?: (status: WineAppPipelineStatus) => void;
   };
-  onUpdate: (fn: (currentJobs: Array<WineAppUpdatedJob>) => void) => void;
-  jobs: WineAppJob[];
+  onUpdate: (fn: (status: WineAppPipelineStatus) => void) => void;
+  jobs: WineAppJobWithScript[];
   run: () => void;
 };

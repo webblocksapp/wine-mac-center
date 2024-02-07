@@ -1,10 +1,6 @@
-import { SpawnProcessArgs, WineAppStep } from '@interfaces';
+import { WineAppStep } from '@interfaces';
 
 export type WineAppJob = {
   name: string;
-  steps: Array<
-    WineAppStep & {
-      script: (args: SpawnProcessArgs) => Promise<void>;
-    }
-  >;
+  steps: Array<WineAppStep>;
 };

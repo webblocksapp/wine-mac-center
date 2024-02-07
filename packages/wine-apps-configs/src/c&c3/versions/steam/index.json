@@ -1,6 +1,7 @@
 {
   "id": "c&c3",
   "winetricks": { "verbs": ["steam"] },
+  "engineVersion": "WS11WineCX64Bit23.6.0",
   "dxvkEnabled": true,
   "executables": [
     {

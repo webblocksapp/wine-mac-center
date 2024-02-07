@@ -3,7 +3,7 @@ import { WineAppConfig } from '@interfaces';
 import { encodeURL } from '@utils';
 
 export const buildAppUrls = (appConfig?: WineAppConfig) => {
-  const URL = `${WINE_APPS_CONFIGS_URL}/${appConfig?.id || ''}`;
+  const URL = `${WINE_APPS_CONFIGS_URL}/${appConfig?.keyName || ''}`;
   const ASSETS_URL = `${URL}/assets`;
   return {
     imgSrc: encodeURL(`${ASSETS_URL}/header.jpeg`),

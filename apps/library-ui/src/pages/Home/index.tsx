@@ -6,7 +6,8 @@ import { useSelector } from 'react-redux';
 
 export const Home: React.FC = () => {
   const wineAppConfigModel = useWineAppConfigModel();
-  const { wineAppsConfigs, loaders } = useSelector(
+  const { loaders } = wineAppConfigModel;
+  const { wineAppsConfigs } = useSelector(
     wineAppConfigModel.selectWineAppConfigState
   );
 

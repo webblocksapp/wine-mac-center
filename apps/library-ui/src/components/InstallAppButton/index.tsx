@@ -14,6 +14,7 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
   ...rest
 }) => {
   const wineAppConfigModel = useWineAppConfigModel();
+  const { loaders } = wineAppConfigModel;
   const wineAppConfig = useSelector((state: RootState) =>
     wineAppConfigModel.selectWineAppConfig(state, appId)
   );
@@ -30,7 +31,7 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
       title="Install App"
       equalSize={40}
       color="secondary"
-      disabled={wineAppConfig.entityState?.reading}
+      disabled={loaders.reading}
       onClick={onClick}
       {...rest}
     >

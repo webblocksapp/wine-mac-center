@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { useWineAppConfigApiClient } from '@api-clients';
 import { WineAppConfigActionType as ActionType } from '@constants';
 import {
-  EntityState,
   RootState,
   WineAppConfigAction,
   WineAppConfigState,
@@ -13,6 +13,9 @@ import { buildAppUrls } from '@utils';
 import { useDispatch } from 'react-redux';
 
 export const useWineAppConfigModel = () => {
+  const [state, setState] = useState({
+    loaders: { listingAll: false, reading: false },
+  });
   const appModel = useAppModel();
   const wineAppConfigApiClient = useWineAppConfigApiClient();
   const dispatch = useDispatch<Dispatch<WineAppConfigAction>>();
@@ -34,8 +37,7 @@ export const useWineAppConfigModel = () => {
   const read = async (id?: string) => {
     try {
       const wineAppConfig = selectWineAppConfig(store.getState(), id);
-      console.log(wineAppConfig);
-      dispatchEntityState(id, { reading: true });
+      dispatchLoader({ reading: true });
 
       if (wineAppConfig.scriptUrl === undefined) {
         throw new Error('Unable to download installation script');
@@ -51,17 +53,13 @@ export const useWineAppConfigModel = () => {
     } catch (error) {
       appModel.dispatchError(error);
     } finally {
-      dispatchEntityState(id, { reading: false });
+      dispatchLoader({ reading: false });
     }
   };
 
-  const dispatchEntityState = (
-    id: string | undefined,
-    entityState: EntityState
-  ) => dispatch({ type: ActionType.PATCH, id, wineAppConfig: { entityState } });
-
-  const dispatchLoader = (loaders: Partial<WineAppConfigState['loaders']>) =>
-    dispatch({ type: ActionType.LOADING, loaders });
+  const dispatchLoader = (loaders: Partial<(typeof state)['loaders']>) => {
+    setState((prev) => ({ ...prev, loaders: { ...prev.loaders, ...loaders } }));
+  };
 
   const selectWineAppConfigState = (state: RootState) =>
     state.wineAppConfigState;
@@ -78,6 +76,7 @@ export const useWineAppConfigModel = () => {
   );
 
   return {
+    loaders: state.loaders,
     listAll,
     read,
     selectWineAppConfigState,

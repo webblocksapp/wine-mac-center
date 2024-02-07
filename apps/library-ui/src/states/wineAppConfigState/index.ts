@@ -4,9 +4,6 @@ import { listAll, patch } from './handlers';
 
 const initialState: WineAppConfigState = {
   wineAppsConfigs: [],
-  loaders: {
-    listingAll: false,
-  },
 };
 
 export const wineAppConfigState = (

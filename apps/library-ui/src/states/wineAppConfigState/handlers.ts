@@ -17,7 +17,6 @@ export const patch = (
       return {
         ...item,
         ...wineAppConfig,
-        entityState: { ...item.entityState, ...wineAppConfig.entityState },
       };
     }
     return item;

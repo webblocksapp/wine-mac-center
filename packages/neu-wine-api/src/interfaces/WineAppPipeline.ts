@@ -4,7 +4,7 @@ export type WineAppPipeline = {
   _: {
     onUpdate?: (currentJobs: Array<WineAppJob>) => void;
   };
-  onUpdate?: (fn: (currentJobs: Array<WineAppJob>) => void) => void;
+  onUpdate: (fn: (currentJobs: Array<WineAppJob>) => void) => void;
   jobs: WineAppJob[];
   run: () => void;
 };

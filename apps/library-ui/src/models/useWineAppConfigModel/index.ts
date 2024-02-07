@@ -70,7 +70,7 @@ export const useWineAppConfigModel = () => {
   const selectWineAppConfig = createSelector(
     [selectWineAppsConfigs, (_: RootState, id?: string) => id],
     (wineAppConfigs, id): WineAppConfigState['wineAppsConfigs'][0] => {
-      const config = wineAppConfigs.find((item) => item.id == id);
+      const config = wineAppConfigs.find((item) => item.id == id)!;
       return { ...config, ...buildAppUrls(config) };
     }
   );

@@ -6,3 +6,4 @@ export * from './InstallAppButton';
 export * from './NotificationsProvider';
 export * from './Sidebar';
 export * from './SidebarItem';
+export * from './WineAppPipelineProvider';

@@ -9,5 +9,5 @@ export type WineAppConfigAction =
   | {
       type: ActionType.PATCH;
       id: string | undefined;
-      wineAppConfig: Partial<WineAppConfigState['wineAppsConfigs'][0]>;
+      wineAppConfig: WineAppConfigState['wineAppsConfigs'][0];
     };

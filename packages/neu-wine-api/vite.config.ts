@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { defineConfig, PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import EnvironmentPlugin from 'vite-plugin-environment';
 import { createHtmlPlugin } from 'vite-plugin-html';
@@ -55,12 +54,6 @@ export default defineConfig(({ mode }) => {
               define: {
                 global: 'globalThis',
               },
-              // Enable esbuild polyfill plugins
-              plugins: [
-                NodeGlobalsPolyfillPlugin({
-                  buffer: true,
-                }),
-              ],
             },
           },
         }

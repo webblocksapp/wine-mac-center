@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { defineConfig, PluginOption } from 'vite';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import EnvironmentPlugin from 'vite-plugin-environment';
@@ -8,6 +7,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 import checker from 'vite-plugin-checker';
 import dts from 'vite-plugin-dts';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
 const { devDependencies } = packageJson;
@@ -41,38 +41,8 @@ export default defineConfig(({ mode }) => {
             }),
           ]
         : []),
+      nodePolyfills(),
     ],
-    ...(isDev
-      ? {
-          resolve: {
-            alias: {
-              path: 'rollup-plugin-node-polyfills/polyfills/path',
-            },
-          },
-          optimizeDeps: {
-            esbuildOptions: {
-              // Node.js global to browser globalThis
-              define: {
-                global: 'globalThis',
-              },
-            },
-          },
-        }
-      : {}),
-    optimizeDeps: {
-      esbuildOptions: {
-        // Node.js global to browser globalThis
-        define: {
-          global: 'globalThis',
-        },
-        // Enable esbuild polyfill plugins
-        plugins: [
-          NodeGlobalsPolyfillPlugin({
-            buffer: true,
-          }) as any,
-        ],
-      },
-    },
     build: {
       minify: false,
       ...(isDev

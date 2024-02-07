@@ -1,0 +1,13 @@
+{
+  "appId": "f339cf36-c576-11ee-935b-685b35922e40",
+  "winetricks": { "verbs": [] },
+  "engineVersion": "WS11WineCX64Bit23.6.0",
+  "dxvkEnabled": true,
+  "executables": [
+    {
+      "main": true,
+      "path": "/drive_c/Program Files (x86)/Steam/Steam.exe",
+      "flags": "-noreactlogin -allosarches -cef-force-32bit -udpforce -no-cef-sandbox"
+    }
+  ]
+}

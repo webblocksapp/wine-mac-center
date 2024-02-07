@@ -1,21 +1,16 @@
 import { WineAppConfig } from 'neu-wine-api';
 import { axiosWineAppsConfigs } from '@utils';
+import { v4 as uuid } from 'uuid';
 
 export const useWineAppConfigApiClient = () => {
-  const listAll = async () => {
-    const { data } = await axiosWineAppsConfigs.get<WineAppConfig[]>(
-      '/index.json'
+  const read = async (scriptUrl: string) => {
+    const { data } = await axiosWineAppsConfigs.get<WineAppConfig>(
+      `${scriptUrl}?nocache=${uuid()}`
     );
     return data;
   };
 
-  const read = async (scriptUrl: string) => {
-    const { data } = await axiosWineAppsConfigs.get<WineAppConfig>(scriptUrl);
-    return data;
-  };
-
   return {
-    listAll,
     read,
   };
 };

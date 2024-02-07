@@ -3,7 +3,7 @@ import { createWineAppPipeline } from '@utils';
 import { useState } from 'react';
 
 export const WinePipeline: React.FC = () => {
-  const [jobs, setJobs] = useState<WineAppPipelineStatus>();
+  const [jobs] = useState<WineAppPipelineStatus>();
 
   const buildApp = async () => {
     const pipeline = await createWineAppPipeline({
@@ -13,12 +13,14 @@ export const WinePipeline: React.FC = () => {
         engineVersion: 'WS11WineCX64Bit23.6.0',
         dxvkEnabled: true,
         setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',
-        winetricks: { verbs: ['steam'] },
+        winetricks: { verbs: [] },
       },
+      outputEveryMs: 1000,
+      debug: true,
     });
 
     pipeline.onUpdate?.((x) => {
-      setJobs(x);
+      console.log(x.jobs[0].steps[0].output);
     });
 
     pipeline.run();

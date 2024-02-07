@@ -1,11 +1,4 @@
-import {
-  ProcessStatus,
-  SpawnProcessArgs,
-  WineAppConfig,
-  WineAppJob,
-  WineAppJobWithScript,
-  WineAppPipeline,
-} from '@interfaces';
+import { SpawnProcessArgs, WineAppConfig, WineAppPipeline } from '@interfaces';
 import { clone, createWineApp } from '@utils';
 import { v4 as uuid } from 'uuid';
 
@@ -21,11 +14,13 @@ export const createWineAppPipeline = async (options: {
     options.appConfig;
 
   const handleOutput = (callbackFn: Function) => {
-    outputEnabled && callbackFn();
-    outputEnabled = false;
-    setTimeout(() => {
-      outputEnabled = true;
-    }, options.outputEveryMs || 100);
+    if (outputEnabled) {
+      callbackFn();
+      outputEnabled = false;
+      setTimeout(() => {
+        outputEnabled = true;
+      }, options.outputEveryMs || 100);
+    }
   };
 
   const buildWinetricksSteps = () => {
@@ -45,34 +40,14 @@ export const createWineAppPipeline = async (options: {
     return steps;
   };
 
-  const cleanJobNoSerializableData = (jobs: WineAppJobWithScript[]) => {
-    return jobs.map((job) => {
-      (job as WineAppJob).steps = job.steps.map(
-        ({ script: _, ...step }) => step
-      );
-      return job;
-    }) as WineAppJob[];
-  };
-
   const concatDataToOutput = (data: string, output = '') =>
     `${output || ''}\n${data}`;
-
-  const buildPipelineStatus = (data: {
-    jobs: WineAppJobWithScript[];
-    status: ProcessStatus;
-  }) => {
-    return clone({
-      pipelineId: id,
-      jobs: cleanJobNoSerializableData(data.jobs),
-      status: data.status,
-    });
-  };
 
   const wineApp = await createWineApp(name);
   const pipeline: WineAppPipeline = {
     _: {},
     onUpdate(fn) {
-      this._.onUpdate = (currentJobs) => fn(currentJobs);
+      this._.onUpdate = (pipelineStatus) => fn(clone(pipelineStatus));
     },
     id,
     jobs: [
@@ -135,39 +110,36 @@ export const createWineAppPipeline = async (options: {
         for (const step of job.steps) {
           await step.script({
             onStdOut: (data) => {
-              options.debug && console.log('stdOut', data);
               step.output = concatDataToOutput(data, step.output);
               handleOutput(() => {
-                this._.onUpdate?.(
-                  buildPipelineStatus({
-                    jobs: pipeline.jobs,
-                    status: 'inProgress',
-                  })
-                );
+                options.debug && console.log('onStdOut', data);
+                this._.onUpdate?.({
+                  pipelineId: id,
+                  jobs: pipeline.jobs,
+                  status: 'inProgress',
+                });
               });
             },
             onStdErr: (data) => {
-              options.debug && console.log('stdErr', data);
               step.output = concatDataToOutput(data, step.output);
               handleOutput(() => {
-                this._.onUpdate?.(
-                  buildPipelineStatus({
-                    jobs: pipeline.jobs,
-                    status: 'inProgress',
-                  })
-                );
+                options.debug && console.log('onStdErr', data);
+                this._.onUpdate?.({
+                  pipelineId: id,
+                  jobs: pipeline.jobs,
+                  status: 'inProgress',
+                });
               });
             },
             onExit: (data) => {
-              options.debug && console.log('exit', data);
               step.output = concatDataToOutput(data, step.output);
               handleOutput(() => {
-                this._.onUpdate?.(
-                  buildPipelineStatus({
-                    jobs: pipeline.jobs,
-                    status: 'inProgress',
-                  })
-                );
+                options.debug && console.log('onExit', data);
+                this._.onUpdate?.({
+                  pipelineId: id,
+                  jobs: pipeline.jobs,
+                  status: 'inProgress',
+                });
               });
             },
           });

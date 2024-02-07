@@ -1,8 +1,9 @@
-import { WineAppConfig, WineAppPipelineAction } from '@interfaces';
+import { WineAppPipelineAction } from '@interfaces';
 import { useWineAppPipeline } from '@components';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
 import { WineAppPipelineActionType as ActionType } from '@constants';
+import { WineAppConfig } from 'neu-wine-api';
 
 export const useWineAppPipelineModel = () => {
   const { createWineAppPipeline } = useWineAppPipeline();

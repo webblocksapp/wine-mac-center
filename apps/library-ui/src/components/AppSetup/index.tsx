@@ -1,5 +1,5 @@
 import {
-  useWineAppConfigModel,
+  useWineAppModel,
   useWineEngineModel,
   useWinetrickModel,
 } from '@models';
@@ -10,13 +10,13 @@ export interface AppSetupProps {
 }
 
 export const AppSetup: React.FC<AppSetupProps> = ({ children }) => {
-  const wineAppConfigModel = useWineAppConfigModel();
+  const wineAppModel = useWineAppModel();
   const winetrickModel = useWinetrickModel();
   const wineEngineModel = useWineEngineModel();
 
   const asyncSetup = () => {
     Promise.allSettled([
-      wineAppConfigModel.listAll(),
+      wineAppModel.listAll(),
       wineEngineModel.list(),
       winetrickModel.listAll(),
     ]);

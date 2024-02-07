@@ -1,7 +1,7 @@
 import { WineAppExecutable, WinetricksOptions } from '@interfaces';
 
 export type WineAppConfig = {
-  id?: string;
+  appId: string;
   name: string;
   engineVersion: string;
   setupExecutablePath: string;

@@ -1,6 +1,6 @@
 import { Box, Card, CardProps, Image } from '@reactjs-ui/core';
 import { InstallAppButton } from '@components';
-import { useWineAppConfigModel } from '@models';
+import { useWineAppModel } from '@models';
 import { useSelector } from 'react-redux';
 import { RootState } from '@interfaces';
 
@@ -9,9 +9,9 @@ export interface AppCardProps extends CardProps {
 }
 
 export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
-  const wineAppConfigModel = useWineAppConfigModel();
-  const wineAppConfig = useSelector((state: RootState) =>
-    wineAppConfigModel.selectWineAppConfig(state, appId)
+  const wineAppModel = useWineAppModel();
+  const wineApp = useSelector((state: RootState) =>
+    wineAppModel.selectWineApp(state, appId)
   );
 
   return (
@@ -25,7 +25,7 @@ export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
         rowGap={'10px'}
       >
         <Image
-          src={wineAppConfig.imgSrc}
+          src={wineApp?.imgSrc}
           height="100%"
           style={{
             objectFit: 'cover',
@@ -34,7 +34,7 @@ export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
           }}
         />
         <Box display="flex" justifyContent="end">
-          <InstallAppButton appId={wineAppConfig.id} />
+          <InstallAppButton appId={wineApp?.id} />
         </Box>
       </Box>
     </Card>

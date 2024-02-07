@@ -1,4 +1,4 @@
-import { WineAppConfig } from '@interfaces';
+import { WineAppConfig } from 'neu-wine-api';
 import { axiosWineAppsConfigs } from '@utils';
 
 export const useWineAppConfigApiClient = () => {

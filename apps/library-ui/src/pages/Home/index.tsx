@@ -1,20 +1,18 @@
 import { AppCard } from '@components';
-import { useWineAppConfigModel } from '@models';
+import { useWineAppModel } from '@models';
 import { Box, SkeletonLoader } from '@reactjs-ui/core';
 import { array } from '@utils';
 import { useSelector } from 'react-redux';
 
 export const Home: React.FC = () => {
-  const wineAppConfigModel = useWineAppConfigModel();
-  const { loaders } = wineAppConfigModel;
-  const { wineAppsConfigs } = useSelector(
-    wineAppConfigModel.selectWineAppConfigState
-  );
+  const wineAppModel = useWineAppModel();
+  const { loaders } = wineAppModel;
+  const { wineApps } = useSelector(wineAppModel.selectWineAppState);
 
   return (
     <SkeletonLoader loading={loaders.listingAll}>
       <Box display="grid" p={2}>
-        {array(wineAppsConfigs, {
+        {array(wineApps, {
           skeleton: { loading: loaders.listingAll, length: 6 },
         }).map((item) => (
           <AppCard key={item.id} appId={item.id} />

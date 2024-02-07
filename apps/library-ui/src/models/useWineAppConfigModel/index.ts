@@ -1,54 +1,33 @@
 import { useState } from 'react';
 import { useWineAppConfigApiClient } from '@api-clients';
 import { WineAppConfigActionType as ActionType } from '@constants';
-import {
-  RootState,
-  WineAppConfigAction,
-  WineAppConfigState,
-} from '@interfaces';
-import { useAppModel } from '@models';
+import { RootState, WineAppConfigAction } from '@interfaces';
+import { useAppModel, useWineAppModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { store } from '@store';
-import { buildAppUrls } from '@utils';
 import { useDispatch } from 'react-redux';
 
 export const useWineAppConfigModel = () => {
   const [state, setState] = useState({
-    loaders: { listingAll: false, reading: false },
+    loaders: { reading: false },
   });
   const appModel = useAppModel();
+  const wineAppModel = useWineAppModel();
   const wineAppConfigApiClient = useWineAppConfigApiClient();
   const dispatch = useDispatch<Dispatch<WineAppConfigAction>>();
 
-  const listAll = async () => {
+  const read = async (appId?: string) => {
     try {
-      dispatchLoader({ listingAll: true });
-      dispatch({
-        type: ActionType.LIST_ALL,
-        wineAppsConfigs: await wineAppConfigApiClient.listAll(),
-      });
-    } catch (error) {
-      appModel.dispatchError(error);
-    } finally {
-      dispatchLoader({ listingAll: false });
-    }
-  };
-
-  const read = async (id?: string) => {
-    try {
-      const wineAppConfig = selectWineAppConfig(store.getState(), id);
+      const wineApp = wineAppModel.selectWineApp(store.getState(), appId);
       dispatchLoader({ reading: true });
 
-      if (wineAppConfig.scriptUrl === undefined) {
-        throw new Error('Unable to download installation script');
+      if (wineApp === undefined) {
+        throw new Error('Application not found.');
       }
 
       dispatch({
         type: ActionType.PATCH,
-        id,
-        wineAppConfig: await wineAppConfigApiClient.read(
-          wineAppConfig.scriptUrl
-        ),
+        wineAppConfig: await wineAppConfigApiClient.read(wineApp.scriptUrl),
       });
     } catch (error) {
       appModel.dispatchError(error);
@@ -68,16 +47,13 @@ export const useWineAppConfigModel = () => {
     (wineAppConfigState) => wineAppConfigState.wineAppsConfigs
   );
   const selectWineAppConfig = createSelector(
-    [selectWineAppsConfigs, (_: RootState, id?: string) => id],
-    (wineAppConfigs, id): WineAppConfigState['wineAppsConfigs'][0] => {
-      const config = wineAppConfigs.find((item) => item.id == id)!;
-      return { ...config, ...buildAppUrls(config) };
-    }
+    [selectWineAppsConfigs, (_: RootState, appId?: string) => appId],
+    (wineAppConfigs, appId) =>
+      wineAppConfigs.find((item) => item.appId == appId)
   );
 
   return {
     loaders: state.loaders,
-    listAll,
     read,
     selectWineAppConfigState,
     selectWineAppsConfigs,

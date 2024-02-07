@@ -1,8 +1,6 @@
 import { InstallIcon } from '@assets/icons';
-import { RootState } from '@interfaces';
 import { useWineAppConfigModel } from '@models';
 import { Button, ButtonProps, Icon } from '@reactjs-ui/core';
-import { useSelector } from 'react-redux';
 
 export interface InstallAppButtonProps extends ButtonProps {
   appId?: string;
@@ -15,12 +13,9 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
 }) => {
   const wineAppConfigModel = useWineAppConfigModel();
   const { loaders } = wineAppConfigModel;
-  const wineAppConfig = useSelector((state: RootState) =>
-    wineAppConfigModel.selectWineAppConfig(state, appId)
-  );
 
   const onClick: InstallAppButtonProps['onClick'] = (event) => {
-    wineAppConfigModel.read(wineAppConfig.id);
+    wineAppConfigModel.read(appId);
     onClickProp?.(event);
   };
 

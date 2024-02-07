@@ -8,6 +8,7 @@ export const WinePipeline: React.FC = () => {
   const buildApp = async () => {
     const pipeline = await createWineAppPipeline({
       appConfig: {
+        appId: '',
         name: 'Steam',
         engineVersion: 'WS11WineCX64Bit23.6.0',
         dxvkEnabled: true,

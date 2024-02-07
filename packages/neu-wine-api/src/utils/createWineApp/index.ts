@@ -21,6 +21,7 @@ export const createWineApp = async (appName: string) => {
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
 
   let appConfig: WineAppConfig = {
+    appId: '',
     name: appName,
     engineVersion: '',
     setupExecutablePath: '',

@@ -5,6 +5,8 @@ export * from './RootState';
 export * from './WineAppConfig';
 export * from './WineAppConfigAction';
 export * from './WineAppConfigState';
+export * from './WineAppPipelineAction';
+export * from './WineAppPipelineState';
 export * from './WineEngineAction';
 export * from './WineEngineState';
 export * from './WinetrickAction';

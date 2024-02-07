@@ -9,9 +9,13 @@ export enum WineEngineActionType {
 }
 
 export enum WineAppConfigActionType {
-  LIST_ALL = 'WINE_APP_CONFIG_STATE:LIST_ALL',
-  LOADING = 'WINE_APP_CONFIG_STATE:LOADING',
-  PATCH = 'WINE_APP_CONFIG_STATE:PATCH',
+  LIST_ALL = 'WINE_APP_CONFIG:LIST_ALL',
+  LOADING = 'WINE_APP_CONFIG:LOADING',
+  PATCH = 'WINE_APP_CONFIG:PATCH',
+}
+
+export enum WineAppPipelineActionType {
+  PATCH = 'WINE_APP_PIPELINE:PATCH',
 }
 
 export enum AppActionType {

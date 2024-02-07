@@ -1,5 +1,9 @@
-import { createContext, useContext } from 'react';
-import { createWineAppPipeline as baseCreateWineAppPipeline } from 'neu-wine-api';
+import { createContext, useContext, useRef } from 'react';
+import { v4 as uuid } from 'uuid';
+import {
+  WineAppPipeline,
+  createWineAppPipeline as baseCreateWineAppPipeline,
+} from 'neu-wine-api';
 import { WineAppConfig } from '@interfaces';
 
 export interface WineAppPipelineProviderProps {
@@ -7,22 +11,28 @@ export interface WineAppPipelineProviderProps {
 }
 
 export const WineAppPipelineContext = createContext<{
-  runWineAppPipeline: (appConfig: WineAppConfig) => Promise<void>;
-} | null>(null);
+  createWineAppPipeline: (
+    appConfig: WineAppConfig
+  ) => Promise<WineAppPipeline & { id: string }>;
+}>({} as any);
 export const useWineAppPipeline = () => useContext(WineAppPipelineContext);
 
 export const WineAppPipelineProvider: React.FC<
   WineAppPipelineProviderProps
 > = ({ children }) => {
-  const runWineAppPipeline = async (appConfig: WineAppConfig) => {
+  const store = useRef<{
+    pipelines: Array<{ id: string; content: WineAppPipeline }>;
+  }>({ pipelines: [] });
+
+  const createWineAppPipeline = async (appConfig: WineAppConfig) => {
     const pipeline = await baseCreateWineAppPipeline({ appConfig });
-    pipeline.onUpdate((currentJobs) => {
-      console.log(currentJobs);
-    });
+    const id = uuid();
+    store.current.pipelines.push({ id, content: pipeline });
+    return { id, ...pipeline };
   };
 
   return (
-    <WineAppPipelineContext.Provider value={{ runWineAppPipeline }}>
+    <WineAppPipelineContext.Provider value={{ createWineAppPipeline }}>
       {children}
     </WineAppPipelineContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { InstallIcon } from '@assets/icons';
-import { useWineAppConfigModel } from '@models';
+import { useWineAppConfigModel, useWineAppPipelineModel } from '@models';
 import { Button, ButtonProps, Icon } from '@reactjs-ui/core';
 
 export interface InstallAppButtonProps extends ButtonProps {
@@ -12,10 +12,12 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
   ...rest
 }) => {
   const wineAppConfigModel = useWineAppConfigModel();
+  const wineAppPipelineModel = useWineAppPipelineModel();
   const { loaders } = wineAppConfigModel;
 
-  const onClick: InstallAppButtonProps['onClick'] = (event) => {
-    wineAppConfigModel.read(appId);
+  const onClick: InstallAppButtonProps['onClick'] = async (event) => {
+    await wineAppConfigModel.read(appId);
+    await wineAppPipelineModel.runWineAppPipeline(appId);
     onClickProp?.(event);
   };
 

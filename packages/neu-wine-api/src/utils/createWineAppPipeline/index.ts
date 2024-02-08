@@ -95,9 +95,15 @@ export const createWineAppPipeline = async (options: {
           {
             name: 'Bundling app',
             script: (args: SpawnProcessArgs) => {
-              const exePath =
-                window.prompt('Type the main executable path') || '';
-              return wineApp.bundleApp({ exePath }, args);
+              let executables = options.appConfig.executables || [];
+
+              if (!options.appConfig.executables?.length) {
+                const exePath =
+                  window.prompt('Type the main executable path') || '';
+                executables = [{ path: exePath, main: true }];
+              }
+
+              return wineApp.bundleApp(executables, args);
             },
             status: 'pending',
             output: '',

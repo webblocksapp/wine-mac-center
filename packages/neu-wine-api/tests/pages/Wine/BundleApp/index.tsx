@@ -14,17 +14,14 @@ export const BundleApp: React.FC = () => {
 
   const bundleApp = async () => {
     setLoading(true);
-    await wineApp.bundleApp(
-      { exePath, flags },
-      {
-        onStdOut: (data) => {
-          setData(data);
-        },
-        onStdErr: (data) => {
-          setData(data);
-        },
-      }
-    );
+    await wineApp.bundleApp([{ path: exePath, main: true, flags }], {
+      onStdOut: (data) => {
+        setData(data);
+      },
+      onStdErr: (data) => {
+        setData(data);
+      },
+    });
     setLoading(false);
   };
 

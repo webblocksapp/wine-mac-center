@@ -2,6 +2,7 @@ import {
   BashScript,
   SpawnProcessArgs,
   WineAppConfig,
+  WineAppExecutable,
   WinetricksOptions,
 } from '@interfaces';
 import { os, filesystem } from '@neutralinojs/lib';
@@ -12,6 +13,7 @@ import {
   fileExists,
   writeFile,
   useEnv,
+  clone,
 } from '@utils';
 import { useWineEngineApiClient } from '@api-clients';
 
@@ -98,6 +100,7 @@ export const createWineApp = async (appName: string) => {
     options = { writeAppConfig: true }
   ) => {
     appConfig = { ...appConfig, ...data };
+    console.log('appConfig', clone(appConfig));
     options.writeAppConfig && (await writeAppConfig(appConfig));
     buildWineEnvExports();
   };
@@ -191,15 +194,14 @@ export const createWineApp = async (appName: string) => {
    * Run executable with wine
    */
   const bundleApp = async (
-    options: { exePath: string; flags?: string },
+    executables: WineAppExecutable[],
     args?: SpawnProcessArgs
   ) => {
     await updateAppConfig({
-      executables: [
-        { main: true, path: options.exePath, flags: options.flags },
-      ],
+      executables,
     });
 
+    const mainExecutable = executables.find((item) => item.main === true);
     const infoPlistXML = plist
       .build({
         CFBundleExecutable: 'winemacapp',
@@ -207,7 +209,7 @@ export const createWineApp = async (appName: string) => {
       })
       .replace(/\n/gi, '');
 
-    const exePath = options.exePath.replace(/\n/gi, '');
+    const exePath = mainExecutable!.path.replace(/\n/gi, '');
 
     return spawnScript('bundleApp', '', {
       ...args,

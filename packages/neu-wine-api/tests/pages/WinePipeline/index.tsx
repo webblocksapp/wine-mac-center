@@ -3,7 +3,7 @@ import { createWineAppPipeline } from '@utils';
 import { useState } from 'react';
 
 export const WinePipeline: React.FC = () => {
-  const [jobs] = useState<WineAppPipelineStatus>();
+  const [pipelineStatus, setPipelineStatus] = useState<WineAppPipelineStatus>();
 
   const buildApp = async () => {
     const pipeline = await createWineAppPipeline({
@@ -14,13 +14,20 @@ export const WinePipeline: React.FC = () => {
         dxvkEnabled: true,
         setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',
         winetricks: { verbs: [] },
+        executables: [
+          {
+            path: '/drive_c/Program Files (x86)/Steam/Steam.exe',
+            main: true,
+            flags: '-appLaunch 4000', //TODO check flags not working.
+          },
+        ],
       },
       outputEveryMs: 1000,
       debug: true,
     });
 
     pipeline.onUpdate?.((x) => {
-      console.log(x.jobs[0].steps[0].output);
+      setPipelineStatus(x);
     });
 
     pipeline.run();
@@ -43,7 +50,7 @@ export const WinePipeline: React.FC = () => {
               whiteSpace: 'pre-wrap',
             }}
           >
-            {JSON.stringify(jobs, null, 2)}
+            {JSON.stringify(pipelineStatus, null, 2)}
           </code>
         </pre>
       </div>

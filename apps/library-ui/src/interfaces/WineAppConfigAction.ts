@@ -1,7 +1,7 @@
 import { WineAppConfigActionType as ActionType } from '@constants';
-import { WineAppConfigState } from '@interfaces';
+import { Flatten, WineAppConfigState } from '@interfaces';
 
 export type WineAppConfigAction = {
   type: ActionType.PATCH;
-  wineAppConfig: WineAppConfigState['wineAppsConfigs'][0];
+  wineAppConfig: Flatten<WineAppConfigState['wineAppsConfigs']>;
 };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useWineAppApiClient } from '@api-clients';
 import { WineAppActionType as ActionType } from '@constants';
-import { RootState, WineAppAction } from '@interfaces';
+import { RootState, WineApp, WineAppAction } from '@interfaces';
 import { useAppModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
@@ -17,10 +17,7 @@ export const useWineAppModel = () => {
   const listAll = async () => {
     try {
       dispatchLoader({ listingAll: true });
-      dispatch({
-        type: ActionType.LIST_ALL,
-        wineApps: await wineAppApiClient.listAll(),
-      });
+      dispatchListAll(await wineAppApiClient.listAll());
     } catch (error) {
       appModel.dispatchError(error);
     } finally {
@@ -28,25 +25,32 @@ export const useWineAppModel = () => {
     }
   };
 
+  const dispatchListAll = (wineApps: WineApp[]) => {
+    dispatch({
+      type: ActionType.LIST_ALL,
+      wineApps,
+    });
+  };
   const dispatchLoader = (loaders: Partial<(typeof state)['loaders']>) => {
     setState((prev) => ({ ...prev, loaders: { ...prev.loaders, ...loaders } }));
   };
 
   const selectWineAppState = (state: RootState) => state.wineAppState;
-  const selectWineAppsConfigs = createSelector(
+  const selectWineApps = createSelector(
     [selectWineAppState],
     (wineAppState) => wineAppState.wineApps
   );
   const selectWineApp = createSelector(
-    [selectWineAppsConfigs, (_: RootState, id?: string) => id],
+    [selectWineApps, (_: RootState, id?: string) => id],
     (wineApps, id) => wineApps.find((item) => item.id == id)
   );
 
   return {
     loaders: state.loaders,
     listAll,
+    dispatchListAll,
     selectWineAppState,
-    selectWineAppsConfigs,
+    selectWineApps,
     selectWineApp,
   };
 };

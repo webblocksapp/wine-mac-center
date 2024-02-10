@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useWineAppConfigApiClient } from '@api-clients';
 import { WineAppConfigActionType as ActionType } from '@constants';
-import { RootState, WineAppConfigAction } from '@interfaces';
+import { RootState, WineAppConfig, WineAppConfigAction } from '@interfaces';
 import { useAppModel, useWineAppModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { store } from '@store';
@@ -25,10 +25,7 @@ export const useWineAppConfigModel = () => {
         throw new Error('Application not found.');
       }
 
-      dispatch({
-        type: ActionType.PATCH,
-        wineAppConfig: await wineAppConfigApiClient.read(wineApp.scriptUrl),
-      });
+      dispatchPatch(await wineAppConfigApiClient.read(wineApp.scriptUrl));
     } catch (error) {
       appModel.dispatchError(error);
     } finally {
@@ -36,6 +33,12 @@ export const useWineAppConfigModel = () => {
     }
   };
 
+  const dispatchPatch = (wineAppConfig: WineAppConfig) => {
+    dispatch({
+      type: ActionType.PATCH,
+      wineAppConfig,
+    });
+  };
   const dispatchLoader = (loaders: Partial<(typeof state)['loaders']>) => {
     setState((prev) => ({ ...prev, loaders: { ...prev.loaders, ...loaders } }));
   };
@@ -49,12 +52,13 @@ export const useWineAppConfigModel = () => {
   const selectWineAppConfig = createSelector(
     [selectWineAppsConfigs, (_: RootState, appId?: string) => appId],
     (wineAppConfigs, appId) =>
-      wineAppConfigs.find((item) => item.appId == appId)
+      wineAppConfigs?.find((item) => item.appId == appId)
   );
 
   return {
     loaders: state.loaders,
     read,
+    dispatchPatch,
     selectWineAppConfigState,
     selectWineAppsConfigs,
     selectWineAppConfig,

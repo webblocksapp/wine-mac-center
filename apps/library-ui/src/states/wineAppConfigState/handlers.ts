@@ -1,10 +1,12 @@
-import { WineAppConfigState } from '@interfaces';
+import { Flatten, WineAppConfigState } from '@interfaces';
 
 export const patch = (
-  wineAppConfig: WineAppConfigState['wineAppsConfigs'][0],
+  wineAppConfig: Flatten<WineAppConfigState['wineAppsConfigs']>,
   state: WineAppConfigState
 ): WineAppConfigState => {
-  if (state.wineAppsConfigs.some((item) => item.appId == wineAppConfig.appId)) {
+  if (
+    state?.wineAppsConfigs?.some((item) => item.appId == wineAppConfig.appId)
+  ) {
     return {
       ...state,
       wineAppsConfigs: state.wineAppsConfigs.map((item) => {
@@ -20,7 +22,7 @@ export const patch = (
   } else {
     return {
       ...state,
-      wineAppsConfigs: [...state.wineAppsConfigs, wineAppConfig],
+      wineAppsConfigs: [...(state.wineAppsConfigs || []), wineAppConfig],
     };
   }
 };

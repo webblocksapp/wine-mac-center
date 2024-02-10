@@ -1,3 +1,4 @@
+import { ProcessStatus } from '@constants';
 import { SpawnProcessArgs, WineAppConfig, WineAppPipeline } from '@interfaces';
 import { clone, createWineApp } from '@utils';
 import { v4 as uuid } from 'uuid';
@@ -32,7 +33,7 @@ export const createWineAppPipeline = async (options: {
         name: `Running winetrick ${verb}`,
         script: (args: SpawnProcessArgs) =>
           wineApp.winetrick(verb, args, winetricks?.options),
-        status: 'pending',
+        status: ProcessStatus.Pending,
         output: '',
       });
     }
@@ -57,20 +58,20 @@ export const createWineAppPipeline = async (options: {
           {
             name: 'Creating wine app',
             script: wineApp.scaffold,
-            status: 'pending',
+            status: ProcessStatus.Pending,
             output: '',
           },
           {
             name: 'Extracting wine engine',
             script: (args: SpawnProcessArgs) =>
               wineApp.extractEngine(engineVersion, args),
-            status: 'pending',
+            status: ProcessStatus.Pending,
             output: '',
           },
           {
             name: 'Generating wine prefix',
             script: (args: SpawnProcessArgs) => wineApp.wineboot('', args),
-            status: 'pending',
+            status: ProcessStatus.Pending,
             output: '',
           },
           ...(dxvkEnabled
@@ -79,7 +80,7 @@ export const createWineAppPipeline = async (options: {
                   name: 'Enabling DXVK',
                   script: (args: SpawnProcessArgs) =>
                     wineApp.winetrick('dxvk1102', args),
-                  status: 'pending',
+                  status: ProcessStatus.Pending,
                   output: '',
                 },
               ]
@@ -89,7 +90,7 @@ export const createWineAppPipeline = async (options: {
             name: 'Running setup executable',
             script: (args: SpawnProcessArgs) =>
               wineApp.runExe(setupExecutablePath, args),
-            status: 'pending',
+            status: ProcessStatus.Pending,
             output: '',
           },
           {
@@ -105,7 +106,7 @@ export const createWineAppPipeline = async (options: {
 
               return wineApp.bundleApp(executables, args);
             },
-            status: 'pending',
+            status: ProcessStatus.Pending,
             output: '',
           },
         ],
@@ -122,7 +123,7 @@ export const createWineAppPipeline = async (options: {
                 this._.onUpdate?.({
                   pipelineId: id,
                   jobs: pipeline.jobs,
-                  status: 'inProgress',
+                  status: ProcessStatus.InProgress,
                 });
               });
             },
@@ -133,7 +134,7 @@ export const createWineAppPipeline = async (options: {
                 this._.onUpdate?.({
                   pipelineId: id,
                   jobs: pipeline.jobs,
-                  status: 'inProgress',
+                  status: ProcessStatus.InProgress,
                 });
               });
             },
@@ -144,7 +145,7 @@ export const createWineAppPipeline = async (options: {
                 this._.onUpdate?.({
                   pipelineId: id,
                   jobs: pipeline.jobs,
-                  status: 'inProgress',
+                  status: ProcessStatus.InProgress,
                 });
               });
             },

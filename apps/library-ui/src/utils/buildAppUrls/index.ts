@@ -2,7 +2,7 @@ import { WINE_APPS_CONFIGS_URL } from '@constants';
 import { WineApp } from '@interfaces';
 import { encodeURL } from '@utils';
 
-export const buildAppUrls = (appConfig?: WineApp) => {
+export const buildAppUrls = (appConfig?: Partial<WineApp>) => {
   const URL = `${WINE_APPS_CONFIGS_URL}/${appConfig?.keyName || ''}`;
   const ASSETS_URL = `${URL}/assets`;
   return {

@@ -1,5 +1,5 @@
-import { ProcessStatus } from '@interfaces';
-import { WineAppJob } from 'dev-dist';
+import { ProcessStatus } from '@constants';
+import { WineAppJob } from '@interfaces';
 
 export type WineAppPipelineStatus = {
   pipelineId: string;

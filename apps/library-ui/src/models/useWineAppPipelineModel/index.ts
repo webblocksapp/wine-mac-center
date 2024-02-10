@@ -1,4 +1,8 @@
-import { RootState, WineAppPipelineAction } from '@interfaces';
+import {
+  RootState,
+  WineAppPipelineAction,
+  WineAppPipelineStatus,
+} from '@interfaces';
 import { useWineAppPipeline } from '@components';
 import { useDispatch } from 'react-redux';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
@@ -16,7 +20,7 @@ export const useWineAppPipelineModel = () => {
   const runWineAppPipeline = async (appId?: string) => {
     try {
       const wineApp = wineAppModel.selectWineApp(store.getState(), appId);
-      let wineAppConfig = wineAppConfigModel.selectWineAppConfig(
+      const wineAppConfig = wineAppConfigModel.selectWineAppConfig(
         store.getState(),
         appId
       );
@@ -25,10 +29,8 @@ export const useWineAppPipelineModel = () => {
         throw Error('Wine application config not found.');
 
       //TODO: define automatic executable download.
-      wineAppConfig = {
-        ...wineAppConfig,
-        setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',
-      };
+      wineAppConfig.setupExecutablePath =
+        '/Users/mauriver/Downloads/SteamSetup.exe';
 
       const pipeline = await createWineAppPipeline({
         appConfig: { ...wineAppConfig, name: wineApp.name },
@@ -36,16 +38,20 @@ export const useWineAppPipelineModel = () => {
         outputEveryMs: 1000,
       });
       pipeline.onUpdate((pipelineStatus) => {
-        dispatch({
-          type: ActionType.PATCH,
-          pipelineStatus,
-        });
+        dispatchPatch({ ...pipelineStatus, appId: wineAppConfig.appId });
         pipeline;
       });
       pipeline.run();
     } catch (error) {
       appModel.dispatchError(error);
     }
+  };
+
+  const dispatchPatch = (pipelineStatus: WineAppPipelineStatus) => {
+    dispatch({
+      type: ActionType.PATCH,
+      pipelineStatus,
+    });
   };
 
   const selectWineAppPipelineState = (state: RootState) =>
@@ -57,12 +63,34 @@ export const useWineAppPipelineModel = () => {
   const selectWineAppPipeline = createSelector(
     [selectWineAppPipelines, (_: RootState, id?: string) => id],
     (wineAppPipelines, id) =>
-      wineAppPipelines.find((item) => item.pipelineId == id)
+      wineAppPipelines?.find((item) => item.pipelineId == id)
+  );
+  const selectWineAppPipelineMeta = createSelector(
+    [selectWineAppPipeline],
+    (wineAppPipeline) => {
+      return {
+        wineApp: wineAppModel.selectWineApp(
+          store.getState(),
+          wineAppPipeline?.appId
+        ),
+        wineAppConfig: wineAppConfigModel.selectWineAppConfig(
+          store.getState(),
+          wineAppPipeline?.appId
+        ),
+      };
+    }
+  );
+  const selectWineAppPipelineWithMeta = createSelector(
+    [selectWineAppPipeline, selectWineAppPipelineMeta],
+    (wineAppsPipeline, meta) => ({ ...wineAppsPipeline, meta })
   );
 
   return {
     runWineAppPipeline,
+    dispatchPatch,
     selectWineAppPipelines,
     selectWineAppPipeline,
+    selectWineAppPipelineMeta,
+    selectWineAppPipelineWithMeta,
   };
 };

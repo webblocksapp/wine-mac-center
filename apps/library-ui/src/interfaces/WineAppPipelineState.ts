@@ -1,5 +1,5 @@
-import { WineAppPipelineStatus } from 'neu-wine-api';
+import { WineAppPipelineStatus } from '@interfaces';
 
 export type WineAppPipelineState = {
-  pipelines: Array<WineAppPipelineStatus>;
+  pipelines?: Array<WineAppPipelineStatus>;
 };

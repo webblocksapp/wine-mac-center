@@ -1,11 +1,16 @@
-import { WineAppPipelineState } from '@interfaces';
+import { Flatten, WineAppPipelineState } from '@interfaces';
 
 export const patch = (
-  pipelineStatus: WineAppPipelineState['pipelines'][0],
+  pipelineStatus: Exclude<
+    Flatten<WineAppPipelineState['pipelines']>,
+    undefined
+  >,
   state: WineAppPipelineState
 ): WineAppPipelineState => {
   if (
-    state.pipelines.some((item) => item.pipelineId == pipelineStatus.pipelineId)
+    state?.pipelines?.some(
+      (item) => item.pipelineId == pipelineStatus.pipelineId
+    )
   ) {
     return {
       ...state,
@@ -19,7 +24,7 @@ export const patch = (
   } else {
     return {
       ...state,
-      pipelines: [...state.pipelines, pipelineStatus],
+      pipelines: [...(state?.pipelines || []), pipelineStatus],
     };
   }
 };

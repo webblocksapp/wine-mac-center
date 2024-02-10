@@ -1,5 +1,5 @@
 export type WineEngineState = {
-  wineEngines: string[];
+  wineEngines?: string[];
   loaders: {
     listing: boolean;
   };

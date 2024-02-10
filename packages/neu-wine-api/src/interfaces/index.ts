@@ -4,7 +4,6 @@ export * from './CommonObject';
 export * from './Env';
 export * from './Job';
 export * from './JobStep';
-export * from './ProcessStatus';
 export * from './ScriptOptions';
 export * from './SpawnProcessArgs';
 export * from './WineApp';

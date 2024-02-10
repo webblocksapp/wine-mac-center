@@ -54,9 +54,15 @@ export const useWineAppPipelineModel = () => {
     [selectWineAppPipelineState],
     (wineAppPipelineState) => wineAppPipelineState.pipelines
   );
+  const selectWineAppPipeline = createSelector(
+    [selectWineAppPipelines, (_: RootState, id?: string) => id],
+    (wineAppPipelines, id) =>
+      wineAppPipelines.find((item) => item.pipelineId == id)
+  );
 
   return {
     runWineAppPipeline,
     selectWineAppPipelines,
+    selectWineAppPipeline,
   };
 };

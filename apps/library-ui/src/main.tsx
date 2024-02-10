@@ -13,19 +13,19 @@ import { App } from './App.tsx';
 import './main.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <Provider store={store}>
-    <NotificationsProvider>
-      <EnvProvider>
-        <WineAppPipelineProvider>
-          <BrowserRouter>
-            <ThemeProvider>
+  <ThemeProvider>
+    <Provider store={store}>
+      <NotificationsProvider>
+        <EnvProvider>
+          <WineAppPipelineProvider>
+            <BrowserRouter>
               <AppSetup>
                 <App />
               </AppSetup>
-            </ThemeProvider>
-          </BrowserRouter>
-        </WineAppPipelineProvider>
-      </EnvProvider>
-    </NotificationsProvider>
-  </Provider>
+            </BrowserRouter>
+          </WineAppPipelineProvider>
+        </EnvProvider>
+      </NotificationsProvider>
+    </Provider>
+  </ThemeProvider>
 );

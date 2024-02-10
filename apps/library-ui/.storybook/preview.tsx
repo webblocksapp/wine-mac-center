@@ -1,6 +1,8 @@
 import { EnvProvider } from '@components';
 import { ThemeProvider } from '@reactjs-ui/core';
+import { store } from '@store';
 import type { Preview } from '@storybook/react';
+import { Provider } from 'react-redux';
 
 const preview: Preview = {
   parameters: {
@@ -15,9 +17,11 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <ThemeProvider>
-        <EnvProvider>
-          <Story />
-        </EnvProvider>
+        <Provider store={store}>
+          <EnvProvider>
+            <Story />
+          </EnvProvider>
+        </Provider>
       </ThemeProvider>
     ),
   ],

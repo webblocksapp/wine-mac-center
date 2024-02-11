@@ -5,6 +5,7 @@ import { RootState, WineApp, WineAppAction } from '@interfaces';
 import { useAppModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
+import { store } from '@store';
 
 export const useWineAppModel = () => {
   const [state, setState] = useState({
@@ -16,7 +17,8 @@ export const useWineAppModel = () => {
 
   const listAll = async () => {
     try {
-      dispatchLoader({ listingAll: true });
+      const wineApps = selectWineApps(store.getState());
+      !wineApps.length && dispatchLoader({ listingAll: true });
       dispatchListAll(await wineAppApiClient.listAll());
     } catch (error) {
       appModel.dispatchError(error);

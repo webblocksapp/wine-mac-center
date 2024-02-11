@@ -8,7 +8,7 @@ export interface StatusBoxProps extends BoxProps {
 }
 
 export const StatusBox: React.FC<StatusBoxProps> = ({
-  status = 'pending',
+  status = ProcessStatus.Pending,
   ...rest
 }) => {
   const TEXTS: Record<ProcessStatus, string> = useMemo(

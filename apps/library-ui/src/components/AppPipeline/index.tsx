@@ -17,8 +17,6 @@ export const AppPipeline: React.FC<AppPipelineProps> = ({
     wineAppPipelineModel.selectWineAppPipelineWithMeta(state, pipelineId)
   );
 
-  console.log(wineAppPipeline.meta);
-
   return (
     <Stack spacing={2} {...rest}>
       <H6>{wineAppPipeline.meta.wineApp?.name}</H6>

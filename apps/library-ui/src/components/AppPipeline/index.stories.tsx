@@ -7,8 +7,9 @@ import {
 } from '@models';
 import { useEffect, useRef } from 'react';
 import { data } from '@mocks/data';
-import { WineAppPipelineStatus } from 'neu-wine-api';
+import { ProcessStatus } from 'neu-wine-api';
 import { useSelector } from 'react-redux';
+import { WineAppPipelineStatus } from '@interfaces';
 
 const meta: Meta<typeof AppPipeline> = {
   title: 'App Components/AppPipeline',
@@ -47,14 +48,40 @@ export const Overview: Story = {
       wineAppPipelineModel.selectWineAppPipelines
     );
     const wineAppPipeline = wineAppPipelines?.[0];
-    const ref = useRef<{ pipeline?: WineAppPipelineStatus }>({
-      pipeline: wineAppPipeline,
-    });
+    const ref = useRef<{ pipeline?: WineAppPipelineStatus; stepIndex: number }>(
+      {
+        pipeline: wineAppPipeline,
+        stepIndex: 0,
+      }
+    );
 
     useEffect(() => {
       const id = setInterval(() => {
-        console.log(ref.current);
+        if (ref.current.pipeline?.jobs === undefined) return;
+        ref.current.pipeline.jobs = ref.current.pipeline?.jobs?.map(
+          (item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                steps: item.steps.map((step, stepIndex) => {
+                  if (stepIndex === ref.current.stepIndex) {
+                    return { ...step, status: ProcessStatus.InProgress };
+                  }
+                  return step;
+                }),
+              };
+            }
+            return item;
+          }
+        );
+
+        wineAppPipelineModel.dispatchPatch(ref.current.pipeline);
+        ref.current.stepIndex++;
       }, 1000);
+
+      if (wineAppPipeline?.status === ProcessStatus.Success) {
+        clearInterval(id);
+      }
 
       return () => {
         clearInterval(id);

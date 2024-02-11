@@ -1,8 +1,22 @@
-import { createWineAppPipeline as baseCreateWineAppPipeline } from 'neu-wine-api';
+import {
+  createWineAppPipeline as baseCreateWineAppPipeline,
+  spawnProcess,
+} from 'neu-wine-api';
 
-export const createWineAppPipeline: typeof baseCreateWineAppPipeline = (
+export const createWineAppPipeline: typeof baseCreateWineAppPipeline = async (
   options
 ) => {
-  const { ...rest } = baseCreateWineAppPipeline(options);
-  return { ...rest };
+  const pipeline = await baseCreateWineAppPipeline(options);
+
+  pipeline.jobs = pipeline.jobs.map((job) => ({
+    ...job,
+    steps: job.steps.map((step) => ({
+      ...step,
+      script: () => {
+        return spawnProcess('echo "Script executed..."');
+      },
+    })),
+  }));
+
+  return pipeline;
 };

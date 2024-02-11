@@ -5,35 +5,38 @@ import {
   useWineAppModel,
   useWineAppPipelineModel,
 } from '@models';
-import { useEffect, useRef } from 'react';
-import { data } from '@mocks/data';
-import { ProcessStatus } from 'neu-wine-api';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { WineAppPipelineStatus } from '@interfaces';
 
 const meta: Meta<typeof AppPipeline> = {
   title: 'App Components/AppPipeline',
   component: AppPipeline,
   decorators: [
     (Story) => {
+      const [loading, setLoading] = useState(true);
       const wineAppModel = useWineAppModel();
-      const wineAppConfigsModel = useWineAppConfigModel();
+      const wineAppConfigModel = useWineAppConfigModel();
       const wineAppPipelineModel = useWineAppPipelineModel();
+      const wineApps = useSelector(wineAppModel.selectWineApps);
+      const wineApp = wineApps?.[0];
 
       useEffect(() => {
-        const { id } = data.wineApps[0];
-        const wineAppConfig = data.wineAppsConfigs.find(
-          (item) => item.appId == id
-        )!;
-        const wineAppPipeline = data.wineAppsPipelines.find(
-          (item) => item.appId == id
-        )!;
-        wineAppModel.dispatchListAll(data.wineApps);
-        wineAppConfigsModel.dispatchPatch(wineAppConfig);
-        wineAppPipelineModel.dispatchPatch(wineAppPipeline);
+        (async () => {
+          await wineAppModel.listAll();
+        })();
       }, []);
 
-      return <Story />;
+      useEffect(() => {
+        (async () => {
+          if (wineApp?.id) {
+            await wineAppConfigModel.read(wineApp?.id);
+            await wineAppPipelineModel.runWineAppPipeline(wineApp?.id);
+            setLoading(false);
+          }
+        })();
+      }, [wineApp?.id]);
+
+      return loading ? <>Loading...</> : <Story />;
     },
   ],
 };
@@ -48,45 +51,6 @@ export const Overview: Story = {
       wineAppPipelineModel.selectWineAppPipelines
     );
     const wineAppPipeline = wineAppPipelines?.[0];
-    const ref = useRef<{ pipeline?: WineAppPipelineStatus; stepIndex: number }>(
-      {
-        pipeline: wineAppPipeline,
-        stepIndex: 0,
-      }
-    );
-
-    useEffect(() => {
-      const id = setInterval(() => {
-        if (ref.current.pipeline?.jobs === undefined) return;
-        ref.current.pipeline.jobs = ref.current.pipeline?.jobs?.map(
-          (item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                steps: item.steps.map((step, stepIndex) => {
-                  if (stepIndex === ref.current.stepIndex) {
-                    return { ...step, status: ProcessStatus.InProgress };
-                  }
-                  return step;
-                }),
-              };
-            }
-            return item;
-          }
-        );
-
-        wineAppPipelineModel.dispatchPatch(ref.current.pipeline);
-        ref.current.stepIndex++;
-      }, 1000);
-
-      if (wineAppPipeline?.status === ProcessStatus.Success) {
-        clearInterval(id);
-      }
-
-      return () => {
-        clearInterval(id);
-      };
-    }, []);
 
     return <AppPipeline pipelineId={wineAppPipeline?.pipelineId} />;
   },

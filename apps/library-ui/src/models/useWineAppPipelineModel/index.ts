@@ -29,20 +29,24 @@ export const useWineAppPipelineModel = () => {
         throw Error('Wine application config not found.');
 
       //TODO: define automatic executable download.
-      wineAppConfig.setupExecutablePath =
-        '/Users/mauriver/Downloads/SteamSetup.exe';
+      const x = {
+        ...wineAppConfig,
+        setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',
+      };
 
       const pipeline = await createWineAppPipeline({
-        appConfig: { ...wineAppConfig, name: wineApp.name },
+        appConfig: { ...x, name: wineApp.name },
         debug: true,
         outputEveryMs: 1000,
       });
+
       pipeline.onUpdate((pipelineStatus) => {
         dispatchPatch({ ...pipelineStatus, appId: wineAppConfig.appId });
         pipeline;
       });
       pipeline.run();
     } catch (error) {
+      console.log(error);
       appModel.dispatchError(error);
     }
   };

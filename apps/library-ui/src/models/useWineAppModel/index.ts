@@ -18,7 +18,7 @@ export const useWineAppModel = () => {
   const listAll = async () => {
     try {
       const wineApps = selectWineApps(store.getState());
-      !wineApps.length && dispatchLoader({ listingAll: true });
+      !wineApps?.length && dispatchLoader({ listingAll: true });
       dispatchListAll(await wineAppApiClient.listAll());
     } catch (error) {
       appModel.dispatchError(error);
@@ -44,7 +44,7 @@ export const useWineAppModel = () => {
   );
   const selectWineApp = createSelector(
     [selectWineApps, (_: RootState, id?: string) => id],
-    (wineApps, id) => wineApps.find((item) => item.id == id)
+    (wineApps, id) => wineApps?.find((item) => item.id == id)
   );
 
   return {

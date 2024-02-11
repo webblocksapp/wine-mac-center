@@ -1,4 +1,8 @@
-import { EnvProvider } from '@components';
+import {
+  EnvProvider,
+  NotificationsProvider,
+  WineAppPipelineProvider,
+} from '@components';
 import { ThemeProvider } from '@reactjs-ui/core';
 import { store } from '@store';
 import type { Preview } from '@storybook/react';
@@ -18,9 +22,13 @@ const preview: Preview = {
     (Story) => (
       <ThemeProvider>
         <Provider store={store}>
-          <EnvProvider>
-            <Story />
-          </EnvProvider>
+          <NotificationsProvider>
+            <EnvProvider>
+              <WineAppPipelineProvider>
+                <Story />
+              </WineAppPipelineProvider>
+            </EnvProvider>
+          </NotificationsProvider>
         </Provider>
       </ThemeProvider>
     ),

@@ -12,8 +12,8 @@ export const createWineAppPipeline: typeof baseCreateWineAppPipeline = async (
     ...job,
     steps: job.steps.map((step) => ({
       ...step,
-      script: () => {
-        return spawnProcess('echo "Script executed..."');
+      script: (args) => {
+        return spawnProcess('echo "Script executed..."', args);
       },
     })),
   }));

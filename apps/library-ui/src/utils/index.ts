@@ -1,6 +1,7 @@
 export * from './array';
 export * from './axiosWineAppsConfigs';
 export * from './buildAppUrls';
+export * from './createWineAppPipeline';
 export * from './encodeURL';
 export * from './handleError';
 export * from './isDev';

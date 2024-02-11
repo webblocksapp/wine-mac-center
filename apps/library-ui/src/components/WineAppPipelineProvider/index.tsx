@@ -1,8 +1,6 @@
 import { createContext, useContext, useRef } from 'react';
-import {
-  WineAppPipeline,
-  createWineAppPipeline as baseCreateWineAppPipeline,
-} from 'neu-wine-api';
+import { WineAppPipeline } from 'neu-wine-api';
+import { createWineAppPipeline as baseCreateWineAppPipeline } from '@utils';
 
 export interface WineAppPipelineProviderProps {
   children?: React.ReactNode;

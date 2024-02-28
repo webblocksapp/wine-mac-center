@@ -74,7 +74,7 @@ export const WinePipeline: React.FC = () => {
                   {step.status}
                 </p>
               </div>
-              <pre
+              {/* <pre
                 style={{
                   height: '300px',
                   width: '300px',
@@ -84,7 +84,7 @@ export const WinePipeline: React.FC = () => {
                 }}
               >
                 <code>{step.output}</code>
-              </pre>
+              </pre> */}
             </div>
           ))}
         </div>

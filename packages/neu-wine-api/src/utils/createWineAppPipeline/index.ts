@@ -137,8 +137,9 @@ export const createWineAppPipeline = async (options: {
                 step.status = ProcessStatus.Cancelled;
                 return;
               }
-              step.output = concatDataToOutput(data, step.output);
+
               step.status = ProcessStatus.InProgress;
+              step.output = concatDataToOutput(data, step.output);
 
               handleOutput(() => {
                 options.debug && console.log('onStdOut', data);
@@ -155,7 +156,10 @@ export const createWineAppPipeline = async (options: {
                 step.status = ProcessStatus.Cancelled;
                 return;
               }
+
+              step.status = ProcessStatus.InProgress;
               step.output = concatDataToOutput(data, step.output);
+
               handleOutput(() => {
                 options.debug && console.log('onStdErr', data);
                 this._.onUpdate?.({

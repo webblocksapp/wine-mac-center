@@ -46,7 +46,37 @@ export const createWineAppPipeline = async (options: {
 
   const wineApp = await createWineApp(name);
   const pipeline: WineAppPipeline = {
-    _: {},
+    _: {
+      std(action, step, data, updateProcess) {
+        options.debug && console.log(action, step.name);
+
+        if (store.killAllProcesses) {
+          updateProcess?.('exit');
+          step.status = ProcessStatus.Cancelled;
+          return;
+        }
+
+        step.status = ProcessStatus.InProgress;
+        step.output = concatDataToOutput(data, step.output);
+
+        if (data === ExitCode.SuccessfulExecution) {
+          step.status = ProcessStatus.Success;
+        }
+
+        if (data === ExitCode.Error) {
+          step.status = ProcessStatus.Error;
+        }
+
+        handleOutput(() => {
+          options.debug && console.log(action, data);
+          this.onUpdate?.({
+            pipelineId: id,
+            jobs: pipeline.jobs,
+            status: ProcessStatus.InProgress,
+          });
+        });
+      },
+    },
     onUpdate(fn) {
       this._.onUpdate = (pipelineStatus) => fn(clone(pipelineStatus));
     },
@@ -118,8 +148,6 @@ export const createWineAppPipeline = async (options: {
     async run() {
       for (const job of pipeline.jobs) {
         for (const step of job.steps) {
-          options.debug && console.log('Step - ' + step.name);
-
           if (store.killAllProcesses) {
             step.status = ProcessStatus.Cancelled;
             this._.onUpdate?.({
@@ -131,66 +159,21 @@ export const createWineAppPipeline = async (options: {
           }
 
           await step.script({
-            onStdOut: (data, updateProcess) => {
-              if (store.killAllProcesses) {
-                updateProcess('exit');
-                step.status = ProcessStatus.Cancelled;
-                return;
-              }
-
-              step.status = ProcessStatus.InProgress;
-              step.output = concatDataToOutput(data, step.output);
-
-              handleOutput(() => {
-                options.debug && console.log('onStdOut', data);
-                this._.onUpdate?.({
-                  pipelineId: id,
-                  jobs: pipeline.jobs,
-                  status: ProcessStatus.InProgress,
-                });
-              });
-            },
-            onStdErr: (data, updateProcess) => {
-              if (store.killAllProcesses) {
-                updateProcess('exit');
-                step.status = ProcessStatus.Cancelled;
-                return;
-              }
-
-              step.status = ProcessStatus.InProgress;
-              step.output = concatDataToOutput(data, step.output);
-
-              handleOutput(() => {
-                options.debug && console.log('onStdErr', data);
-                this._.onUpdate?.({
-                  pipelineId: id,
-                  jobs: pipeline.jobs,
-                  status: ProcessStatus.InProgress,
-                });
-              });
-            },
-            onExit: (data) => {
-              step.output = concatDataToOutput(data, step.output);
-
-              if (data === ExitCode.SuccessfulExecution) {
-                step.status = ProcessStatus.Success;
-              }
-
-              if (data === ExitCode.Error) {
-                step.status = ProcessStatus.Error;
-              }
-
-              handleOutput(() => {
-                options.debug && console.log('onExit', data);
-                this._.onUpdate?.({
-                  pipelineId: id,
-                  jobs: pipeline.jobs,
-                  status: ProcessStatus.InProgress,
-                });
-              });
-            },
+            onStdOut: (data, updateProcess) =>
+              this._.std('stdOut', step, data, updateProcess),
+            onStdErr: (data, updateProcess) =>
+              this._.std('stdErr', step, data, updateProcess),
+            onExit: (data) => this._.std('exit', step, data),
           });
         }
+      }
+
+      if (!store.killAllProcesses) {
+        this._.onUpdate?.({
+          pipelineId: id,
+          jobs: pipeline.jobs,
+          status: ProcessStatus.Success,
+        });
       }
     },
   };

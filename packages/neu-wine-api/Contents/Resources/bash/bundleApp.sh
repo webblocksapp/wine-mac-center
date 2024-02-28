@@ -34,4 +34,3 @@ source env.sh
 EOM
 
 chmod +x "$EXEC_FILE"
-echo "App bundled successfully"

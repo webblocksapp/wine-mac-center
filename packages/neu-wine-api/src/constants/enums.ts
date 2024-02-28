@@ -5,3 +5,9 @@ export enum ProcessStatus {
   Cancelled = 'cancelled',
   Error = 'error',
 }
+
+export enum ExitCode {
+  SuccessfulExecution = 0,
+  Error = 1,
+  ImproperCommand = 2,
+}

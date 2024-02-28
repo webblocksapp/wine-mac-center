@@ -1,4 +1,4 @@
-import { ProcessStatus } from '@constants';
+import { ExitCode, ProcessStatus } from '@constants';
 import { SpawnProcessArgs, WineAppConfig, WineAppPipeline } from '@interfaces';
 import { clone, createWineApp } from '@utils';
 import { v4 as uuid } from 'uuid';
@@ -9,17 +9,17 @@ export const createWineAppPipeline = async (options: {
   outputEveryMs?: number;
 }) => {
   const id = uuid();
-  let outputEnabled = true;
+  const store = { outputEnabled: true, killAllProcesses: false };
 
   const { name, engineVersion, dxvkEnabled, winetricks, setupExecutablePath } =
     options.appConfig;
 
   const handleOutput = (callbackFn: Function) => {
-    if (outputEnabled) {
+    if (store.outputEnabled) {
       callbackFn();
-      outputEnabled = false;
+      store.outputEnabled = false;
       setTimeout(() => {
-        outputEnabled = true;
+        store.outputEnabled = true;
       }, options.outputEveryMs || 100);
     }
   };
@@ -41,7 +41,7 @@ export const createWineAppPipeline = async (options: {
     return steps;
   };
 
-  const concatDataToOutput = (data: string, output = '') =>
+  const concatDataToOutput = (data: string | number, output = '') =>
     `${output || ''}\n${data}`;
 
   const wineApp = await createWineApp(name);
@@ -51,6 +51,9 @@ export const createWineAppPipeline = async (options: {
       this._.onUpdate = (pipelineStatus) => fn(clone(pipelineStatus));
     },
     id,
+    kill: () => {
+      store.killAllProcesses = true;
+    },
     jobs: [
       {
         name: 'Create wine app',
@@ -115,9 +118,28 @@ export const createWineAppPipeline = async (options: {
     async run() {
       for (const job of pipeline.jobs) {
         for (const step of job.steps) {
+          options.debug && console.log('Step - ' + step.name);
+
+          if (store.killAllProcesses) {
+            step.status = ProcessStatus.Cancelled;
+            this._.onUpdate?.({
+              pipelineId: id,
+              jobs: pipeline.jobs,
+              status: ProcessStatus.Cancelled,
+            });
+            continue;
+          }
+
           await step.script({
-            onStdOut: (data) => {
+            onStdOut: (data, updateProcess) => {
+              if (store.killAllProcesses) {
+                updateProcess('exit');
+                step.status = ProcessStatus.Cancelled;
+                return;
+              }
               step.output = concatDataToOutput(data, step.output);
+              step.status = ProcessStatus.InProgress;
+
               handleOutput(() => {
                 options.debug && console.log('onStdOut', data);
                 this._.onUpdate?.({
@@ -127,7 +149,12 @@ export const createWineAppPipeline = async (options: {
                 });
               });
             },
-            onStdErr: (data) => {
+            onStdErr: (data, updateProcess) => {
+              if (store.killAllProcesses) {
+                updateProcess('exit');
+                step.status = ProcessStatus.Cancelled;
+                return;
+              }
               step.output = concatDataToOutput(data, step.output);
               handleOutput(() => {
                 options.debug && console.log('onStdErr', data);
@@ -140,6 +167,15 @@ export const createWineAppPipeline = async (options: {
             },
             onExit: (data) => {
               step.output = concatDataToOutput(data, step.output);
+
+              if (data === ExitCode.SuccessfulExecution) {
+                step.status = ProcessStatus.Success;
+              }
+
+              if (data === ExitCode.Error) {
+                step.status = ProcessStatus.Error;
+              }
+
               handleOutput(() => {
                 options.debug && console.log('onExit', data);
                 this._.onUpdate?.({

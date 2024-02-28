@@ -21,7 +21,7 @@ export const AppPipeline: React.FC<AppPipelineProps> = ({
     <Stack spacing={2} {...rest}>
       <H6>{wineAppPipeline.meta.wineApp?.name}</H6>
       {wineAppPipeline.jobs?.map?.((item) => (
-        <Stack>
+        <Stack key={item.name}>
           <Stack spacing={2}>
             {item?.steps?.map((step, index) => (
               <Card key={index}>

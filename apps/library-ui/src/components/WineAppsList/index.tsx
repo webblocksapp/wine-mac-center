@@ -14,8 +14,10 @@ const List = forwardRef<HTMLDivElement, ListProps>(
       ref={ref}
       {...rest}
       style={{
-        display: 'flex',
-        flexWrap: 'wrap',
+        display: 'grid',
+        gridAutoColumns: 'minmax(200px, auto)',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        gridGap: '10px',
         ...style,
       }}
     >
@@ -28,7 +30,7 @@ const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
   <div
     {...rest}
     style={{
-      padding: '0.5rem',
+      padding: 12,
       display: 'flex',
       flex: 'none',
       alignContent: 'stretch',

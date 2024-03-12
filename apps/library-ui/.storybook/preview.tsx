@@ -7,6 +7,9 @@ import { ThemeProvider } from '@reactjs-ui/core';
 import { store } from '@store';
 import type { Preview } from '@storybook/react';
 import { Provider } from 'react-redux';
+import { worker } from '@mocks/browser';
+
+worker.start({ onUnhandledRequest: 'bypass' });
 
 const preview: Preview = {
   parameters: {

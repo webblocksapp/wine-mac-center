@@ -12,7 +12,7 @@ type Story = StoryObj<typeof WineAppsList>;
 
 export const Overview: Story = {
   render: () => (
-    <Box height={600} width={600}>
+    <Box height={600} width={1200}>
       <WineAppsList />
     </Box>
   ),

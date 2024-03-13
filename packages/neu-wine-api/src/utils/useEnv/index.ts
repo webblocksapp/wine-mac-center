@@ -15,6 +15,7 @@ export const useEnv = () => {
   const initEnv = async (mode: string | undefined) => {
     switch (mode) {
       case 'development':
+      case 'integration':
         ENV.DIRNAME = (await os.execCommand('pwd')).stdOut.trim();
         ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, 'Contents/Resources');
         break;

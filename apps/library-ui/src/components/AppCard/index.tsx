@@ -11,7 +11,7 @@ export interface AppCardProps extends CardProps {
 export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
   const wineAppModel = useWineAppModel();
   const wineApp = useSelector((state: RootState) =>
-    wineAppModel.selectWineApp(state, appId)
+    wineAppModel.selectWineApp(state, appId),
   );
 
   return (

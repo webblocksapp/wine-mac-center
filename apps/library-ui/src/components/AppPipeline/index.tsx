@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { StatusBox } from '@components';
 
 export interface AppPipelineProps extends StackProps {
-  pipelineId?: string;
+  pipelineId: string;
 }
 
 export const AppPipeline: React.FC<AppPipelineProps> = ({
@@ -14,7 +14,7 @@ export const AppPipeline: React.FC<AppPipelineProps> = ({
 }) => {
   const wineAppPipelineModel = useWineAppPipelineModel();
   const wineAppPipeline = useSelector((state: RootState) =>
-    wineAppPipelineModel.selectWineAppPipelineWithMeta(state, pipelineId)
+    wineAppPipelineModel.selectWineAppPipelineWithMeta(state, pipelineId),
   );
 
   return (

@@ -22,7 +22,7 @@ export const useWineAppPipelineModel = () => {
       const wineApp = wineAppModel.selectWineApp(store.getState(), appId);
       const wineAppConfig = wineAppConfigModel.selectWineAppConfig(
         store.getState(),
-        appId
+        appId,
       );
 
       if (wineApp === undefined || wineAppConfig === undefined)
@@ -62,12 +62,17 @@ export const useWineAppPipelineModel = () => {
     state.wineAppPipelineState;
   const selectWineAppPipelines = createSelector(
     [selectWineAppPipelineState],
-    (wineAppPipelineState) => wineAppPipelineState.pipelines
+    (wineAppPipelineState) => wineAppPipelineState.pipelines,
   );
   const selectWineAppPipeline = createSelector(
     [selectWineAppPipelines, (_: RootState, id?: string) => id],
     (wineAppPipelines, id) =>
-      wineAppPipelines?.find((item) => item.pipelineId == id)
+      wineAppPipelines?.find((item) => item.pipelineId == id),
+  );
+  const selectWineAppPipelineByAppId = createSelector(
+    [selectWineAppPipelines, (_: RootState, appId?: string) => appId],
+    (wineAppPipelines, appId) =>
+      wineAppPipelines?.find((item) => item.appId == appId),
   );
   const selectWineAppPipelineMeta = createSelector(
     [selectWineAppPipeline],
@@ -75,18 +80,18 @@ export const useWineAppPipelineModel = () => {
       return {
         wineApp: wineAppModel.selectWineApp(
           store.getState(),
-          wineAppPipeline?.appId
+          wineAppPipeline?.appId,
         ),
         wineAppConfig: wineAppConfigModel.selectWineAppConfig(
           store.getState(),
-          wineAppPipeline?.appId
+          wineAppPipeline?.appId,
         ),
       };
-    }
+    },
   );
   const selectWineAppPipelineWithMeta = createSelector(
     [selectWineAppPipeline, selectWineAppPipelineMeta],
-    (wineAppsPipeline, meta) => ({ ...wineAppsPipeline, meta })
+    (wineAppsPipeline, meta) => ({ ...wineAppsPipeline, meta }),
   );
 
   return {
@@ -94,6 +99,7 @@ export const useWineAppPipelineModel = () => {
     dispatchPatch,
     selectWineAppPipelines,
     selectWineAppPipeline,
+    selectWineAppPipelineByAppId,
     selectWineAppPipelineMeta,
     selectWineAppPipelineWithMeta,
   };

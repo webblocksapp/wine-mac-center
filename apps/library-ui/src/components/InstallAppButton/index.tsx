@@ -1,6 +1,15 @@
 import { InstallIcon } from '@assets/icons';
+import { AppPipeline, CircularProgress } from '@components';
 import { useWineAppConfigModel, useWineAppPipelineModel } from '@models';
-import { Button, ButtonProps, Icon } from '@reactjs-ui/core';
+import {
+  Button,
+  ButtonProps,
+  Icon,
+  useDialogFactoryContext,
+} from '@reactjs-ui/core';
+import { RootState } from '@interfaces';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 export interface InstallAppButtonProps extends ButtonProps {
   appId?: string;
@@ -13,13 +22,26 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
 }) => {
   const wineAppConfigModel = useWineAppConfigModel();
   const wineAppPipelineModel = useWineAppPipelineModel();
-  const { loaders } = wineAppConfigModel;
+  const pipeline = useSelector((state: RootState) =>
+    wineAppPipelineModel.selectWineAppPipelineByAppId(state, appId),
+  );
+  const [loading, setLoading] = useState(false);
+  const { createDialog } = useDialogFactoryContext();
 
   const onClick: InstallAppButtonProps['onClick'] = async (event) => {
+    setLoading(true);
     await wineAppConfigModel.read(appId);
     await wineAppPipelineModel.runWineAppPipeline(appId);
     onClickProp?.(event);
+    setLoading(false);
   };
+
+  useEffect(() => {
+    pipeline &&
+      createDialog({
+        template: <AppPipeline pipelineId={pipeline.pipelineId} />,
+      });
+  }, [pipeline?.pipelineId]);
 
   return (
     <Button
@@ -28,16 +50,20 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
       title="Install App"
       equalSize={40}
       color="secondary"
-      disabled={loaders.reading}
+      disabled={loading}
       onClick={onClick}
       {...rest}
     >
-      <Icon
-        size={24}
-        color="text.primary"
-        strokeWidth={2}
-        render={InstallIcon}
-      />
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Icon
+          size={24}
+          color="text.primary"
+          strokeWidth={2}
+          render={InstallIcon}
+        />
+      )}
     </Button>
   );
 };

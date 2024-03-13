@@ -18,6 +18,7 @@ const List = forwardRef<HTMLDivElement, ListProps>(
         gridAutoColumns: 'minmax(200px, auto)',
         gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
         gridGap: '10px',
+        padding: '10px',
         ...style,
       }}
     >

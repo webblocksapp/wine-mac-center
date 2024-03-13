@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from '@reactjs-ui/core';
+import { DialogFactoryProvider, ThemeProvider } from '@reactjs-ui/core';
 import { BrowserRouter } from 'react-router-dom';
 import {
   AppSetup,
@@ -27,14 +27,16 @@ const main = async () => {
             <WineAppPipelineProvider>
               <BrowserRouter>
                 <AppSetup>
-                  <App />
+                  <DialogFactoryProvider>
+                    <App />
+                  </DialogFactoryProvider>
                 </AppSetup>
               </BrowserRouter>
             </WineAppPipelineProvider>
           </EnvProvider>
         </NotificationsProvider>
       </Provider>
-    </ThemeProvider>
+    </ThemeProvider>,
   );
 };
 

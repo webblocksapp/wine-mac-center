@@ -2818,7 +2818,7 @@ packages:
     dev: true
 
   /@reactjs-ui/core@0.0.0(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/icons-material@5.15.7)(@mui/material@5.15.7)(react-router-dom@6.22.0):
-    resolution: {integrity: sha512-c6GTlyxULOCD2H/qAUBXfFVmohREEPgFJ3tswuOa5ayWV0581wePUE4suB7T/fDlVqERvKj3PhYMXDZkFvmKBw==}
+    resolution: {integrity: sha512-OjcCE7MoWhUyVfxiZQw4eRf5Md4eq9nB2qCJbrR7vR1c9NLAB2LXr74n5Fww7w+sDzU9yAe6uo9sOfQvSeBOCw==}
     peerDependencies:
       '@emotion/react': ^11.11.1
       '@emotion/styled': ^11.11.0
@@ -2831,6 +2831,7 @@ packages:
       '@mui/icons-material': 5.15.7(@mui/material@5.15.7)(@types/react@18.2.52)(react@18.2.0)
       '@mui/material': 5.15.7(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.2.52)(react-dom@18.2.0)(react@18.2.0)
       react-router-dom: 6.22.0(react-dom@18.2.0)(react@18.2.0)
+      uuid: 9.0.1
     dev: false
 
   /@reactjs-ui/form-fields@0.0.0(@reactjs-ui/core@0.0.0)(react@18.2.0):

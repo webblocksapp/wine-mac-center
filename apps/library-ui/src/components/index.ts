@@ -2,6 +2,7 @@ export * from './AppCard';
 export * from './AppForm';
 export * from './AppPipeline';
 export * from './AppSetup';
+export * from './CircularProgress';
 export * from './EnvProvider';
 export * from './InstallAppButton';
 export * from './NotificationsProvider';

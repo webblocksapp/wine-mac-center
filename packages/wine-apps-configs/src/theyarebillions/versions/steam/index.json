@@ -1,0 +1,22 @@
+{
+  "appId": "352dea26-9db1-40f1-9da9-ed487e3a9f63",
+  "winetricks": {
+    "verbs": [
+      "steam",
+      "dotnet40",
+      "dotnet45",
+      "dotnet452",
+      "dotnet46",
+      "dotnet461"
+    ]
+  },
+  "engineVersion": "WS11WineCX64Bit23.6.0",
+  "dxvkEnabled": true,
+  "executables": [
+    {
+      "main": true,
+      "path": "/drive_c/Program Files (x86)/Steam/Steam.exe",
+      "flags": "-noreactlogin -allosarches -cef-force-32bit -udpforce -no-cef-sandbox -applaunch 644930"
+    }
+  ]
+}

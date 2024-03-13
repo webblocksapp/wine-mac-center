@@ -10,5 +10,11 @@
     "keyName": "steam",
     "name": "Steam",
     "version": "standard"
+  },
+  {
+    "id": "21e89a4f-437c-4977-91b0-9edaf409dc51",
+    "keyName": "aomee",
+    "name": "Age of Mythology Extended Edition",
+    "version": "steam"
   }
 ]

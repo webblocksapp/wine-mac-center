@@ -15,11 +15,12 @@ export type WineAppPipeline = {
         script: (args: SpawnProcessArgs) => Promise<void>;
       },
       data: string | number,
-      updateProcess?: UpdateProcess
+      updateProcess?: UpdateProcess,
     ) => void;
   };
   id: string;
   onUpdate: (fn: (status: WineAppPipelineStatus) => void) => void;
+  getInitialStatus: () => WineAppPipelineStatus;
   jobs: WineAppJobWithScript[];
   run: () => void;
   kill: () => void;

@@ -48,10 +48,14 @@ export const Overview: Story = {
   render: (_) => {
     const wineAppPipelineModel = useWineAppPipelineModel();
     const wineAppPipelines = useSelector(
-      wineAppPipelineModel.selectWineAppPipelines
+      wineAppPipelineModel.selectWineAppPipelines,
     );
     const wineAppPipeline = wineAppPipelines?.[0];
 
-    return <AppPipeline pipelineId={wineAppPipeline?.pipelineId} />;
+    return wineAppPipeline ? (
+      <AppPipeline pipelineId={wineAppPipeline.pipelineId} />
+    ) : (
+      <>Loading...</>
+    );
   },
 };

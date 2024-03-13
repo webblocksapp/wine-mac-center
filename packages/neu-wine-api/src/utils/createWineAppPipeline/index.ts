@@ -81,6 +81,12 @@ export const createWineAppPipeline = async (options: {
       this._.onUpdate = (pipelineStatus) => fn(clone(pipelineStatus));
     },
     id,
+    getInitialStatus: () =>
+      clone({
+        pipelineId: id,
+        jobs: pipeline.jobs,
+        status: ProcessStatus.Cancelled,
+      }),
     kill: () => {
       store.killAllProcesses = true;
     },

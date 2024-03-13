@@ -18,7 +18,7 @@ export const AppPipeline: React.FC<AppPipelineProps> = ({
   );
 
   return (
-    <Stack spacing={2} {...rest}>
+    <Stack p={2} spacing={2} {...rest}>
       <H6>{wineAppPipeline.meta.wineApp?.name}</H6>
       {wineAppPipeline.jobs?.map?.((item) => (
         <Stack key={item.name}>

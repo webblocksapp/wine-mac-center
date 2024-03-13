@@ -40,13 +40,16 @@ export const useWineAppPipelineModel = () => {
         outputEveryMs: 1000,
       });
 
+      dispatchPatch({
+        ...pipeline.getInitialStatus(),
+        appId: wineAppConfig.appId,
+      });
+
       pipeline.onUpdate((pipelineStatus) => {
         dispatchPatch({ ...pipelineStatus, appId: wineAppConfig.appId });
-        pipeline;
       });
       pipeline.run();
     } catch (error) {
-      console.log(error);
       appModel.dispatchError(error);
     }
   };

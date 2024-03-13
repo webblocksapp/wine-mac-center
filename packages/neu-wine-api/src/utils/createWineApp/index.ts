@@ -13,7 +13,6 @@ import {
   fileExists,
   writeFile,
   useEnv,
-  clone,
 } from '@utils';
 import { useWineEngineApiClient } from '@api-clients';
 
@@ -97,10 +96,9 @@ export const createWineApp = async (appName: string) => {
 
   const updateAppConfig = async (
     data: Partial<WineAppConfig>,
-    options = { writeAppConfig: true }
+    options = { writeAppConfig: true },
   ) => {
     appConfig = { ...appConfig, ...data };
-    console.log('appConfig', clone(appConfig));
     options.writeAppConfig && (await writeAppConfig(appConfig));
     buildWineEnvExports();
   };
@@ -110,7 +108,7 @@ export const createWineApp = async (appName: string) => {
    */
   const buildWineEnvExports = () => {
     WINE_EXPORTS = buildEnvExports(WINE_ENV, (envName) =>
-      Boolean(envName.match(/(^WINE)/gi)?.length)
+      Boolean(envName.match(/(^WINE)/gi)?.length),
     );
   };
 
@@ -159,7 +157,7 @@ export const createWineApp = async (appName: string) => {
   const winetrick = (
     verbs: string,
     processArgs?: SpawnProcessArgs,
-    options?: WinetricksOptions
+    options?: WinetricksOptions,
   ) => {
     const flags = winetricksOptionsToFlags(options);
     return spawnScript('winetrick', `${flags} ${verbs}`, processArgs);
@@ -186,7 +184,7 @@ export const createWineApp = async (appName: string) => {
     const updatedAppConfig = { ...(await readAppConfig()), ...appConfig };
     await writeFile(
       WINE_ENV.WINE_APP_CONFIG_JSON_PATH,
-      JSON.stringify(updatedAppConfig)
+      JSON.stringify(updatedAppConfig),
     );
   };
 
@@ -195,7 +193,7 @@ export const createWineApp = async (appName: string) => {
    */
   const bundleApp = async (
     executables: WineAppExecutable[],
-    args?: SpawnProcessArgs
+    args?: SpawnProcessArgs,
   ) => {
     await updateAppConfig({
       executables,
@@ -258,7 +256,7 @@ export const createWineApp = async (appName: string) => {
   const spawnScript = (
     name: BashScript,
     scriptArgs: string = '',
-    processArgs?: SpawnProcessArgs
+    processArgs?: SpawnProcessArgs,
   ) => spawnProcess(s(`${SCRIPTS_PATH}/${name}.sh ${scriptArgs}`), processArgs);
 
   const execCommand: typeof os.execCommand = (command, options) =>

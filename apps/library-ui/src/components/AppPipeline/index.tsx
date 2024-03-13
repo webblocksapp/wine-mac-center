@@ -1,6 +1,13 @@
 import { RootState } from '@interfaces';
 import { useWineAppPipelineModel } from '@models';
-import { Body1, Card, H6, Stack, StackProps } from '@reactjs-ui/core';
+import {
+  Body1,
+  Card,
+  H6,
+  Stack,
+  StackProps,
+  useDialog,
+} from '@reactjs-ui/core';
 import { useSelector } from 'react-redux';
 import { StatusBox } from '@components';
 
@@ -12,10 +19,13 @@ export const AppPipeline: React.FC<AppPipelineProps> = ({
   pipelineId,
   ...rest
 }) => {
+  const dialog = useDialog();
   const wineAppPipelineModel = useWineAppPipelineModel();
   const wineAppPipeline = useSelector((state: RootState) =>
     wineAppPipelineModel.selectWineAppPipelineWithMeta(state, pipelineId),
   );
+
+  console.log(dialog);
 
   return (
     <Stack p={2} spacing={2} {...rest}>

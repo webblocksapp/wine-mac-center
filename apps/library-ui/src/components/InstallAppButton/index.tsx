@@ -40,6 +40,7 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
     pipeline &&
       createDialog({
         template: <AppPipeline pipelineId={pipeline.pipelineId} />,
+        options: { disableBackdropClick: true, disableEscapeKeyDown: true },
       });
   }, [pipeline?.pipelineId]);
 

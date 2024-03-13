@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@faker-js/faker": "^8.4.1",
     "@neutralinojs/lib": "^3.11.0",
     "@neutralinojs/neu": "^9.6.1",
     "@storybook/addon-essentials": "^8.0.0",

@@ -21,12 +21,13 @@ export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
         width="100%"
         p={1}
         display="grid"
-        gridTemplateRows="1fr 40px"
+        gridTemplateRows="230px 40px"
         rowGap={'10px'}
       >
         <Image
           src={wineApp?.imgSrc}
           height="100%"
+          width="100%"
           style={{
             objectFit: 'cover',
             maxWidth: '100%',

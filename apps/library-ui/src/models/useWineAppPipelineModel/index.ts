@@ -35,7 +35,7 @@ export const useWineAppPipelineModel = () => {
       };
 
       const pipeline = await createWineAppPipeline({
-        appConfig: { ...x, name: wineApp.name },
+        appConfig: { ...x, name: wineApp.name, iconURL: wineApp.iconURL },
         debug: true,
         outputEveryMs: 1000,
       });

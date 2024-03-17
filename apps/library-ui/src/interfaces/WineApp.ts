@@ -5,4 +5,5 @@ export type WineApp = {
   version: string;
   imgSrc: string;
   scriptUrl: string;
+  iconURL: string;
 };

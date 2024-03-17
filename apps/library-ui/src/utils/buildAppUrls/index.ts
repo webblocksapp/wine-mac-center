@@ -8,6 +8,7 @@ export const buildAppUrls = (appConfig?: Partial<WineApp>) => {
   const ASSETS_URL = `${URL}/assets`;
   return {
     imgSrc: encodeURL(`${ASSETS_URL}/header.jpeg?cache=${uuid()}`),
+    iconURL: encodeURL(`${ASSETS_URL}/winemacapp.icns?cache=${uuid()}`),
     scriptUrl: encodeURL(
       `${URL}/versions/${appConfig?.version || ''}/index.json`,
     ),

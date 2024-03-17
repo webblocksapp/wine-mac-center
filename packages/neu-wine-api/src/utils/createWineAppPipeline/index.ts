@@ -11,8 +11,14 @@ export const createWineAppPipeline = async (options: {
   const id = uuid();
   const store = { outputEnabled: true, killAllProcesses: false };
 
-  const { name, engineVersion, dxvkEnabled, winetricks, setupExecutablePath } =
-    options.appConfig;
+  const {
+    iconURL,
+    name,
+    engineVersion,
+    dxvkEnabled,
+    winetricks,
+    setupExecutablePath,
+  } = options.appConfig;
 
   const handleOutput = (callbackFn: Function) => {
     if (store.outputEnabled) {
@@ -96,20 +102,19 @@ export const createWineAppPipeline = async (options: {
         steps: [
           {
             name: 'Creating wine app',
-            script: wineApp.scaffold,
+            script: (args) => wineApp.scaffold(iconURL, args),
             status: ProcessStatus.Pending,
             output: '',
           },
           {
             name: 'Extracting wine engine',
-            script: (args: SpawnProcessArgs) =>
-              wineApp.extractEngine(engineVersion, args),
+            script: (args) => wineApp.extractEngine(engineVersion, args),
             status: ProcessStatus.Pending,
             output: '',
           },
           {
             name: 'Generating wine prefix',
-            script: (args: SpawnProcessArgs) => wineApp.wineboot('', args),
+            script: (args) => wineApp.wineboot('', args),
             status: ProcessStatus.Pending,
             output: '',
           },
@@ -127,14 +132,13 @@ export const createWineAppPipeline = async (options: {
           ...buildWinetricksSteps(),
           {
             name: 'Running setup executable',
-            script: (args: SpawnProcessArgs) =>
-              wineApp.runExe(setupExecutablePath, args),
+            script: (args) => wineApp.runExe(setupExecutablePath, args),
             status: ProcessStatus.Pending,
             output: '',
           },
           {
             name: 'Bundling app',
-            script: (args: SpawnProcessArgs) => {
+            script: (args) => {
               let executables = options.appConfig.executables || [];
 
               if (!options.appConfig.executables?.length) {

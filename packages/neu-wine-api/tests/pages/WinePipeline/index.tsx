@@ -60,7 +60,7 @@ export const WinePipeline: React.FC = () => {
       {pipelineStatus?.jobs?.map?.((item) => (
         <div key={item.name}>
           {item?.steps?.map((step, index) => (
-            <div>
+            <div key={index}>
               <div
                 style={{
                   display: 'flex',
@@ -69,7 +69,6 @@ export const WinePipeline: React.FC = () => {
                   padding: '10px',
                   border: '1px solid black',
                 }}
-                key={index}
               >
                 <p>{step.name}</p>
                 <p style={{ color: STATUS_COLORS[step.status] }}>

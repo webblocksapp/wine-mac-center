@@ -54,7 +54,7 @@ export const createWineApp = async (appName: string) => {
       return `${WINE_ENV.WINE_APP_PATH}/Contents`;
     },
     get WINE_APP_RESOURCES_PATH() {
-      return `${WINE_ENV.WINE_APP_PATH}/Resources`;
+      return `${WINE_ENV.WINE_APP_CONTENTS_PATH}/Resources`;
     },
     get WINE_CONFIG_APP_NAME() {
       return 'Config';
@@ -121,7 +121,7 @@ export const createWineApp = async (appName: string) => {
   /**
    * Logic for creating the wine application structure.
    */
-  const scaffold = async (args?: SpawnProcessArgs) => {
+  const scaffold = async (appIconURL: string, args?: SpawnProcessArgs) => {
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
     if (stdErr) throw new Error(stdErr);
     if (appName != stdOut) {
@@ -133,16 +133,16 @@ export const createWineApp = async (appName: string) => {
       onExit: async (data) => {
         await args?.onExit?.(data);
         await updateAppConfig({ name: appName });
-        await setupAppIcon();
+        await setupAppIcon(appIconURL);
       },
     });
   };
 
-  const setupAppIcon = async () => {
+  const setupAppIcon = async (appIconURL: string) => {
     try {
       filesystem.writeBinaryFile(
         `${WINE_ENV.WINE_APP_RESOURCES_PATH}/${FileName.CFBundleIconFile}`,
-        await downloadFile(appConfig.iconURL),
+        await downloadFile(appIconURL),
       );
     } catch (error) {
       console.error(error);

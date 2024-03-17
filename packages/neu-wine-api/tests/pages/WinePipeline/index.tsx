@@ -20,6 +20,8 @@ export const WinePipeline: React.FC = () => {
       appConfig: {
         appId: '',
         name: 'Steam',
+        iconURL:
+          'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/steam/assets/winemacapp.icns',
         engineVersion: 'WS11WineCX64Bit23.6.0',
         dxvkEnabled: true,
         setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',

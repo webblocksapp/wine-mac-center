@@ -11,6 +11,7 @@ cp -R "$SCRIPTS_PATH" "$WINE_CONFIG_APP_RESOURCES_PATH"
 source "$SCRIPTS_PATH/env.sh"
 
 # Creates the initial folder structure
+mkdir -p "$WINE_APP_RESOURCES_PATH"
 mkdir -p "$WINE_APP_LOGS_PATH"
 mkdir -p "$WINE_APP_ENGINE_PATH"
 mkdir -p "$WINE_APP_PREFIX_PATH"

@@ -13,8 +13,10 @@ import {
   fileExists,
   writeFile,
   useEnv,
+  downloadFile,
 } from '@utils';
 import { useWineEngineApiClient } from '@api-clients';
+import { FileName } from '@constants';
 
 export const createWineApp = async (appName: string) => {
   const env = useEnv();
@@ -26,6 +28,7 @@ export const createWineApp = async (appName: string) => {
     name: appName,
     engineVersion: '',
     setupExecutablePath: '',
+    iconURL: '',
     dxvkEnabled: false,
   };
   let WINE_EXPORTS = '';
@@ -49,6 +52,9 @@ export const createWineApp = async (appName: string) => {
     },
     get WINE_APP_CONTENTS_PATH() {
       return `${WINE_ENV.WINE_APP_PATH}/Contents`;
+    },
+    get WINE_APP_RESOURCES_PATH() {
+      return `${WINE_ENV.WINE_APP_PATH}/Resources`;
     },
     get WINE_CONFIG_APP_NAME() {
       return 'Config';
@@ -127,8 +133,20 @@ export const createWineApp = async (appName: string) => {
       onExit: async (data) => {
         await args?.onExit?.(data);
         await updateAppConfig({ name: appName });
+        await setupAppIcon();
       },
     });
+  };
+
+  const setupAppIcon = async () => {
+    try {
+      filesystem.writeBinaryFile(
+        `${WINE_ENV.WINE_APP_RESOURCES_PATH}/${FileName.CFBundleIconFile}`,
+        await downloadFile(appConfig.iconURL),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   /**
@@ -202,8 +220,8 @@ export const createWineApp = async (appName: string) => {
     const mainExecutable = executables.find((item) => item.main === true);
     const infoPlistXML = plist
       .build({
-        CFBundleExecutable: 'winemacapp',
-        CFBundleIconFile: 'winemacapp.ics',
+        CFBundleExecutable: FileName.CFBundleExecutable,
+        CFBundleIconFile: FileName.CFBundleIconFile,
       })
       .replace(/\n/gi, '');
 

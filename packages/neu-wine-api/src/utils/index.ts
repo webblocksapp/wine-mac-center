@@ -2,6 +2,7 @@ export * from './buildEnvExports';
 export * from './clone';
 export * from './createWineApp';
 export * from './createWineAppPipeline';
+export * from './downloadFile';
 export * from './fileExists';
 export * from './randomId';
 export * from './spawnProcess';

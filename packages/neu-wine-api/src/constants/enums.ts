@@ -11,3 +11,8 @@ export enum ExitCode {
   Error = 1,
   ImproperCommand = 2,
 }
+
+export enum FileName {
+  CFBundleExecutable = 'winemacapp',
+  CFBundleIconFile = 'winemacapp.icns',
+}

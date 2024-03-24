@@ -5,6 +5,7 @@ export type WineAppConfig = {
   iconURL: string;
   name: string;
   engineVersion: string;
+  setupExecutableURLs?: string[];
   setupExecutablePath: string;
   winetricks?: { verbs: string[]; options?: WinetricksOptions };
   dxvkEnabled: boolean;

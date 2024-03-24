@@ -8,4 +8,5 @@ export const ENV = {
   WINE_APPS_PATH: '',
   WINE_ENGINES_PATH: '',
   WINE_LIBS_PATH: '',
+  WINE_TMP_PATH: '',
 };

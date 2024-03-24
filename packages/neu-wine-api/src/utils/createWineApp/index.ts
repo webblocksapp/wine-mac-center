@@ -47,6 +47,9 @@ export const createWineApp = async (appName: string) => {
     get WINE_ENGINES_PATH() {
       return env.get().WINE_ENGINES_PATH;
     },
+    get WINE_TMP_PATH() {
+      return env.get().WINE_TMP_PATH;
+    },
     get WINE_LIBS_PATH() {
       return env.get().WINE_LIBS_PATH;
     },
@@ -182,6 +185,34 @@ export const createWineApp = async (appName: string) => {
   };
 
   /**
+   * Search provided executable.
+   */
+  const setSetupExe = async (exeURLs: string[]) => {
+    let downloadedExe = false;
+
+    for (let i = 0; i < exeURLs.length; i++) {
+      if (downloadedExe) continue;
+      const exeURL = exeURLs[i];
+      const fileName = exeURL.split('/').pop();
+      if (fileName === undefined) throw new Error('Invalid filename');
+
+      try {
+        filesystem.writeBinaryFile(
+          `${WINE_ENV.WINE_TMP_PATH}/${fileName}`,
+          await downloadFile(exeURL),
+        );
+        downloadedExe = true;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (downloadedExe === false) {
+      alert('Please provide a setup executable');
+    }
+  };
+
+  /**
    * Run executable with wine.
    */
   const runExe = (args: string, processArgs?: SpawnProcessArgs) => {
@@ -308,6 +339,7 @@ export const createWineApp = async (appName: string) => {
     winecfg,
     winetrick,
     runExe,
+    setSetupExe,
     bundleApp,
     listAppExecutables,
     getAppConfig,

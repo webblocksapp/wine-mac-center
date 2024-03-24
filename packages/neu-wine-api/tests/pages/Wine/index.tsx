@@ -15,6 +15,7 @@ import {
 import { WineApp } from '@interfaces';
 import { InitApp } from './InitApp';
 import { WineCfg } from './WineCfg';
+import { SetSetupExe } from './SetSetupExe';
 
 export const WineAppContext = createContext<{
   wineApp: WineApp;
@@ -36,6 +37,7 @@ export const Wine: React.FC = () => {
             <Wineboot />
             <EnableDxvk />
             <Winetrick />
+            <SetSetupExe />
             <RunExe />
             <BundleApp />
             <WineCfg />

@@ -146,7 +146,8 @@ export const createWineAppPipeline = async (options: {
             script: (args) => {
               return wineApp.runExe(
                 wineApp.getAppConfig().setupExecutablePath ||
-                  setupExecutablePath,
+                  setupExecutablePath ||
+                  '',
                 args,
               );
             },

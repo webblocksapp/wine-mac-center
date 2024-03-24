@@ -24,13 +24,15 @@ export const WinePipeline: React.FC = () => {
           'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/steam/assets/winemacapp.icns',
         engineVersion: 'WS11WineCX64Bit23.6.0',
         dxvkEnabled: true,
-        setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',
+        setupExecutableURLs: [
+          'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/downloadables/setup-executables/SteamSetup.exe',
+        ], //TODO: Fix status updating on pipeline.
         winetricks: { verbs: [] },
         executables: [
           {
             path: '/drive_c/Program Files (x86)/Steam/Steam.exe',
             main: true,
-            flags: '-appLaunch 4000', //TODO check flags not working.
+            flags: '-appLaunch 4000',
           },
         ],
       },

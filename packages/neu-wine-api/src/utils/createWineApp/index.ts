@@ -189,16 +189,19 @@ export const createWineApp = async (appName: string) => {
    */
   const setSetupExe = async (exeURLs: string[]) => {
     let downloadedExe = false;
+    let setupExecutablePath = '';
 
     for (let i = 0; i < exeURLs.length; i++) {
       if (downloadedExe) continue;
       const exeURL = exeURLs[i];
       const fileName = exeURL.split('/').pop();
+      setupExecutablePath = `${WINE_ENV.WINE_TMP_PATH}/${fileName}`;
+
       if (fileName === undefined) throw new Error('Invalid filename');
 
       try {
         filesystem.writeBinaryFile(
-          `${WINE_ENV.WINE_TMP_PATH}/${fileName}`,
+          setupExecutablePath,
           await downloadFile(exeURL),
         );
         downloadedExe = true;
@@ -209,6 +212,8 @@ export const createWineApp = async (appName: string) => {
 
     if (downloadedExe === false) {
       alert('Please provide a setup executable');
+    } else {
+      updateAppConfig({ setupExecutablePath });
     }
   };
 

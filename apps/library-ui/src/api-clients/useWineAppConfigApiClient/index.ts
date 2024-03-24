@@ -1,13 +1,27 @@
 import { WineAppConfig } from 'neu-wine-api';
 import { axiosWineAppsConfigs } from '@utils';
+import { DOWNLOADABLES_URLS } from '@constants';
 import { v4 as uuid } from 'uuid';
 
 export const useWineAppConfigApiClient = () => {
+  const mapResponse = (data: WineAppConfig): WineAppConfig => {
+    return {
+      ...data,
+      setupExecutableURLs: data?.setupExecutableURLs?.map?.((url) => {
+        if (DOWNLOADABLES_URLS[url]) {
+          return DOWNLOADABLES_URLS[url];
+        }
+
+        return url;
+      }),
+    };
+  };
+
   const read = async (scriptUrl: string) => {
     const { data } = await axiosWineAppsConfigs.get<WineAppConfig>(
-      `${scriptUrl}?nocache=${uuid()}`
+      `${scriptUrl}?nocache=${uuid()}`,
     );
-    return data;
+    return mapResponse(data);
   };
 
   return {

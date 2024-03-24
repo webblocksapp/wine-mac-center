@@ -8,7 +8,7 @@ export const SetSetupExe: React.FC = () => {
   const setSetupExe = async () => {
     setLoading(true);
     await wineApp.setSetupExe([
-      'https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe',
+      'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/downloadables/setup-executables/SteamSetup.exe',
     ]);
     setLoading(false);
   };

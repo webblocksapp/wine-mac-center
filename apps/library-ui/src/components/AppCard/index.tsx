@@ -1,4 +1,4 @@
-import { Box, Card, CardProps, Image } from '@reactjs-ui/core';
+import { Box, Card, CardProps, Image } from 'reactjs-ui-core';
 import { InstallAppButton } from '@components';
 import { useWineAppModel } from '@models';
 import { useSelector } from 'react-redux';

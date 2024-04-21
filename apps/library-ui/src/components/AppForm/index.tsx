@@ -1,4 +1,4 @@
-import { Grid, H6, Select, Stack, TextField } from '@reactjs-ui/core';
+import { Grid, H6, Select, Stack, TextField } from 'reactjs-ui-core';
 
 export const AppForm: React.FC = () => {
   return (

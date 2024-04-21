@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import { DialogFactoryProvider, ThemeProvider } from '@reactjs-ui/core';
+import { DialogFactoryProvider, ThemeProvider } from 'reactjs-ui-core';
 import { BrowserRouter } from 'react-router-dom';
 import {
   AppSetup,

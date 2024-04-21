@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { NotificationsProvider, useNotifications } from '@components';
 import { useAppModel } from '@models';
-import { Button, Stack } from '@reactjs-ui/core';
+import { Button, Stack } from 'reactjs-ui-core';
 
 const meta: Meta<typeof NotificationsProvider> = {
   title: 'App Components/NotificationsProvider',

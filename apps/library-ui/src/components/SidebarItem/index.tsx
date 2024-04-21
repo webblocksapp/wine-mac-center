@@ -1,4 +1,4 @@
-import { Body1, Icon, MenuItem, MenuItemProps } from '@reactjs-ui/core';
+import { Body1, Icon, MenuItem, MenuItemProps } from 'reactjs-ui-core';
 import { MenuItem as MenuItemType } from '@interfaces';
 import { styles } from './styles';
 

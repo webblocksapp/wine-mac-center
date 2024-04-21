@@ -7,7 +7,7 @@ import {
   Stack,
   StackProps,
   useDialog,
-} from '@reactjs-ui/core';
+} from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { StatusBox } from '@components';
 

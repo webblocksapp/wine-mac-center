@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { WineAppsList } from '@components';
-import { Box } from '@reactjs-ui/core';
+import { Box } from 'reactjs-ui-core';
 
 const meta: Meta<typeof WineAppsList> = {
   title: 'App Components/WineAppsList',

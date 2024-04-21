@@ -1,4 +1,4 @@
-import { Body2, Box, BoxProps } from '@reactjs-ui/core';
+import { Body2, Box, BoxProps } from 'reactjs-ui-core';
 import { PROCESS_STATUS_COLORS } from '@constants';
 import { ProcessStatus } from 'neu-wine-api';
 import { useMemo } from 'react';

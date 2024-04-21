@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect } from 'react';
 import { AppCard } from '@components';
 import { useWineAppModel } from '@models';
-import { SkeletonLoader } from '@reactjs-ui/core';
+import { SkeletonLoader } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
 

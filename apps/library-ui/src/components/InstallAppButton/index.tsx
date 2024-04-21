@@ -6,7 +6,7 @@ import {
   ButtonProps,
   Icon,
   useDialogFactoryContext,
-} from '@reactjs-ui/core';
+} from 'reactjs-ui-core';
 import { RootState } from '@interfaces';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';

@@ -1,5 +1,5 @@
 import { AppForm } from '@components';
-import { Box } from '@reactjs-ui/core';
+import { Box } from 'reactjs-ui-core';
 
 export const CreateApp: React.FC = () => {
   return (

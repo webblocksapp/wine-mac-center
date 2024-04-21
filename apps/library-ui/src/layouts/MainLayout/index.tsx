@@ -1,5 +1,5 @@
 import { Sidebar } from '@components';
-import { Box } from '@reactjs-ui/core';
+import { Box } from 'reactjs-ui-core';
 import { Outlet } from 'react-router-dom';
 import { SIDEBAR_MENU } from '@constants';
 

@@ -1,4 +1,4 @@
-import { sleep } from '@reactjs-ui/core';
+import { sleep } from 'reactjs-ui-core';
 import { faker } from '@faker-js/faker';
 import {
   createWineAppPipeline as baseCreateWineAppPipeline,

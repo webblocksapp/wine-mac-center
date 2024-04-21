@@ -2,7 +2,7 @@ import {
   CircularProgress as BaseCircularProgress,
   CircularProgressProps as BaseCircularProgressProps,
   Box,
-} from '@reactjs-ui/core';
+} from 'reactjs-ui-core';
 
 export interface CircularProgressProps extends BaseCircularProgressProps {
   size?: number;

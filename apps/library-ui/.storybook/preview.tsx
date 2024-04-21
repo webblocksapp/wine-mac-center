@@ -3,7 +3,7 @@ import {
   NotificationsProvider,
   WineAppPipelineProvider,
 } from '@components';
-import { ThemeProvider } from '@reactjs-ui/core';
+import { ThemeProvider } from 'reactjs-ui-core';
 import { store } from '@store';
 import type { Preview } from '@storybook/react';
 import { Provider } from 'react-redux';

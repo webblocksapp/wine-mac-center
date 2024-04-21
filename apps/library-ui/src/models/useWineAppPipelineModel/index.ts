@@ -14,7 +14,7 @@ export const useWineAppPipelineModel = () => {
   const appModel = useAppModel();
   const wineAppModel = useWineAppModel();
   const wineAppConfigModel = useWineAppConfigModel();
-  const { createWineAppPipeline } = useWineAppPipeline();
+  const { createWineAppPipeline, ...context } = useWineAppPipeline();
   const dispatch = useDispatch<Dispatch<WineAppPipelineAction>>();
 
   const runWineAppPipeline = async (appId?: string) => {
@@ -25,17 +25,16 @@ export const useWineAppPipelineModel = () => {
         appId,
       );
 
-      if (wineApp === undefined || wineAppConfig === undefined)
+      if (wineApp === undefined || wineAppConfig === undefined) {
         throw Error('Wine application config not found.');
-
-      //TODO: define automatic executable download.
-      const x = {
-        ...wineAppConfig,
-        setupExecutablePath: '/Users/mauriver/Downloads/SteamSetup.exe',
-      };
+      }
 
       const pipeline = await createWineAppPipeline({
-        appConfig: { ...x, name: wineApp.name, iconURL: wineApp.iconURL },
+        appConfig: {
+          ...wineAppConfig,
+          name: wineApp.name,
+          iconURL: wineApp.iconURL,
+        },
         debug: true,
         outputEveryMs: 1000,
       });
@@ -52,6 +51,16 @@ export const useWineAppPipelineModel = () => {
     } catch (error) {
       appModel.dispatchError(error);
     }
+  };
+
+  const killWineAppPipeline = (id: string | undefined) =>
+    context.killWineAppPipeline(id);
+
+  const clearWineAppPipeline = (id: string | undefined) => {
+    dispatch({
+      type: ActionType.REMOVE,
+      id,
+    });
   };
 
   const dispatchPatch = (pipelineStatus: WineAppPipelineStatus) => {
@@ -99,6 +108,8 @@ export const useWineAppPipelineModel = () => {
 
   return {
     runWineAppPipeline,
+    killWineAppPipeline,
+    clearWineAppPipeline,
     dispatchPatch,
     selectWineAppPipelines,
     selectWineAppPipeline,

@@ -1,7 +1,12 @@
 import { WineAppPipelineActionType as ActionType } from '@constants';
 import { Flatten, WineAppPipelineState } from '@interfaces';
 
-export type WineAppPipelineAction = {
-  type: ActionType.PATCH;
-  pipelineStatus: Flatten<WineAppPipelineState['pipelines']>;
-};
+export type WineAppPipelineAction =
+  | {
+      type: ActionType.PATCH;
+      pipelineStatus: Flatten<WineAppPipelineState['pipelines']>;
+    }
+  | {
+      type: ActionType.REMOVE;
+      id: string | undefined;
+    };

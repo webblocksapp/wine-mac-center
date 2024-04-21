@@ -5,11 +5,11 @@ export const patch = (
     Flatten<WineAppPipelineState['pipelines']>,
     undefined
   >,
-  state: WineAppPipelineState
+  state: WineAppPipelineState,
 ): WineAppPipelineState => {
   if (
     state?.pipelines?.some(
-      (item) => item.pipelineId == pipelineStatus.pipelineId
+      (item) => item.pipelineId == pipelineStatus.pipelineId,
     )
   ) {
     return {
@@ -28,3 +28,13 @@ export const patch = (
     };
   }
 };
+
+export const remove = (
+  id: string | undefined,
+  state: WineAppPipelineState,
+): WineAppPipelineState => ({
+  ...state,
+  pipelines: [
+    ...(state?.pipelines || []).filter((item) => item.pipelineId !== id),
+  ],
+});

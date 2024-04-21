@@ -2,6 +2,7 @@ import { RootState } from '@interfaces';
 import { useWineAppPipelineModel } from '@models';
 import {
   Body1,
+  Button,
   Card,
   H6,
   Stack,
@@ -24,8 +25,10 @@ export const AppPipeline: React.FC<AppPipelineProps> = ({
   const wineAppPipeline = useSelector((state: RootState) =>
     wineAppPipelineModel.selectWineAppPipelineWithMeta(state, pipelineId),
   );
-
-  console.log(dialog);
+  const close = () => {
+    wineAppPipelineModel.clearWineAppPipeline(wineAppPipeline.pipelineId);
+    dialog?.close();
+  };
 
   return (
     <Stack p={2} spacing={2} {...rest}>
@@ -53,6 +56,19 @@ export const AppPipeline: React.FC<AppPipelineProps> = ({
           </Stack>
         </Stack>
       ))}
+      <Stack direction="row" justifyContent="flex-end" spacing={1}>
+        <Button
+          color="error"
+          onClick={() =>
+            wineAppPipelineModel.killWineAppPipeline(wineAppPipeline.pipelineId)
+          }
+        >
+          Kill
+        </Button>
+        <Button color="info" onClick={close}>
+          Close
+        </Button>
+      </Stack>
     </Stack>
   );
 };

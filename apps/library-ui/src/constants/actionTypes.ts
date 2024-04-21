@@ -18,6 +18,7 @@ export enum WineAppConfigActionType {
 
 export enum WineAppPipelineActionType {
   PATCH = 'WINE_APP_PIPELINE:PATCH',
+  REMOVE = 'WINE_APP_PIPELINE:REMOVE',
 }
 
 export enum AppActionType {

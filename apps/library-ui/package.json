@@ -12,7 +12,7 @@
     "storybook": "STORYBOOK_RUNNING=1 storybook dev -p 6006",
     "build-storybook": "storybook build",
     "copy-wine-deps": "rm -rf ./Contents && cp -r ../../packages/neu-wine-api/Contents ./Contents",
-    "project-setup": "pnpm copy-wine-deps",
+    "project-setup": "pnpm neu-setup && pnpm copy-wine-deps",
     "neu-server": "pnpm neu run -- --mode=cloud",
     "neu-setup": "pnpm neu update && pnpm build",
     "neu-build": "pnpm build && pnpm neu build"

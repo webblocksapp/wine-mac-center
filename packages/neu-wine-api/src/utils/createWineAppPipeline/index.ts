@@ -161,7 +161,8 @@ export const createWineAppPipeline = async (options: {
 
               if (!options.appConfig.executables?.length) {
                 const exePath =
-                  window.prompt('Type the main executable path') || '';
+                  (window as Window).prompt('Type the main executable path') ||
+                  '';
                 executables = [{ path: exePath, main: true }];
               }
 

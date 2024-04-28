@@ -149,8 +149,6 @@ export class NeutralinoCurl {
     };
     document.dispatchEvent(eStart);
 
-    console.log(NL_ARCH, this.appResourcesEXT + `/curl/bin/curl ${args}`);
-
     let cmd = await os.spawnProcess(
       this.appResourcesEXT + `/${architectures[NL_ARCH]}/bin/curl ${args}`,
     );

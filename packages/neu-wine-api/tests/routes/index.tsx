@@ -8,12 +8,17 @@ import {
   Wine,
   ListDlls,
   WinePipeline,
+  Curl,
 } from '@@pages';
 
 export const routes: RouteObject[] = [
   {
     path: '',
     element: <Home />,
+  },
+  {
+    path: 'curl',
+    element: <Curl />,
   },
   {
     path: 'os',

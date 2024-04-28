@@ -4,6 +4,7 @@ const menu = [
   { text: 'Os', route: 'os' },
   { text: 'Winetricks', route: 'winetricks' },
   { text: 'Wine', route: 'wine' },
+  { text: 'Curl', route: 'curl' },
 ];
 
 export const Home: React.FC = () => (

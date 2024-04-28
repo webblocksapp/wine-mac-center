@@ -178,11 +178,11 @@ importers:
         specifier: ^0.2.3
         version: 0.2.3(esbuild@0.20.2)
       '@neutralinojs/lib':
-        specifier: ^3.13.0
-        version: 3.13.0
+        specifier: ^5.1.0
+        version: 5.1.0
       '@neutralinojs/neu':
-        specifier: ^9.8.0
-        version: 9.8.0
+        specifier: ^11.0.1
+        version: 11.0.1
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.7
@@ -2558,6 +2558,35 @@ packages:
 
   /@neutralinojs/lib@3.13.0:
     resolution: {integrity: sha512-rbqoCqMrnpxP2r5Vkhb8BpDTlQBVHftzN0rJFnq2yW5Fszl0Jf9kRpn/UBiImrjEfPYIEshdgPtuTds4SJX+Fg==}
+    dev: true
+
+  /@neutralinojs/lib@5.1.0:
+    resolution: {integrity: sha512-CcPPP+TdY1Uaprert/bpc6voZS2b5Q8E10mMi5ave1ege+n9ARs5h1GOQQ8liZqMHbJeYu4dcBnIYsHQZQ351g==}
+    dev: true
+
+  /@neutralinojs/neu@11.0.1:
+    resolution: {integrity: sha512-GIQW8KUi3X3Bb90ozFBRq5ZjsN6ktY+AK+w8y8tErHw2nkn/NGt4Nuu+nssutnJawR87EgCmZ7FXoa3wx2UCqg==}
+    hasBin: true
+    dependencies:
+      archiver: 4.0.2
+      asar: 3.2.0
+      chalk: 4.1.2
+      chokidar: 3.6.0
+      commander: 7.2.0
+      configstore: 5.0.1
+      decompress: 4.2.1
+      edit-json-file: 1.8.0
+      figlet: 1.7.0
+      follow-redirects: 1.15.6
+      fs-extra: 9.1.0
+      recursive-readdir: 2.2.3
+      spawn-command: 0.0.2-1
+      tcp-port-used: 1.0.2
+      uuid: 8.3.2
+      websocket: 1.0.34
+    transitivePeerDependencies:
+      - debug
+      - supports-color
     dev: true
 
   /@neutralinojs/neu@9.8.0:
@@ -5313,6 +5342,18 @@ packages:
       ms: 2.0.0
     dev: true
 
+  /debug@4.3.1:
+    resolution: {integrity: sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+    dev: true
+
   /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -6836,6 +6877,11 @@ packages:
       side-channel: 1.0.6
     dev: true
 
+  /ip-regex@4.3.0:
+    resolution: {integrity: sha512-B9ZWJxHHOHUhUjCPrMpLD4xEq35bUTClHM1S6CBU5ixQnkZmwipwgc96vAd7AAGM9TGHvJR+Uss+/Ak6UphK+Q==}
+    engines: {node: '>=8'}
+    dev: true
+
   /ip@2.0.1:
     resolution: {integrity: sha512-lJUL9imLTNi1ZfXT+DU6rBBdbiKGBuay9B6xGSPVjUeQwaH1RIGqef8RZkUtHioLmSNpPR5M4HVKJGm1j8FWVQ==}
     dev: true
@@ -7081,6 +7127,10 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /is-url@1.2.4:
+    resolution: {integrity: sha512-ITvGim8FhRiYe4IQ5uHSkj7pVaPDrCTkNd3yq3cV7iZAcJdHTUMPMEHcqSOy9xZ9qFenQCvi+2wjH9a1nXqHww==}
+    dev: true
+
   /is-weakmap@2.0.2:
     resolution: {integrity: sha512-K5pXYOm9wqY1RgjpL3YTkF39tni1XajUIkawTLUo9EZEVUFga5gSQJF8nNS7ZwJQ02y+1YCNYcMh+HIf1ZqE+w==}
     engines: {node: '>= 0.4'}
@@ -7099,6 +7149,15 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       is-docker: 2.2.1
+    dev: true
+
+  /is2@2.0.9:
+    resolution: {integrity: sha512-rZkHeBn9Zzq52sd9IUIV3a5mfwBY+o2HePMh0wkGBM4z4qjvy2GwVxQ6nNXSfw6MmVP6gf1QIlWjiOavhM3x5g==}
+    engines: {node: '>=v0.10.0'}
+    dependencies:
+      deep-is: 0.1.4
+      ip-regex: 4.3.0
+      is-url: 1.2.4
     dev: true
 
   /isarray@1.0.0:
@@ -9094,6 +9153,10 @@ packages:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
     dev: true
 
+  /spawn-command@0.0.2-1:
+    resolution: {integrity: sha512-n98l9E2RMSJ9ON1AKisHzz7V42VDiBQGY6PB1BwRglz99wpVsSuGzQ+jOi6lFXBGVTCrRpltvjm+/XA+tpeJrg==}
+    dev: true
+
   /spdx-correct@3.2.0:
     resolution: {integrity: sha512-kN9dJbvnySHULIluDHy32WHRUu3Og7B9sbY7tsFLctQkIqnMh3hErYgdMjTYuqmcXX+lK5T1lnUt3G7zNswmZA==}
     dependencies:
@@ -9334,6 +9397,15 @@ packages:
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0
+    dev: true
+
+  /tcp-port-used@1.0.2:
+    resolution: {integrity: sha512-l7ar8lLUD3XS1V2lfoJlCBaeoaWo/2xfYt81hM7VlvR4RrMVFqfmzfhLVk40hAb368uitje5gPtBRL1m/DGvLA==}
+    dependencies:
+      debug: 4.3.1
+      is2: 2.0.9
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /telejson@7.2.0:

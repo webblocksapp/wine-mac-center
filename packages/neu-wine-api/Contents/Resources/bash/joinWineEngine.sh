@@ -3,4 +3,7 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
-7z x "$1" -o"$2"
+directory_path=$(dirname "$1")
+
+7z x -y "$1" -o"$2"
+rm -rf "$directory_path"

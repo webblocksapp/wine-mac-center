@@ -14,6 +14,8 @@ import {
   writeFile,
   useEnv,
   downloadFile,
+  dirExists,
+  NeutralinoCurl,
 } from '@utils';
 import { useWineEngineApiClient } from '@api-clients';
 import { FileName } from '@constants';
@@ -22,6 +24,7 @@ export const createWineApp = async (appName: string) => {
   const env = useEnv();
   const wineEngineApiClient = useWineEngineApiClient();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
+  const CURL = new NeutralinoCurl({ debug: true });
 
   let appConfig: WineAppConfig = {
     appId: '',
@@ -146,6 +149,41 @@ export const createWineApp = async (appName: string) => {
       filesystem.writeBinaryFile(
         `${WINE_ENV.WINE_APP_RESOURCES_PATH}/${FileName.CFBundleIconFile}`,
         await downloadFile(appIconURL),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const downloadWineEngine = async (
+    urls: string[],
+    version: string,
+    args?: SpawnProcessArgs,
+  ) => {
+    try {
+      const engineTmpFolder = `${WINE_ENV.WINE_TMP_PATH}/${version}`;
+      let fileNamePart = '';
+
+      for (const url of urls) {
+        const fileName = url.split('/').pop();
+
+        if (!fileName) throw new Error('Invalid engine file name');
+        fileNamePart = fileNamePart || fileName;
+
+        if (!(await dirExists(engineTmpFolder))) {
+          filesystem.createDirectory(engineTmpFolder);
+        }
+
+        await CURL.download(
+          url,
+          `${WINE_ENV.WINE_TMP_PATH}/${version}/${fileName}`,
+        );
+      }
+
+      return spawnScript(
+        'joinWineEngine',
+        `${engineTmpFolder}/${fileNamePart} ${WINE_ENV.WINE_ENGINES_PATH}`,
+        args,
       );
     } catch (error) {
       console.error(error);
@@ -339,6 +377,7 @@ export const createWineApp = async (appName: string) => {
     spawnProcess,
     spawnScript,
     listWineEngines: wineEngineApiClient.list,
+    downloadWineEngine,
     extractEngine,
     wineboot,
     winecfg,

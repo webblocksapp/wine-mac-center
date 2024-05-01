@@ -1,6 +1,7 @@
 export type BashScript =
   | 'buildUniqueAppName'
   | 'bundleApp'
+  | 'joinWineEngine'
   | 'cmd'
   | 'scaffoldApp'
   | 'extractWineEngine'

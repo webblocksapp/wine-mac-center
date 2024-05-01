@@ -16,6 +16,7 @@ import { WineApp } from '@interfaces';
 import { InitApp } from './InitApp';
 import { WineCfg } from './WineCfg';
 import { SetSetupExe } from './SetSetupExe';
+import { DownloadEngine } from './DownloadEngine';
 
 export const WineAppContext = createContext<{
   wineApp: WineApp;
@@ -33,6 +34,7 @@ export const Wine: React.FC = () => {
         {wineApp ? (
           <>
             <ScaffoldApp />
+            <DownloadEngine />
             <ExtractEngine />
             <Wineboot />
             <EnableDxvk />

@@ -153,43 +153,51 @@ export class NeutralinoCurl {
       this.appResourcesEXT + `/${architectures[NL_ARCH]}/bin/curl ${args}`,
     );
 
-    events.on('spawnedProcess', (e) => {
-      if (cmd.id == e.detail.id) {
-        switch (e.detail.action) {
-          case 'stdOut':
-            let eData = new CustomEvent('curlData', { detail: e.detail.data });
-            document.dispatchEvent(eData);
-            break;
-          case 'stdErr':
-            const m = e.detail.data.match(/\d+\.\d+/);
-            if (m !== null && parseFloat(m[0]) >= this.progress) {
-              this.progress = parseFloat(m[0]);
-              if (this.debug) {
-                console.log('Curl progress in percent: ' + m[0]);
+    return new Promise((resolve, reject) => {
+      events.on('spawnedProcess', (e) => {
+        if (cmd.id == e.detail.id) {
+          switch (e.detail.action) {
+            case 'stdOut':
+              let eData = new CustomEvent('curlData', {
+                detail: e.detail.data,
+              });
+              document.dispatchEvent(eData);
+              break;
+            case 'stdErr':
+              const m = e.detail.data.match(/\d+\.\d+/);
+              if (m !== null && parseFloat(m[0]) >= this.progress) {
+                this.progress = parseFloat(m[0]);
+                if (this.debug) {
+                  console.log('Curl progress in percent: ' + m[0]);
+                }
+                let eProgress = new CustomEvent('curlProgress', {
+                  detail: Math.round(parseFloat(m[0])),
+                });
+                document.dispatchEvent(eProgress);
               }
-              let eProgress = new CustomEvent('curlProgress', {
-                detail: Math.round(parseFloat(m[0])),
+              break;
+            case 'exit':
+              if (this.debug) {
+                console.log(`Curl terminated with exit code: ${e.detail.data}`);
+              }
+              if (e.detail.data == 0) {
+                let eProgress = new CustomEvent('curlProgress', {
+                  detail: 100.0,
+                });
+                document.dispatchEvent(eProgress);
+              }
+              let eEnd = new CustomEvent('curlEnd', {
+                detail: parseInt(e.detail.data),
               });
-              document.dispatchEvent(eProgress);
-            }
-            break;
-          case 'exit':
-            if (this.debug) {
-              console.log(`Curl terminated with exit code: ${e.detail.data}`);
-            }
-            if (e.detail.data == 0) {
-              let eProgress = new CustomEvent('curlProgress', {
-                detail: 100.0,
-              });
-              document.dispatchEvent(eProgress);
-            }
-            let eEnd = new CustomEvent('curlEnd', {
-              detail: parseInt(e.detail.data),
-            });
-            document.dispatchEvent(eEnd);
-            break;
+              document.dispatchEvent(eEnd);
+
+              e.detail.data == 0 && resolve(undefined);
+              e.detail.data != 0 && reject(undefined);
+
+              break;
+          }
         }
-      }
+      });
     });
   }
   async resetProgress() {

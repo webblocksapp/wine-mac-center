@@ -3,6 +3,7 @@ export * from './clone';
 export * from './createWineApp';
 export * from './createWineAppPipeline';
 export * from './curl';
+export * from './dirExists';
 export * from './downloadFile';
 export * from './fileExists';
 export * from './randomId';

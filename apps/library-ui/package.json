@@ -12,16 +12,17 @@
     "storybook": "STORYBOOK_RUNNING=1 storybook dev -p 6006",
     "build-storybook": "storybook build",
     "copy-wine-deps": "rm -rf ./Contents && cp -r ../../packages/neu-wine-api/Contents ./Contents",
-    "project-setup": "pnpm neu-setup && pnpm copy-wine-deps",
+    "copy-neu-extensions": "rm -rf ./extensions && cp -r ../../packages/neu-wine-api/extensions ./extensions",
+    "project-setup": "pnpm neu-setup && pnpm copy-wine-deps && pnpm copy-neu-extensions",
     "neu-server": "pnpm neu run -- --mode=cloud",
     "neu-setup": "pnpm neu update && pnpm build",
-    "neu-build": "pnpm build && pnpm neu build"
+    "neu-build": "pnpm project-setup && pnpm build && pnpm neu build"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
-    "@mui/material": "^5.15.15",    
+    "@mui/material": "^5.15.15",
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
     "notistack": "^3.0.1",

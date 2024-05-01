@@ -35,6 +35,7 @@ neutralino.d.ts
 .storage
 *.log
 .tmp
+extensions
 
 # Wine related files
 

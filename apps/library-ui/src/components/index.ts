@@ -11,3 +11,4 @@ export * from './SidebarItem';
 export * from './StatusBox';
 export * from './WineAppPipelineProvider';
 export * from './WineAppsList';
+export * from './WineInstalledAppsList';

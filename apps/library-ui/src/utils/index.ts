@@ -7,4 +7,5 @@ export * from './encodeURL';
 export * from './handleError';
 export * from './isDev';
 export * from './isIntegration';
+export * from './parseJSON';
 export * from './useEnv';

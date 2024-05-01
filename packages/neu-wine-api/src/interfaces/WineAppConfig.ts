@@ -5,6 +5,7 @@ export type WineAppConfig = {
   iconURL: string;
   name: string;
   engineVersion: string;
+  engineURLs: string[];
   setupExecutableURLs?: string[];
   setupExecutablePath?: string;
   winetricks?: { verbs: string[]; options?: WinetricksOptions };

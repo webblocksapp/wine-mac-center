@@ -23,6 +23,7 @@
       "@components": ["src/components"],
       "@@components": ["tests/components"],
       "@constants": ["src/constants"],
+      "@@constants": ["tests/constants"],
       "@hocs": ["src/hocs"],
       "@icons/*": ["src/assets/icons/*"],
       "@interfaces": ["src/interfaces"],

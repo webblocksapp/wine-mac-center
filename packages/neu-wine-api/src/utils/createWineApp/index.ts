@@ -30,6 +30,7 @@ export const createWineApp = async (appName: string) => {
     appId: '',
     name: appName,
     engineVersion: '',
+    engineURLs: [],
     setupExecutablePath: '',
     iconURL: '',
     dxvkEnabled: false,

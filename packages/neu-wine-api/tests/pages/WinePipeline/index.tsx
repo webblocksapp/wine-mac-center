@@ -1,3 +1,4 @@
+import { ENGINES_URLS } from '@@constants';
 import { ProcessStatus } from '@constants';
 import { WineAppPipeline, WineAppPipelineStatus } from '@interfaces';
 import { createWineAppPipeline } from '@utils';
@@ -23,6 +24,7 @@ export const WinePipeline: React.FC = () => {
         iconURL:
           'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/steam/assets/winemacapp.icns',
         engineVersion: 'WS11WineCX64Bit23.6.0',
+        engineURLs: ENGINES_URLS['WS11WineCX64Bit23.6.0'],
         dxvkEnabled: true,
         setupExecutableURLs: [
           'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/downloadables/setup-executables/SteamSetup.exe',

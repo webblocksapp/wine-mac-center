@@ -1,6 +1,6 @@
 import { parseJSON, useEnv } from '@utils';
 import { filesystem } from '@neutralinojs/lib';
-import { fileExists } from 'neu-wine-api';
+import { WineAppConfig, fileExists } from 'neu-wine-api';
 import { WINE_APP_CONFIG_JSON_PATH } from '@constants';
 import { WineInstalledApp } from '@interfaces';
 
@@ -27,7 +27,8 @@ export const useWineInstalledAppApiClient = () => {
 
     promises = promises.filter((item) => item !== undefined);
     configs = (await Promise.all(promises))
-      .map((item) => parseJSON<WineInstalledApp>(item))
+      .map((item) => parseJSON<WineAppConfig>(item))
+      .map((item) => ({ ...item, configId: item?.id, id: item?.appId }))
       .filter((item) => item !== undefined) as WineInstalledApp[];
 
     return configs;

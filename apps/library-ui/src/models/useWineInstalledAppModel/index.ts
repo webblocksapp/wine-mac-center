@@ -49,8 +49,7 @@ export const useWineInstalledAppModel = () => {
   );
   const selectWineInstalledApp = createSelector(
     [selectWineInstalledApps, (_: RootState, id?: string) => id],
-    (wineInstalledApps, id) =>
-      wineInstalledApps?.find((item) => item.appId == id),
+    (wineInstalledApps, id) => wineInstalledApps?.find((item) => item.id == id),
   );
 
   return {

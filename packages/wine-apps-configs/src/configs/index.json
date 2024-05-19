@@ -1,24 +1,24 @@
 [
   {
-    "id": "75a55d4f-6dcc-498a-b74a-f8765c6683e8",
+    "appConfigId": "75a55d4f-6dcc-498a-b74a-f8765c6683e8",
     "keyName": "c&c3",
     "name": "Command & Conquer 3 Tiberium Wars",
     "version": "steam"
   },
   {
-    "id": "f339cf36-c576-11ee-935b-685b35922e40",
+    "appConfigId": "f339cf36-c576-11ee-935b-685b35922e40",
     "keyName": "steam",
     "name": "Steam",
     "version": "standard"
   },
   {
-    "id": "21e89a4f-437c-4977-91b0-9edaf409dc51",
+    "appConfigId": "21e89a4f-437c-4977-91b0-9edaf409dc51",
     "keyName": "aomee",
     "name": "Age of Mythology Extended Edition",
     "version": "steam"
   },
   {
-    "id": "352dea26-9db1-40f1-9da9-ed487e3a9f63",
+    "appConfigId": "352dea26-9db1-40f1-9da9-ed487e3a9f63",
     "keyName": "theyarebillions",
     "name": "They Are Billions",
     "version": "steam"

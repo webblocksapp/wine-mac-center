@@ -47,12 +47,15 @@ export const useWineAppConfigModel = () => {
     state.wineAppConfigState;
   const selectWineAppsConfigs = createSelector(
     [selectWineAppConfigState],
-    (wineAppConfigState) => wineAppConfigState.wineAppsConfigs
+    (wineAppConfigState) => wineAppConfigState.wineAppsConfigs,
   );
   const selectWineAppConfig = createSelector(
-    [selectWineAppsConfigs, (_: RootState, appId?: string) => appId],
-    (wineAppConfigs, appId) =>
-      wineAppConfigs?.find((item) => item.appId == appId)
+    [
+      selectWineAppsConfigs,
+      (_: RootState, appConfigId?: string) => appConfigId,
+    ],
+    (wineAppConfigs, appConfigId) =>
+      wineAppConfigs?.find((item) => item.id == appConfigId),
   );
 
   return {

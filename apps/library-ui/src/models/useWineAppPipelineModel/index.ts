@@ -17,12 +17,12 @@ export const useWineAppPipelineModel = () => {
   const { createWineAppPipeline, ...context } = useWineAppPipeline();
   const dispatch = useDispatch<Dispatch<WineAppPipelineAction>>();
 
-  const runWineAppPipeline = async (appId?: string) => {
+  const runWineAppPipeline = async (appConfigId?: string) => {
     try {
-      const wineApp = wineAppModel.selectWineApp(store.getState(), appId);
+      const wineApp = wineAppModel.selectWineApp(store.getState(), appConfigId);
       const wineAppConfig = wineAppConfigModel.selectWineAppConfig(
         store.getState(),
-        appId,
+        appConfigId,
       );
 
       if (wineApp === undefined || wineAppConfig === undefined) {

@@ -1,5 +1,5 @@
 export type WineApp = {
-  id: string;
+  appConfigId: string;
   keyName: string;
   name: string;
   version: string;

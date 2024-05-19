@@ -5,13 +5,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@interfaces';
 
 export interface AppCardProps extends CardProps {
-  appId?: string;
+  appConfigId?: string;
 }
 
-export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
+export const AppCard: React.FC<AppCardProps> = ({ appConfigId, ...rest }) => {
   const wineAppModel = useWineAppModel();
   const wineApp = useSelector((state: RootState) =>
-    wineAppModel.selectWineApp(state, appId),
+    wineAppModel.selectWineApp(state, appConfigId),
   );
 
   return (
@@ -35,7 +35,7 @@ export const AppCard: React.FC<AppCardProps> = ({ appId, ...rest }) => {
           }}
         />
         <Box display="flex" justifyContent="end">
-          <InstallAppButton appId={wineApp?.id} />
+          <InstallAppButton appConfigId={wineApp?.appConfigId} />
         </Box>
       </Box>
     </Card>

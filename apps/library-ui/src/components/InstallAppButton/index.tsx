@@ -12,26 +12,26 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 export interface InstallAppButtonProps extends ButtonProps {
-  appId?: string;
+  appConfigId?: string;
 }
 
 export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
-  appId,
+  appConfigId,
   onClick: onClickProp,
   ...rest
 }) => {
   const wineAppConfigModel = useWineAppConfigModel();
   const wineAppPipelineModel = useWineAppPipelineModel();
   const pipeline = useSelector((state: RootState) =>
-    wineAppPipelineModel.selectWineAppPipelineByAppId(state, appId),
+    wineAppPipelineModel.selectWineAppPipelineByAppConfigId(state, appConfigId),
   );
   const [loading, setLoading] = useState(false);
   const { createDialog } = useDialogFactoryContext();
 
   const onClick: InstallAppButtonProps['onClick'] = async (event) => {
     setLoading(true);
-    await wineAppConfigModel.read(appId);
-    await wineAppPipelineModel.runWineAppPipeline(appId);
+    await wineAppConfigModel.read(appConfigId);
+    await wineAppPipelineModel.runWineAppPipeline(appConfigId);
     onClickProp?.(event);
     setLoading(false);
   };

@@ -41,11 +41,11 @@ export const useWineAppPipelineModel = () => {
 
       dispatchPatch({
         ...pipeline.getInitialStatus(),
-        appId: wineAppConfig.appId,
+        appConfigId: wineAppConfig.id,
       });
 
       pipeline.onUpdate((pipelineStatus) => {
-        dispatchPatch({ ...pipelineStatus, appId: wineAppConfig.appId });
+        dispatchPatch({ ...pipelineStatus, appConfigId: wineAppConfig.id });
       });
       pipeline.run();
     } catch (error) {
@@ -77,14 +77,20 @@ export const useWineAppPipelineModel = () => {
     (wineAppPipelineState) => wineAppPipelineState.pipelines,
   );
   const selectWineAppPipeline = createSelector(
-    [selectWineAppPipelines, (_: RootState, id?: string) => id],
-    (wineAppPipelines, id) =>
-      wineAppPipelines?.find((item) => item.pipelineId == id),
+    [
+      selectWineAppPipelines,
+      (_: RootState, appConfigId?: string) => appConfigId,
+    ],
+    (wineAppPipelines, appConfigId) =>
+      wineAppPipelines?.find((item) => item.pipelineId == appConfigId),
   );
-  const selectWineAppPipelineByAppId = createSelector(
-    [selectWineAppPipelines, (_: RootState, appId?: string) => appId],
-    (wineAppPipelines, appId) =>
-      wineAppPipelines?.find((item) => item.appId == appId),
+  const selectWineAppPipelineByAppConfigId = createSelector(
+    [
+      selectWineAppPipelines,
+      (_: RootState, appConfigId?: string) => appConfigId,
+    ],
+    (wineAppPipelines, appConfigId) =>
+      wineAppPipelines?.find((item) => item.appConfigId == appConfigId),
   );
   const selectWineAppPipelineMeta = createSelector(
     [selectWineAppPipeline],
@@ -92,11 +98,11 @@ export const useWineAppPipelineModel = () => {
       return {
         wineApp: wineAppModel.selectWineApp(
           store.getState(),
-          wineAppPipeline?.appId,
+          wineAppPipeline?.appConfigId,
         ),
         wineAppConfig: wineAppConfigModel.selectWineAppConfig(
           store.getState(),
-          wineAppPipeline?.appId,
+          wineAppPipeline?.appConfigId,
         ),
       };
     },
@@ -113,7 +119,7 @@ export const useWineAppPipelineModel = () => {
     dispatchPatch,
     selectWineAppPipelines,
     selectWineAppPipeline,
-    selectWineAppPipelineByAppId,
+    selectWineAppPipelineByAppConfigId,
     selectWineAppPipelineMeta,
     selectWineAppPipelineWithMeta,
   };

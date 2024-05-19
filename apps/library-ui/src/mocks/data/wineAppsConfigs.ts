@@ -3,7 +3,7 @@ import { WineAppConfig } from '@interfaces';
 export const wineAppsConfigs: Array<WineAppConfig & { keyName: string }> = [
   {
     keyName: 'c&c3',
-    appId: '75a55d4f-6dcc-498a-b74a-f8765c6683e8',
+    id: '75a55d4f-6dcc-498a-b74a-f8765c6683e8',
     winetricks: { verbs: ['steam'] },
     engineVersion: 'WS11WineCX64Bit23.6.0',
     engineURLs: [],
@@ -20,7 +20,7 @@ export const wineAppsConfigs: Array<WineAppConfig & { keyName: string }> = [
   },
   {
     keyName: 'steam',
-    appId: 'f339cf36-c576-11ee-935b-685b35922e40',
+    id: 'f339cf36-c576-11ee-935b-685b35922e40',
     winetricks: { verbs: [] },
     engineVersion: 'WS11WineCX64Bit23.6.0',
     engineURLs: [],

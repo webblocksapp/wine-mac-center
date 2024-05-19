@@ -28,13 +28,13 @@ const meta: Meta<typeof AppPipeline> = {
 
       useEffect(() => {
         (async () => {
-          if (wineApp?.id) {
-            await wineAppConfigModel.read(wineApp?.id);
-            await wineAppPipelineModel.runWineAppPipeline(wineApp?.id);
+          if (wineApp?.appConfigId) {
+            await wineAppConfigModel.read(wineApp?.appConfigId);
+            await wineAppPipelineModel.runWineAppPipeline(wineApp?.appConfigId);
             setLoading(false);
           }
         })();
-      }, [wineApp?.id]);
+      }, [wineApp?.appConfigId]);
 
       return loading ? <>Loading...</> : <Story />;
     },

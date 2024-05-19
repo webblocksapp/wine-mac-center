@@ -38,7 +38,7 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
           }}
         />
         <Box display="flex" justifyContent="end">
-          <InstallAppButton appId={wineApp?.id} />
+          <InstallAppButton appConfigId={wineApp?.appConfigId} />
         </Box>
       </Box>
     </Card>

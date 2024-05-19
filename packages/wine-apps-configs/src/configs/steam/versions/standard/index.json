@@ -1,5 +1,5 @@
 {
-  "appId": "f339cf36-c576-11ee-935b-685b35922e40",
+  "id": "f339cf36-c576-11ee-935b-685b35922e40",
   "winetricks": { "verbs": [] },
   "engineVersion": "WS11WineCX64Bit23.6.0",
   "dxvkEnabled": true,

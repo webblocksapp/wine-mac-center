@@ -19,10 +19,10 @@ export const WinePipeline: React.FC = () => {
   const buildApp = async () => {
     const pipeline = await createWineAppPipeline({
       appConfig: {
-        appId: '',
+        id: '',
         name: 'Steam',
         iconURL:
-          'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/steam/assets/winemacapp.icns',
+          'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/configs/steam/assets/winemacapp.icns',
         engineVersion: 'WS11WineCX64Bit23.6.0',
         engineURLs: ENGINES_URLS['WS11WineCX64Bit23.6.0'],
         dxvkEnabled: true,

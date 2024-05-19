@@ -174,7 +174,10 @@ export const createWineAppPipeline = async (options: {
                 executables = [{ path: exePath, main: true }];
               }
 
-              return wineApp.bundleApp(executables, args);
+              return wineApp.bundleApp(
+                { executables, configId: options.appConfig.id },
+                args,
+              );
             },
             status: ProcessStatus.Pending,
             output: '',

@@ -14,14 +14,17 @@ export const BundleApp: React.FC = () => {
 
   const bundleApp = async () => {
     setLoading(true);
-    await wineApp.bundleApp([{ path: exePath, main: true, flags }], {
-      onStdOut: (data) => {
-        setData(data);
+    await wineApp.bundleApp(
+      { executables: [{ path: exePath, main: true, flags }], configId: '' },
+      {
+        onStdOut: (data) => {
+          setData(data);
+        },
+        onStdErr: (data) => {
+          setData(data);
+        },
       },
-      onStdErr: (data) => {
-        setData(data);
-      },
-    });
+    );
     setLoading(false);
   };
 
@@ -30,7 +33,7 @@ export const BundleApp: React.FC = () => {
       (await wineApp.listAppExecutables()).map((item) => ({
         value: item.path,
         label: item.name,
-      }))
+      })),
     );
   };
 

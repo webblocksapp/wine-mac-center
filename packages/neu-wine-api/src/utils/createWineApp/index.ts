@@ -19,6 +19,7 @@ import {
 } from '@utils';
 import { useWineEngineApiClient } from '@api-clients';
 import { FileName } from '@constants';
+import { v4 as uuid } from 'uuid';
 
 export const createWineApp = async (appName: string) => {
   const env = useEnv();
@@ -27,7 +28,8 @@ export const createWineApp = async (appName: string) => {
   const CURL = new NeutralinoCurl({ debug: true });
 
   let appConfig: WineAppConfig = {
-    appId: '',
+    id: '',
+    appId: uuid(),
     name: appName,
     engineVersion: '',
     engineURLs: [],
@@ -285,11 +287,13 @@ export const createWineApp = async (appName: string) => {
    * Run executable with wine
    */
   const bundleApp = async (
-    executables: WineAppExecutable[],
+    params: { executables: WineAppExecutable[]; configId: string },
     args?: SpawnProcessArgs,
   ) => {
+    const { executables, configId } = params;
     await updateAppConfig({
       executables,
+      id: configId,
     });
 
     const mainExecutable = executables.find((item) => item.main === true);

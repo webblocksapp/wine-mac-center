@@ -24,3 +24,7 @@ export enum WineAppPipelineActionType {
 export enum AppActionType {
   SHOW_MESSAGE = 'APP:SHOW_MESSAGE',
 }
+
+export enum WineInstalledAppActionType {
+  LIST_ALL = 'WINE_INSTALLED_APP:LIST_ALL',
+}

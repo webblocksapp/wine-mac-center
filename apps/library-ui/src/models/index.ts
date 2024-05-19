@@ -3,4 +3,5 @@ export * from './useWineAppConfigModel';
 export * from './useWineAppModel';
 export * from './useWineAppPipelineModel';
 export * from './useWineEngineModel';
+export * from './useWineInstalledAppModel';
 export * from './useWinetrickModel';

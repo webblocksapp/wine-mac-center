@@ -1,10 +1,9 @@
 import React, { forwardRef, useEffect } from 'react';
-import { AppCard } from '@components';
-import { useWineAppModel } from '@models';
+import { InstalledAppCard } from '@components';
+import { useWineInstalledAppModel } from '@models';
 import { SkeletonLoader } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
-import { useWineInstalledAppApiClient } from '@api-clients';
 
 interface ListProps extends React.HTMLAttributes<HTMLDivElement> {}
 interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -44,27 +43,24 @@ const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
 );
 
 export const WineInstalledAppsList: React.FC = () => {
-  const wineAppModel = useWineAppModel();
-  const { loaders } = wineAppModel;
-  const { wineApps } = useSelector(wineAppModel.selectWineAppState);
-  const api = useWineInstalledAppApiClient();
+  const wineInstalledAppModel = useWineInstalledAppModel();
+  const { loaders } = wineInstalledAppModel;
+  const { wineInstalledApps } = useSelector(
+    wineInstalledAppModel.selectWineInstalledAppState,
+  );
 
   useEffect(() => {
-    wineAppModel.listAll();
-
-    (async () => {
-      console.log(await api.listAll());
-    })();
+    wineInstalledAppModel.listAll();
   }, []);
 
   return (
     <SkeletonLoader loading={loaders.listingAll}>
       <VirtuosoGrid
         style={{ height: '100%' }}
-        data={wineApps}
+        data={wineInstalledApps}
         components={{ List, Item }}
         itemContent={(_, wineApp) => (
-          <AppCard key={wineApp.id} appId={wineApp.id} />
+          <InstalledAppCard key={wineApp.appId} appId={wineApp.appId} />
         )}
       />
     </SkeletonLoader>

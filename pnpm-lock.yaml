@@ -50,11 +50,11 @@ importers:
         specifier: ^4.7.10
         version: 4.7.10(react-dom@18.2.0)(react@18.2.0)
       reactjs-ui-core:
-        specifier: ^0.0.1
-        version: 0.0.1(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.15)(@mui/material@5.15.15)(react-router-dom@6.22.3)
+        specifier: ^0.0.2
+        version: 0.0.2(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.15)(@mui/material@5.15.15)(react-router-dom@6.22.3)
       reactjs-ui-form-fields:
         specifier: ^0.0.0
-        version: 0.0.0(react@18.2.0)(reactjs-ui-core@0.0.1)
+        version: 0.0.0(react@18.2.0)(reactjs-ui-core@0.0.2)
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -8638,8 +8638,8 @@ packages:
     dependencies:
       loose-envify: 1.4.0
 
-  /reactjs-ui-core@0.0.1(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.15)(@mui/material@5.15.15)(react-router-dom@6.22.3):
-    resolution: {integrity: sha512-VBO/mShMfpEjfKtjLbiJzXntaK4sAYukF/pQb08iOaNX+KhfspNcZWz9UlJS3SNdbWHh5EMl9e/0qMBOx++6kA==}
+  /reactjs-ui-core@0.0.2(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.15)(@mui/material@5.15.15)(react-router-dom@6.22.3):
+    resolution: {integrity: sha512-nvuSEWLloNsymCUT1JwO23WXCnskEBAnOiQYzRmC0CGjQ3sAysG8oM6tgVZl0mn/A46MDPaBeHa8UbHbsrikXA==}
     peerDependencies:
       '@emotion/react': ^11.11.1
       '@emotion/styled': ^11.11.0
@@ -8655,14 +8655,14 @@ packages:
       uuid: 9.0.1
     dev: false
 
-  /reactjs-ui-form-fields@0.0.0(react@18.2.0)(reactjs-ui-core@0.0.1):
+  /reactjs-ui-form-fields@0.0.0(react@18.2.0)(reactjs-ui-core@0.0.2):
     resolution: {integrity: sha512-WUFN9RPDV+7mCnKwo2sW267mymOId6gRIra1DQA9cFvCo3XhTboLY9QidwoLqxbk6lX3IP00kSHQmxpKw+BVXg==}
     peerDependencies:
       reactjs-ui-core: '*'
     dependencies:
       '@hookform/resolvers': 3.3.4(react-hook-form@7.51.3)
       react-hook-form: 7.51.3(react@18.2.0)
-      reactjs-ui-core: 0.0.1(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.15)(@mui/material@5.15.15)(react-router-dom@6.22.3)
+      reactjs-ui-core: 0.0.2(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.15.15)(@mui/material@5.15.15)(react-router-dom@6.22.3)
       yup: 1.4.0
     transitivePeerDependencies:
       - react

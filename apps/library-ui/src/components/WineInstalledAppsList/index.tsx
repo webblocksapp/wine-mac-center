@@ -5,7 +5,7 @@ import {
   SortDirectionSelect,
 } from '@components';
 import { useWineInstalledAppModel } from '@models';
-import { SkeletonLoader, Stack } from 'reactjs-ui-core';
+import { Button, SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { RootState } from '@interfaces';
@@ -63,7 +63,13 @@ export const WineInstalledAppsList: React.FC = () => {
 
   return (
     <Stack display="grid" gridTemplateRows="auto 1fr" spacing={1}>
-      <Stack direction="row" spacing={1} pt={2} px={3}>
+      <Stack
+        direction="row"
+        spacing={1}
+        pt={2}
+        px={3}
+        justifyContent="space-between"
+      >
         <Stack spacing={1} direction="row" width="100%" maxWidth={450}>
           <SearchField
             onChange={(event) =>
@@ -82,6 +88,11 @@ export const WineInstalledAppsList: React.FC = () => {
               }))
             }
           />
+        </Stack>
+        <Stack>
+          <Button sx={{ height: '100%' }} color="secondary">
+            Create App
+          </Button>
         </Stack>
       </Stack>
       <SkeletonLoader loading={loaders.listingAll}>

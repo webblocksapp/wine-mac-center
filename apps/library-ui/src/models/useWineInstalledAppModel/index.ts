@@ -5,11 +5,13 @@ import {
   RootState,
   WineInstalledAppAction,
   WineInstalledApp,
+  SortDirection,
 } from '@interfaces';
 import { useAppModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { store } from '@store';
+import { objectMatchCriteria } from '@utils';
 
 export const useWineInstalledAppModel = () => {
   const [state, setState] = useState({
@@ -96,12 +98,41 @@ export const useWineInstalledAppModel = () => {
   const selectWineInstalledAppState = (state: RootState) =>
     state.wineInstalledAppState;
   const selectWineInstalledApps = createSelector(
-    [selectWineInstalledAppState],
-    (wineInstalledAppState) => wineInstalledAppState.wineInstalledApps,
+    [
+      selectWineInstalledAppState,
+      (_: RootState, filters?: { criteria?: string; order?: SortDirection }) =>
+        filters,
+    ],
+    (wineInstalledAppState, filters) => {
+      let wineInstalledApps = wineInstalledAppState.wineInstalledApps;
+
+      const { criteria, order } = filters || {};
+
+      if (criteria) {
+        wineInstalledApps = wineInstalledApps?.filter((item) =>
+          objectMatchCriteria(item, criteria, ['name']),
+        );
+      }
+
+      if (order === 'asc' || order === undefined) {
+        wineInstalledApps = [...(wineInstalledApps || [])]?.sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+      }
+
+      if (order === 'desc') {
+        wineInstalledApps = [...(wineInstalledApps || [])]?.sort((a, b) =>
+          b.name.localeCompare(a.name),
+        );
+      }
+
+      return wineInstalledApps;
+    },
   );
   const selectWineInstalledApp = createSelector(
-    [selectWineInstalledApps, (_: RootState, id?: string) => id],
-    (wineInstalledApps, id) => wineInstalledApps?.find((item) => item.id == id),
+    [selectWineInstalledAppState, (_: RootState, id?: string) => id],
+    (wineInstalledAppsState, id) =>
+      wineInstalledAppsState.wineInstalledApps?.find((item) => item.id == id),
   );
 
   return {

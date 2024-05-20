@@ -1,9 +1,14 @@
-import React, { forwardRef, useEffect } from 'react';
-import { InstalledAppCard } from '@components';
+import React, { forwardRef, useEffect, useState } from 'react';
+import {
+  InstalledAppCard,
+  SearchField,
+  SortDirectionSelect,
+} from '@components';
 import { useWineInstalledAppModel } from '@models';
-import { SkeletonLoader } from 'reactjs-ui-core';
+import { SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
+import { RootState } from '@interfaces';
 
 interface ListProps extends React.HTMLAttributes<HTMLDivElement> {}
 interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -44,9 +49,12 @@ const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
 
 export const WineInstalledAppsList: React.FC = () => {
   const wineInstalledAppModel = useWineInstalledAppModel();
+  const [filters, setFilters] = useState<
+    Parameters<typeof wineInstalledAppModel.selectWineInstalledApps>[1]
+  >({ criteria: '', order: 'asc' });
   const { loaders } = wineInstalledAppModel;
-  const { wineInstalledApps } = useSelector(
-    wineInstalledAppModel.selectWineInstalledAppState,
+  const wineInstalledApps = useSelector((state: RootState) =>
+    wineInstalledAppModel.selectWineInstalledApps(state, filters),
   );
 
   useEffect(() => {
@@ -54,18 +62,41 @@ export const WineInstalledAppsList: React.FC = () => {
   }, []);
 
   return (
-    <SkeletonLoader loading={loaders.listingAll}>
-      <VirtuosoGrid
-        style={{ height: '100%' }}
-        data={wineInstalledApps}
-        components={{ List, Item }}
-        itemContent={(_, installedWineApp) => (
-          <InstalledAppCard
-            key={installedWineApp.id}
-            appId={installedWineApp.id}
+    <Stack display="grid" gridTemplateRows="auto 1fr" spacing={1}>
+      <Stack direction="row" spacing={1} pt={2} px={3}>
+        <Stack spacing={1} direction="row" width="100%" maxWidth={450}>
+          <SearchField
+            onChange={(event) =>
+              setFilters((prev) => ({
+                ...prev,
+                criteria: event.currentTarget.value,
+              }))
+            }
           />
-        )}
-      />
-    </SkeletonLoader>
+          <SortDirectionSelect
+            value={filters?.order}
+            onChange={(order) =>
+              setFilters((prev) => ({
+                ...prev,
+                order,
+              }))
+            }
+          />
+        </Stack>
+      </Stack>
+      <SkeletonLoader loading={loaders.listingAll}>
+        <VirtuosoGrid
+          style={{ height: '100%' }}
+          data={wineInstalledApps}
+          components={{ List, Item }}
+          itemContent={(_, installedWineApp) => (
+            <InstalledAppCard
+              key={installedWineApp.id}
+              appId={installedWineApp.id}
+            />
+          )}
+        />
+      </SkeletonLoader>
+    </Stack>
   );
 };

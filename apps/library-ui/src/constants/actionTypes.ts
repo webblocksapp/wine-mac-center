@@ -27,4 +27,5 @@ export enum AppActionType {
 
 export enum WineInstalledAppActionType {
   LIST_ALL = 'WINE_INSTALLED_APP:LIST_ALL',
+  PATCH = 'WINE_INSTALLED_APP:PATCH',
 }

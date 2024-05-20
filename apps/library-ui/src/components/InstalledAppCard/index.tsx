@@ -42,7 +42,7 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
           }}
         />
         <Box display="flex" justifyContent="end">
-          <RunAppButton appConfigId={wineApp?.appConfigId} />
+          <RunAppButton appId={installedWineApp?.id} />
         </Box>
       </Box>
     </Card>

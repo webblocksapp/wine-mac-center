@@ -5,3 +5,4 @@ export * from './InstallIcon';
 export * from './PlayIcon';
 export * from './SettingsIcon';
 export * from './TasksIcon';
+export * from './XCircleIcon';

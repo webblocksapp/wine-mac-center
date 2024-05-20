@@ -31,10 +31,62 @@ export const useWineInstalledAppModel = () => {
     }
   };
 
+  const runApp = async (appId?: string) => {
+    try {
+      const wineInstalledApp = selectWineInstalledApp(store.getState(), appId);
+
+      if (wineInstalledApp === undefined) {
+        throw new Error('No installed app found.');
+      }
+
+      const process = await wineInstalledAppApiClient.runApp(
+        wineInstalledApp.appPath,
+      );
+
+      dispatchPatch(wineInstalledApp.id, { pid: process.pid });
+    } catch (error) {
+      appModel.dispatchError(error);
+    } finally {
+      dispatchLoader({ listingAll: false });
+    }
+  };
+
+  const killApp = async (appId?: string) => {
+    try {
+      const wineInstalledApp = selectWineInstalledApp(store.getState(), appId);
+
+      if (wineInstalledApp === undefined) {
+        throw new Error('No installed app found.');
+      }
+
+      if (wineInstalledApp.pid === undefined) {
+        throw new Error('No app running.');
+      }
+
+      await wineInstalledAppApiClient.killApp(wineInstalledApp.pid);
+
+      dispatchPatch(wineInstalledApp.id, { pid: undefined });
+    } catch (error) {
+      appModel.dispatchError(error);
+    } finally {
+      dispatchLoader({ listingAll: false });
+    }
+  };
+
   const dispatchListAll = (wineInstalledApps: WineInstalledApp[]) => {
     dispatch({
       type: ActionType.LIST_ALL,
       wineInstalledApps,
+    });
+  };
+  const dispatchPatch = (
+    appId: string,
+    wineInstalledApp: Partial<WineInstalledApp>,
+  ) => {
+    dispatch({
+      type: ActionType.PATCH,
+      appId,
+      wineInstalledApp,
     });
   };
   const dispatchLoader = (loaders: Partial<(typeof state)['loaders']>) => {
@@ -56,6 +108,8 @@ export const useWineInstalledAppModel = () => {
     loaders: state.loaders,
     listAll,
     dispatchListAll,
+    runApp,
+    killApp,
     selectWineInstalledAppState,
     selectWineInstalledApps,
     selectWineInstalledApp,

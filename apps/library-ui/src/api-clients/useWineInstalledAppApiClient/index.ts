@@ -1,5 +1,5 @@
 import { parseJSON, useEnv } from '@utils';
-import { filesystem } from '@neutralinojs/lib';
+import { filesystem, os } from '@neutralinojs/lib';
 import { WineAppConfig, fileExists } from 'neu-wine-api';
 import { WINE_APP_CONFIG_JSON_PATH } from '@constants';
 import { WineInstalledApp } from '@interfaces';
@@ -48,7 +48,17 @@ export const useWineInstalledAppApiClient = () => {
     return configs;
   };
 
+  const runApp = (appPath: string) => {
+    return os.spawnProcess(`open "${appPath}"`);
+  };
+
+  const killApp = (pid: number) => {
+    return os.spawnProcess(`kill ${pid}`);
+  };
+
   return {
     listAll,
+    runApp,
+    killApp,
   };
 };

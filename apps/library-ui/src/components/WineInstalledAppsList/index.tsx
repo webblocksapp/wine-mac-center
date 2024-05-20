@@ -5,10 +5,11 @@ import {
   SortDirectionSelect,
 } from '@components';
 import { useWineInstalledAppModel } from '@models';
-import { Button, SkeletonLoader, Stack } from 'reactjs-ui-core';
+import { Button, Icon, SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { RootState } from '@interfaces';
+import { PlusIcon } from '@heroicons/react/24/solid';
 
 interface ListProps extends React.HTMLAttributes<HTMLDivElement> {}
 interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -90,7 +91,21 @@ export const WineInstalledAppsList: React.FC = () => {
           />
         </Stack>
         <Stack>
-          <Button sx={{ height: '100%' }} color="secondary">
+          <Button
+            rootStyle={{ flexGrow: 1 }}
+            sx={{
+              paddingLeft: '7px',
+              height: '100%',
+              border: (theme) => `1px solid ${theme.palette.primary.main}`,
+            }}
+            color="secondary"
+          >
+            <Icon
+              pr={1}
+              strokeWidth={3}
+              color="primary.main"
+              render={PlusIcon}
+            />
             Create App
           </Button>
         </Stack>

@@ -28,5 +28,11 @@
     "keyName": "halosa",
     "name": "Halo Spartan Assault",
     "version": "steam"
+  },
+  {
+    "appConfigId": "4557131a-1675-11ef-bdcd-685b35922e40",
+    "keyName": "spelunky2",
+    "name": "Spelunky 2",
+    "version": "steam"
   }
 ]

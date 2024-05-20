@@ -22,5 +22,11 @@
     "keyName": "theyarebillions",
     "name": "They Are Billions",
     "version": "steam"
+  },
+  {
+    "appConfigId": "4fa0bb6a-1656-11ef-a129-685b35922e40",
+    "keyName": "halosa",
+    "name": "Halo Spartan Assault",
+    "version": "steam"
   }
 ]

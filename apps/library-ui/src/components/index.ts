@@ -7,6 +7,7 @@ export * from './EnvProvider';
 export * from './InstallAppButton';
 export * from './InstalledAppCard';
 export * from './NotificationsProvider';
+export * from './RunAppButton';
 export * from './Sidebar';
 export * from './SidebarItem';
 export * from './StatusBox';

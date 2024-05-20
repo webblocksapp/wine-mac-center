@@ -1,5 +1,5 @@
 import { Box, Card, CardProps, Image } from 'reactjs-ui-core';
-import { InstallAppButton } from '@components';
+import { RunAppButton } from '@components';
 import { useWineAppModel, useWineInstalledAppModel } from '@models';
 import { useSelector } from 'react-redux';
 import { RootState } from '@interfaces';
@@ -42,7 +42,7 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
           }}
         />
         <Box display="flex" justifyContent="end">
-          <InstallAppButton appConfigId={wineApp?.appConfigId} />
+          <RunAppButton appConfigId={wineApp?.appConfigId} />
         </Box>
       </Box>
     </Card>

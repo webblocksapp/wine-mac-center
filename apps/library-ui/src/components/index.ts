@@ -8,6 +8,7 @@ export * from './InstallAppButton';
 export * from './InstalledAppCard';
 export * from './NotificationsProvider';
 export * from './RunAppButton';
+export * from './SearchField';
 export * from './Sidebar';
 export * from './SidebarItem';
 export * from './StatusBox';

@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect } from 'react';
-import { AppCard } from '@components';
+import { AppCard, SearchField } from '@components';
 import { useWineAppModel } from '@models';
-import { SkeletonLoader } from 'reactjs-ui-core';
+import { Box, SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
 
@@ -53,17 +53,24 @@ export const WineAppsList: React.FC = () => {
 
   return (
     <SkeletonLoader loading={loaders.listingAll}>
-      <VirtuosoGrid
-        style={{ height: '100%' }}
-        data={wineApps}
-        components={{ List, Item }}
-        itemContent={(_, wineApp) => (
-          <AppCard
-            key={wineApp.appConfigId}
-            appConfigId={wineApp.appConfigId}
-          />
-        )}
-      />
+      <Stack display="grid" gridTemplateRows="auto 1fr" spacing={1}>
+        <Stack direction="row" pt={2} px={3}>
+          <Box width="100%" maxWidth={400}>
+            <SearchField />
+          </Box>
+        </Stack>
+        <VirtuosoGrid
+          style={{ height: '100%' }}
+          data={wineApps}
+          components={{ List, Item }}
+          itemContent={(_, wineApp) => (
+            <AppCard
+              key={wineApp.appConfigId}
+              appConfigId={wineApp.appConfigId}
+            />
+          )}
+        />
+      </Stack>
     </SkeletonLoader>
   );
 };

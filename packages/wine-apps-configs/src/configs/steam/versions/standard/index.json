@@ -1,6 +1,6 @@
 {
   "id": "f339cf36-c576-11ee-935b-685b35922e40",
-  "winetricks": { "verbs": [] },
+  "winetricks": { "verbs": ["steam"] },
   "engineVersion": "WS11WineCX64Bit23.6.0",
   "dxvkEnabled": true,
   "setupExecutableURLs": ["{{Steam}}"],

@@ -4,6 +4,7 @@ export * from './CommonObject';
 export * from './Flatten';
 export * from './MenuItem';
 export * from './RootState';
+export * from './SortDirection';
 export * from './WineApp';
 export * from './WineAppAction';
 export * from './WineAppConfig';

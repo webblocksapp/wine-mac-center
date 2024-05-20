@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useWineAppApiClient } from '@api-clients';
 import { WineAppActionType as ActionType } from '@constants';
-import { RootState, WineApp, WineAppAction } from '@interfaces';
+import { RootState, SortDirection, WineApp, WineAppAction } from '@interfaces';
 import { useAppModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
@@ -42,11 +42,12 @@ export const useWineAppModel = () => {
   const selectWineApps = createSelector(
     [
       selectWineAppState,
-      (_: RootState, filters?: { criteria?: string }) => filters,
+      (_: RootState, filters?: { criteria?: string; order?: SortDirection }) =>
+        filters,
     ],
     (wineAppState, filters) => {
       let wineApps = wineAppState.wineApps;
-      const criteria = filters?.criteria;
+      const { criteria, order } = filters || {};
 
       if (criteria) {
         wineApps = wineApps?.filter((item) =>
@@ -54,13 +55,25 @@ export const useWineAppModel = () => {
         );
       }
 
+      if (order === 'asc' || order === undefined) {
+        wineApps = [...(wineApps || [])]?.sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+      }
+
+      if (order === 'desc') {
+        wineApps = [...(wineApps || [])]?.sort((a, b) =>
+          b.name.localeCompare(a.name),
+        );
+      }
+
       return wineApps;
     },
   );
   const selectWineApp = createSelector(
-    [selectWineApps, (_: RootState, appConfigId?: string) => appConfigId],
-    (wineApps, appConfigId) =>
-      wineApps?.find((item) => item.appConfigId == appConfigId),
+    [selectWineAppState, (_: RootState, appConfigId?: string) => appConfigId],
+    (wineAppState, appConfigId) =>
+      wineAppState.wineApps?.find((item) => item.appConfigId == appConfigId),
   );
 
   return {

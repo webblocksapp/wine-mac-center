@@ -11,6 +11,7 @@ export * from './RunAppButton';
 export * from './SearchField';
 export * from './Sidebar';
 export * from './SidebarItem';
+export * from './SortDirectionSelect';
 export * from './StatusBox';
 export * from './WineAppPipelineProvider';
 export * from './WineAppsList';

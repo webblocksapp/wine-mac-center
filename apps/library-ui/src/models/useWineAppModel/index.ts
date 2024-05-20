@@ -6,6 +6,7 @@ import { useAppModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { store } from '@store';
+import { objectMatchCriteria } from '@utils';
 
 export const useWineAppModel = () => {
   const [state, setState] = useState({
@@ -39,8 +40,22 @@ export const useWineAppModel = () => {
 
   const selectWineAppState = (state: RootState) => state.wineAppState;
   const selectWineApps = createSelector(
-    [selectWineAppState],
-    (wineAppState) => wineAppState.wineApps,
+    [
+      selectWineAppState,
+      (_: RootState, filters?: { criteria?: string }) => filters,
+    ],
+    (wineAppState, filters) => {
+      let wineApps = wineAppState.wineApps;
+      const criteria = filters?.criteria;
+
+      if (criteria) {
+        wineApps = wineApps?.filter((item) =>
+          objectMatchCriteria(item, criteria, ['name']),
+        );
+      }
+
+      return wineApps;
+    },
   );
   const selectWineApp = createSelector(
     [selectWineApps, (_: RootState, appConfigId?: string) => appConfigId],

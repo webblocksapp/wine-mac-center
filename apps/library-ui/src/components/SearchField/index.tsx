@@ -6,6 +6,7 @@ export type SearchFieldProps = TextFieldProps & {};
 export const SearchField: React.FC<SearchFieldProps> = (props) => {
   return (
     <TextField
+      autoComplete="off"
       InputProps={{
         startAdornment: <Icon pr={1} render={MagnifyingGlassIcon} />,
       }}

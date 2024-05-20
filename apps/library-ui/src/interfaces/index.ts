@@ -1,5 +1,6 @@
 export * from './AppAction';
 export * from './AppState';
+export * from './CommonObject';
 export * from './Flatten';
 export * from './MenuItem';
 export * from './RootState';

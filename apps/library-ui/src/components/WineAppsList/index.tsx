@@ -1,9 +1,10 @@
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { AppCard, SearchField } from '@components';
 import { useWineAppModel } from '@models';
 import { Box, SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
+import { RootState } from '@interfaces';
 
 interface ListProps extends React.HTMLAttributes<HTMLDivElement> {}
 interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -44,8 +45,11 @@ const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
 
 export const WineAppsList: React.FC = () => {
   const wineAppModel = useWineAppModel();
+  const [filters, setFilters] = useState({ criteria: '' });
   const { loaders } = wineAppModel;
-  const { wineApps } = useSelector(wineAppModel.selectWineAppState);
+  const wineApps = useSelector((state: RootState) =>
+    wineAppModel.selectWineApps(state, filters),
+  );
 
   useEffect(() => {
     wineAppModel.listAll();
@@ -56,7 +60,14 @@ export const WineAppsList: React.FC = () => {
       <Stack display="grid" gridTemplateRows="auto 1fr" spacing={1}>
         <Stack direction="row" pt={2} px={3}>
           <Box width="100%" maxWidth={400}>
-            <SearchField />
+            <SearchField
+              onChange={(event) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  criteria: event.currentTarget.value,
+                }))
+              }
+            />
           </Box>
         </Stack>
         <VirtuosoGrid

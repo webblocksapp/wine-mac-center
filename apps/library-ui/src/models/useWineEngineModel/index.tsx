@@ -1,7 +1,7 @@
 import { useWineEngineApiClient } from 'neu-wine-api';
-import { Dispatch } from '@reduxjs/toolkit';
+import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { WineEngineAction, WineEngineState } from '@interfaces';
+import { RootState, WineEngineAction, WineEngineState } from '@interfaces';
 import { WineEngineActionType as ActionType } from '@constants';
 import { useAppModel } from '@models';
 
@@ -28,7 +28,15 @@ export const useWineEngineModel = () => {
     dispatch({ type: ActionType.LOADING, loaders });
   };
 
+  const selectWineEngineState = (state: RootState) => state.wineEngineState;
+  const selectWineEngines = createSelector(
+    [selectWineEngineState],
+    (wineEngineState) => wineEngineState.wineEngines,
+  );
+
   return {
     list,
+    selectWineEngineState,
+    selectWineEngines,
   };
 };

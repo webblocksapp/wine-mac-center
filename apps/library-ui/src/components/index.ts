@@ -1,4 +1,5 @@
 export * from './AppCard';
+export * from './AppConfigDialog';
 export * from './AppForm';
 export * from './AppPipeline';
 export * from './AppSetup';
@@ -15,4 +16,5 @@ export * from './SortDirectionSelect';
 export * from './StatusBox';
 export * from './WineAppPipelineProvider';
 export * from './WineAppsList';
+export * from './WineEnginesSelect';
 export * from './WineInstalledAppsList';

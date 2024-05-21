@@ -1,5 +1,6 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import {
+  AppConfigDialog,
   InstalledAppCard,
   SearchField,
   SortDirectionSelect,
@@ -50,6 +51,7 @@ const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
 
 export const WineInstalledAppsList: React.FC = () => {
   const wineInstalledAppModel = useWineInstalledAppModel();
+  const [showDialog, setShowDialog] = useState(false);
   const [filters, setFilters] = useState<
     Parameters<typeof wineInstalledAppModel.selectWineInstalledApps>[1]
   >({ criteria: '', order: 'asc' });
@@ -99,6 +101,7 @@ export const WineInstalledAppsList: React.FC = () => {
               border: (theme) => `1px solid ${theme.palette.primary.main}`,
             }}
             color="secondary"
+            onClick={() => setShowDialog(true)}
           >
             <Icon
               pr={1}
@@ -123,6 +126,18 @@ export const WineInstalledAppsList: React.FC = () => {
           )}
         />
       </SkeletonLoader>
+      {showDialog ? (
+        <AppConfigDialog
+          setOpen={setShowDialog}
+          open={showDialog}
+          onClose={() => {
+            console.log('XXXX');
+            setShowDialog(false);
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </Stack>
   );
 };

@@ -80,6 +80,7 @@ export const useWinetrickApiClient = () => {
 
       const [apps, benchmarks, dlls, fonts, games, settings] = promises;
       winetricks = { apps, benchmarks, dlls, fonts, games, settings };
+      await filesystem.writeFile(WINETRICKS_PATH, JSON.stringify(winetricks));
     } else {
       winetricks = {
         ...winetricks,

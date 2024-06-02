@@ -1,6 +1,6 @@
-import { Winetrick } from '@interfaces';
-import { os } from '@neutralinojs/lib';
-import { useEnv } from '@utils';
+import { Winetrick, Winetricks } from '@interfaces';
+import { filesystem, os } from '@neutralinojs/lib';
+import { fileExists, parseJson, useEnv } from '@utils';
 
 export const useWinetrickApiClient = () => {
   const env = useEnv();
@@ -56,8 +56,43 @@ export const useWinetrickApiClient = () => {
     return getWinetricks('settings list');
   };
 
+  const listAll = async (options: { force: boolean }) => {
+    const WINETRICKS_PATH = `${env.get().WINE_ASSETS_PATH}/winetricks.json`;
+
+    let winetricks: Winetricks = {
+      apps: [],
+      benchmarks: [],
+      dlls: [],
+      fonts: [],
+      games: [],
+      settings: [],
+    };
+
+    if (!fileExists(WINETRICKS_PATH) || options.force) {
+      const promises = await Promise.all([
+        await listApps(),
+        await listBenchmarks(),
+        await listDlls(),
+        await listFonts(),
+        await listGames(),
+        await listSettings(),
+      ]);
+
+      const [apps, benchmarks, dlls, fonts, games, settings] = promises;
+      winetricks = { apps, benchmarks, dlls, fonts, games, settings };
+    } else {
+      winetricks = {
+        ...winetricks,
+        ...parseJson<Winetricks>(await filesystem.readFile(WINETRICKS_PATH)),
+      };
+    }
+
+    return winetricks;
+  };
+
   return {
     help,
+    listAll,
     listApps,
     listBenchmarks,
     listDlls,

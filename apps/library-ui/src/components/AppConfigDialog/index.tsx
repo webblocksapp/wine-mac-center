@@ -8,7 +8,7 @@ import {
   Stack,
 } from 'reactjs-ui-core';
 import { TextField, Checkbox, useForm } from 'reactjs-ui-form-fields';
-import { WineEnginesSelect } from '@components';
+import { WineEnginesSelect, WinetricksSelector } from '@components';
 import { useSchema } from './useSchema';
 
 export interface AppConfigDialogProps extends DialogProps {
@@ -38,6 +38,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
+                  autoComplete="off"
                   control={form.control}
                   name="name"
                   label="Application Name"
@@ -55,6 +56,9 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                   name="dxvkEnabled"
                   label="Enable DXVK"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <WinetricksSelector />
               </Grid>
             </Grid>
           </Box>

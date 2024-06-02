@@ -18,3 +18,4 @@ export * from './WineAppPipelineProvider';
 export * from './WineAppsList';
 export * from './WineEnginesSelect';
 export * from './WineInstalledAppsList';
+export * from './WinetricksSelector';

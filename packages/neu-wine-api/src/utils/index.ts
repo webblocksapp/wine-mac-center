@@ -6,6 +6,7 @@ export * from './curl';
 export * from './dirExists';
 export * from './downloadFile';
 export * from './fileExists';
+export * from './parseJson';
 export * from './randomId';
 export * from './spawnProcess';
 export * from './useEnv';

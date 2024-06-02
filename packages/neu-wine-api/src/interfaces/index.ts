@@ -16,5 +16,6 @@ export * from './WineAppPipelineStatus';
 export * from './WineAppStep';
 export * from './WineEnv';
 export * from './Winetrick';
+export * from './Winetricks';
 export * from './WinetricksOptions';
 export * from './Workflow';

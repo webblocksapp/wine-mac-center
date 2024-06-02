@@ -5,6 +5,7 @@ export * from './buildAppUrls';
 export * from './createWineAppPipeline';
 export * from './encodeURL';
 export * from './escapeRegExp';
+export * from './fileExists';
 export * from './flattenObject';
 export * from './formatObjectPath';
 export * from './handleError';

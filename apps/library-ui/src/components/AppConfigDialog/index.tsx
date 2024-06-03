@@ -9,7 +9,9 @@ import {
 } from 'reactjs-ui-core';
 import { TextField, Checkbox, useForm } from 'reactjs-ui-form-fields';
 import { WineEnginesSelect, WinetricksSelector } from '@components';
-import { useSchema } from './useSchema';
+import { useWineAppPipelineModel } from '@models';
+import { v4 as uuid } from 'uuid';
+import { FormSchema, useSchema } from './useSchema';
 
 export interface AppConfigDialogProps extends DialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,9 +23,17 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
 }) => {
   const schema = useSchema();
   const form = useForm(schema);
+  const wineAppPipelineModel = useWineAppPipelineModel();
 
-  const submit = () => {
+  const submit = (data: FormSchema) => {
     form.reset();
+    const { name, dxvkEnabled, engineVersion } = data;
+    wineAppPipelineModel.runWineAppPipeline({
+      id: uuid(),
+      name,
+      dxvkEnabled,
+      engineVersion,
+    });
   };
 
   return (
@@ -50,16 +60,30 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                   name="engineVersion"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={4}>
                 <Checkbox
                   control={form.control}
                   name="dxvkEnabled"
                   label="Enable DXVK"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <WinetricksSelector />
+              <Grid item xs={4}>
+                <Checkbox
+                  control={form.control}
+                  name="useWinetricks"
+                  label="Winetricks"
+                />
               </Grid>
+              {form.watch('useWinetricks') ? (
+                <Grid item xs={12}>
+                  <WinetricksSelector
+                    control={form.control}
+                    name="winetricks"
+                  />
+                </Grid>
+              ) : (
+                <></>
+              )}
             </Grid>
           </Box>
           <Stack direction="row" spacing={1} justifyContent="flex-end">

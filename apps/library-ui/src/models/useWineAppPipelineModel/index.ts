@@ -1,5 +1,6 @@
 import {
   RootState,
+  WineAppConfig,
   WineAppPipelineAction,
   WineAppPipelineStatus,
 } from '@interfaces';
@@ -17,7 +18,7 @@ export const useWineAppPipelineModel = () => {
   const { createWineAppPipeline, ...context } = useWineAppPipeline();
   const dispatch = useDispatch<Dispatch<WineAppPipelineAction>>();
 
-  const runWineAppPipeline = async (appConfigId?: string) => {
+  const runWineAppPipelineByAppConfigId = async (appConfigId?: string) => {
     try {
       const wineApp = wineAppModel.selectWineApp(store.getState(), appConfigId);
       const wineAppConfig = wineAppConfigModel.selectWineAppConfig(
@@ -29,23 +30,34 @@ export const useWineAppPipelineModel = () => {
         throw Error('Wine application config not found.');
       }
 
+      await runWineAppPipeline({
+        ...wineAppConfig,
+        id: wineAppConfig.id,
+        name: wineApp.name,
+        iconURL: wineApp.iconURL,
+      });
+    } catch (error) {
+      appModel.dispatchError(error);
+    }
+  };
+
+  const runWineAppPipeline = async (
+    appConfig: WineAppConfig & { name: string; iconURL: string },
+  ) => {
+    try {
       const pipeline = await createWineAppPipeline({
-        appConfig: {
-          ...wineAppConfig,
-          name: wineApp.name,
-          iconURL: wineApp.iconURL,
-        },
+        appConfig,
         debug: true,
         outputEveryMs: 1000,
       });
 
       dispatchPatch({
         ...pipeline.getInitialStatus(),
-        appConfigId: wineAppConfig.id,
+        appConfigId: appConfig.id,
       });
 
       pipeline.onUpdate((pipelineStatus) => {
-        dispatchPatch({ ...pipelineStatus, appConfigId: wineAppConfig.id });
+        dispatchPatch({ ...pipelineStatus, appConfigId: appConfig.id });
       });
       pipeline.run();
     } catch (error) {
@@ -114,6 +126,7 @@ export const useWineAppPipelineModel = () => {
 
   return {
     runWineAppPipeline,
+    runWineAppPipelineByAppConfigId,
     killWineAppPipeline,
     clearWineAppPipeline,
     dispatchPatch,

@@ -30,7 +30,9 @@ const meta: Meta<typeof AppPipeline> = {
         (async () => {
           if (wineApp?.appConfigId) {
             await wineAppConfigModel.read(wineApp?.appConfigId);
-            await wineAppPipelineModel.runWineAppPipeline(wineApp?.appConfigId);
+            await wineAppPipelineModel.runWineAppPipelineByAppConfigId(
+              wineApp?.appConfigId,
+            );
             setLoading(false);
           }
         })();

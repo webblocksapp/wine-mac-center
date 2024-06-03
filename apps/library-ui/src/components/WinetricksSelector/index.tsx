@@ -33,43 +33,42 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
   }, []);
 
   return (
-    <Field
-      control={control}
-      fieldOptions={fieldOptions}
-      as="checkbox-group"
-      name={name}
-      value={value}
-      render={({ props, helpers }) => (
-        <SkeletonLoader loading={loaders.listingAll}>
-          <Stack spacing={1}>
-            {CATEGORIES.map((category) => (
-              <Box key={category.key}>
-                <Accordion label={category.label}>
+    <SkeletonLoader loading={loaders.listingAll}>
+      <Stack spacing={1}>
+        {CATEGORIES.map((category) => (
+          <Box key={category.key}>
+            <Accordion label={category.label}>
+              <Field
+                control={control}
+                fieldOptions={fieldOptions}
+                as="checkbox-group"
+                name={name}
+                value={value}
+                render={(field) => (
                   <Grid container spacing={0}>
                     {winetricks[category.key as keyof Winetricks].map(
-                      (item) => (
-                        <Grid item xs={4}>
+                      (winetrick) => (
+                        <Grid key={winetrick.verb} item xs={4}>
                           <Checkbox
                             name={name}
-                            label={item.verb}
-                            value={item}
-                            checked={helpers.isChecked(item)}
+                            label={winetrick.verb}
+                            value={winetrick.verb}
+                            checked={field.helpers.isChecked(winetrick.verb)}
                             onChange={(event) => {
-                              props.onChange(event);
-                              props?.onChange?.(event);
+                              field.props.onChange(event);
                             }}
-                            onBlur={props.onBlur}
+                            onBlur={field.props.onBlur}
                           />
                         </Grid>
                       ),
                     )}
                   </Grid>
-                </Accordion>
-              </Box>
-            ))}
-          </Stack>
-        </SkeletonLoader>
-      )}
-    />
+                )}
+              />
+            </Accordion>
+          </Box>
+        ))}
+      </Stack>
+    </SkeletonLoader>
   );
 };

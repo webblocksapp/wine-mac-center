@@ -31,7 +31,7 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
   const onClick: InstallAppButtonProps['onClick'] = async (event) => {
     setLoading(true);
     await wineAppConfigModel.read(appConfigId);
-    await wineAppPipelineModel.runWineAppPipeline(appConfigId);
+    await wineAppPipelineModel.runWineAppPipelineByAppConfigId(appConfigId);
     onClickProp?.(event);
     setLoading(false);
   };

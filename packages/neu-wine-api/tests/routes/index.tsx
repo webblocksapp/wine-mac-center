@@ -1,15 +1,6 @@
 import { RouteObject } from 'react-router-dom';
 import { MainLayout } from '@@layouts';
-import {
-  Envs,
-  Help,
-  Home,
-  ListGames,
-  Wine,
-  ListDlls,
-  WinePipeline,
-  Curl,
-} from '@@pages';
+import { Envs, Help, Home, Wine, ListDlls, WinePipeline, Curl } from '@@pages';
 
 export const routes: RouteObject[] = [
   {
@@ -55,10 +46,6 @@ export const routes: RouteObject[] = [
       {
         path: 'help',
         element: <Help />,
-      },
-      {
-        path: 'list-games',
-        element: <ListGames />,
       },
       {
         path: 'list-dlls',

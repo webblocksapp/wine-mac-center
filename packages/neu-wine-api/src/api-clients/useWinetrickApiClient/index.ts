@@ -1,6 +1,6 @@
 import { Winetrick, Winetricks } from '@interfaces';
 import { filesystem, os } from '@neutralinojs/lib';
-import { fileExists, parseJson, useEnv } from '@utils';
+import { dirExists, fileExists, parseJson, useEnv } from '@utils';
 
 export const useWinetrickApiClient = () => {
   const env = useEnv();
@@ -48,38 +48,37 @@ export const useWinetrickApiClient = () => {
     return getWinetricks('fonts list');
   };
 
-  const listGames = async () => {
-    return getWinetricks('games list');
-  };
-
   const listSettings = () => {
     return getWinetricks('settings list');
   };
 
   const listAll = async (options?: { force?: boolean }) => {
-    const WINETRICKS_PATH = `${env.get().WINE_ASSETS_PATH}/winetricks.json`;
+    const WINE_ASSETS_PATH = env.get().WINE_ASSETS_PATH;
+    const WINETRICKS_PATH = `${WINE_ASSETS_PATH}/winetricks.json`;
 
     let winetricks: Winetricks = {
       apps: [],
       benchmarks: [],
       dlls: [],
       fonts: [],
-      games: [],
       settings: [],
     };
 
-    if (!fileExists(WINETRICKS_PATH) || options?.force) {
+    if (!(await dirExists(WINE_ASSETS_PATH))) {
+      await filesystem.createDirectory(WINE_ASSETS_PATH);
+    }
+
+    if (!(await fileExists(WINETRICKS_PATH)) || options?.force) {
       const promises = await Promise.all([
         await listApps(),
         await listBenchmarks(),
         await listDlls(),
         await listFonts(),
-        await listGames(),
         await listSettings(),
       ]);
 
-      const [apps, benchmarks, dlls, fonts, games, settings] = promises;
-      winetricks = { apps, benchmarks, dlls, fonts, games, settings };
+      const [apps, benchmarks, dlls, fonts, settings] = promises;
+      winetricks = { apps, benchmarks, dlls, fonts, settings };
       await filesystem.writeFile(WINETRICKS_PATH, JSON.stringify(winetricks));
     } else {
       winetricks = {
@@ -98,7 +97,6 @@ export const useWinetrickApiClient = () => {
     listBenchmarks,
     listDlls,
     listFonts,
-    listGames,
     listSettings,
   };
 };

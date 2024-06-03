@@ -5,6 +5,5 @@ export type Winetricks = {
   benchmarks: Winetrick[];
   dlls: Winetrick[];
   fonts: Winetrick[];
-  games: Winetrick[];
   settings: Winetrick[];
 };

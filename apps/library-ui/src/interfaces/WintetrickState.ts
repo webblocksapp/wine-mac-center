@@ -10,12 +10,6 @@ export type WinetrickState = {
     settings: Winetrick[];
   };
   loaders: {
-    listingApps: boolean;
-    listingBenchmarks: boolean;
-    listingDlls: boolean;
-    listingFonts: boolean;
-    listingGames: boolean;
-    listingSettings: boolean;
     listingAll: boolean;
   };
 };

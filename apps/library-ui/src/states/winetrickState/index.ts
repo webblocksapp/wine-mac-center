@@ -13,18 +13,12 @@ const initialState: WinetrickState = {
   },
   loaders: {
     listingAll: false,
-    listingApps: false,
-    listingBenchmarks: false,
-    listingDlls: false,
-    listingFonts: false,
-    listingGames: false,
-    listingSettings: false,
   },
 };
 
 export const winetrickState = (
   state: WinetrickState = initialState,
-  action: WinetrickAction
+  action: WinetrickAction,
 ) => {
   switch (action.type) {
     case WinetrickActionType.LIST:

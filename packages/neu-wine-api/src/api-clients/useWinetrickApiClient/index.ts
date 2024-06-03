@@ -56,7 +56,7 @@ export const useWinetrickApiClient = () => {
     return getWinetricks('settings list');
   };
 
-  const listAll = async (options: { force: boolean }) => {
+  const listAll = async (options?: { force?: boolean }) => {
     const WINETRICKS_PATH = `${env.get().WINE_ASSETS_PATH}/winetricks.json`;
 
     let winetricks: Winetricks = {
@@ -68,7 +68,7 @@ export const useWinetrickApiClient = () => {
       settings: [],
     };
 
-    if (!fileExists(WINETRICKS_PATH) || options.force) {
+    if (!fileExists(WINETRICKS_PATH) || options?.force) {
       const promises = await Promise.all([
         await listApps(),
         await listBenchmarks(),

@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
-    "@neutralinojs/lib": "^5.1.0",
-    "@neutralinojs/neu": "^11.0.1",
+    "@neutralinojs/lib": "^5.2.0",
+    "@neutralinojs/neu": "^11.2.0",
     "@types/node": "^20.12.7",
     "@types/plist": "^3.0.5",
     "@types/react": "^18.2.79",

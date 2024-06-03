@@ -66,11 +66,11 @@ importers:
         specifier: ^8.4.1
         version: 8.4.1
       '@neutralinojs/lib':
-        specifier: ^3.13.0
-        version: 3.13.0
+        specifier: ^5.2.0
+        version: 5.2.0
       '@neutralinojs/neu':
-        specifier: ^9.8.0
-        version: 9.8.0
+        specifier: ^11.2.0
+        version: 11.2.0
       '@storybook/addon-essentials':
         specifier: ^8.0.8
         version: 8.0.8(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
@@ -181,11 +181,11 @@ importers:
         specifier: ^0.2.3
         version: 0.2.3(esbuild@0.20.2)
       '@neutralinojs/lib':
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^5.2.0
+        version: 5.2.0
       '@neutralinojs/neu':
-        specifier: ^11.0.1
-        version: 11.0.1
+        specifier: ^11.2.0
+        version: 11.2.0
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.7
@@ -1584,6 +1584,16 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: true
 
+  /@electron/asar@3.2.10:
+    resolution: {integrity: sha512-mvBSwIBUeiRscrCeJE1LwctAriBj65eUDm0Pc11iE5gRwzkmsdbS7FnZ1XUWjpSeQWL1L5g12Fc/SchPM9DUOw==}
+    engines: {node: '>=10.12.0'}
+    hasBin: true
+    dependencies:
+      commander: 5.1.0
+      glob: 7.2.3
+      minimatch: 3.1.2
+    dev: true
+
   /@emotion/babel-plugin@11.11.0:
     resolution: {integrity: sha512-m4HEDZleaaCH+XgDDsPF15Ht6wTLsgDTeR3WYj9Q/k76JtWhrJjcP4+/XlG8LGT/Rol9qUfOIztXeA84ATpqPQ==}
     dependencies:
@@ -2567,55 +2577,27 @@ packages:
       tar-fs: 2.1.1
     dev: true
 
-  /@neutralinojs/lib@3.13.0:
-    resolution: {integrity: sha512-rbqoCqMrnpxP2r5Vkhb8BpDTlQBVHftzN0rJFnq2yW5Fszl0Jf9kRpn/UBiImrjEfPYIEshdgPtuTds4SJX+Fg==}
+  /@neutralinojs/lib@5.2.0:
+    resolution: {integrity: sha512-RlKpkPZSy3BD4ZOgX//LcLBOcffoErLL2xxYplco5fUvYv0BFNW1POGg/Iw7PdhleJMjSfgZavQe4+Kre8/D0w==}
     dev: true
 
-  /@neutralinojs/lib@5.1.0:
-    resolution: {integrity: sha512-CcPPP+TdY1Uaprert/bpc6voZS2b5Q8E10mMi5ave1ege+n9ARs5h1GOQQ8liZqMHbJeYu4dcBnIYsHQZQ351g==}
-    dev: true
-
-  /@neutralinojs/neu@11.0.1:
-    resolution: {integrity: sha512-GIQW8KUi3X3Bb90ozFBRq5ZjsN6ktY+AK+w8y8tErHw2nkn/NGt4Nuu+nssutnJawR87EgCmZ7FXoa3wx2UCqg==}
+  /@neutralinojs/neu@11.2.0:
+    resolution: {integrity: sha512-an52gOfJN7FCa7TPzBA9A3oir0wRTTwVzHa5EQYQseekQ0pFjCjjodVOSwSDZQkv760kjsUTRuOsX0HIQNiQew==}
     hasBin: true
     dependencies:
+      '@electron/asar': 3.2.10
       archiver: 4.0.2
-      asar: 3.2.0
       chalk: 4.1.2
       chokidar: 3.6.0
       commander: 7.2.0
       configstore: 5.0.1
       decompress: 4.2.1
       edit-json-file: 1.8.0
-      figlet: 1.7.0
       follow-redirects: 1.15.6
       fs-extra: 9.1.0
       recursive-readdir: 2.2.3
       spawn-command: 0.0.2-1
       tcp-port-used: 1.0.2
-      uuid: 8.3.2
-      websocket: 1.0.34
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-    dev: true
-
-  /@neutralinojs/neu@9.8.0:
-    resolution: {integrity: sha512-TuHTwGHKvlQtsHT3jugwoFNXZQ+xHnOofO1O3nnBG9uplfDmk3aU0zi95DpuPgQWMOxr+vLKBPL2p9BMrrLDWg==}
-    hasBin: true
-    dependencies:
-      archiver: 4.0.2
-      asar: 3.2.0
-      chalk: 4.1.2
-      chokidar: 3.6.0
-      commander: 7.2.0
-      configstore: 5.0.1
-      decompress: 4.2.1
-      edit-json-file: 1.8.0
-      figlet: 1.7.0
-      follow-redirects: 1.15.6
-      fs-extra: 9.1.0
-      recursive-readdir: 2.2.3
       uuid: 8.3.2
       websocket: 1.0.34
     transitivePeerDependencies:
@@ -4485,20 +4467,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /asar@3.2.0:
-    resolution: {integrity: sha512-COdw2ZQvKdFGFxXwX3oYh2/sOsJWJegrdJCGxnN4MZ7IULgRBp9P6665aqj9z1v9VwP4oP1hRBojRDQ//IGgAg==}
-    engines: {node: '>=10.12.0'}
-    deprecated: Please use @electron/asar moving forward.  There is no API change, just a package name change
-    hasBin: true
-    dependencies:
-      chromium-pickle-js: 0.2.0
-      commander: 5.1.0
-      glob: 7.2.3
-      minimatch: 3.1.2
-    optionalDependencies:
-      '@types/glob': 7.2.0
-    dev: true
-
   /asn1.js@4.10.1:
     resolution: {integrity: sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw==}
     dependencies:
@@ -4941,10 +4909,6 @@ packages:
   /chownr@2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
-    dev: true
-
-  /chromium-pickle-js@0.2.0:
-    resolution: {integrity: sha512-1R5Fho+jBq0DDydt+/vHWj5KJNJCKdARKOCwZUen84I5BreWoLqRLANH1U87eJy1tiASPtMnGqJJq0ZsLoRPOw==}
     dev: true
 
   /cipher-base@1.0.4:
@@ -6226,12 +6190,6 @@ packages:
     resolution: {integrity: sha512-3yurQZ2hD9VISAhJJP9bpYFNQrHHBXE2JxxjY5aLEcDi46RmAzJE2OC9FAde0yis5ElW0jTTzs0zfg/Cca4XqQ==}
     dev: true
 
-  /figlet@1.7.0:
-    resolution: {integrity: sha512-gO8l3wvqo0V7wEFLXPbkX83b7MVjRrk1oRLfYlZXol8nEpb/ON9pcKLI4qpBv5YtOTfrINtqb7b40iYY2FTWFg==}
-    engines: {node: '>= 0.4.0'}
-    hasBin: true
-    dev: true
-
   /file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -6581,6 +6539,7 @@ packages:
 
   /glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -6866,6 +6825,7 @@ packages:
 
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2

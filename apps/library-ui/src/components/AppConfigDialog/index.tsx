@@ -33,6 +33,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
       name,
       dxvkEnabled,
       engineVersion,
+      iconURL: '',
     });
   };
 
@@ -94,7 +95,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
             >
               Cancel
             </Button>
-            <Button type="submit" color="primary">
+            <Button disabled={form.isInvalid} type="submit" color="primary">
               Create
             </Button>
           </Stack>

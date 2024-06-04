@@ -9,12 +9,18 @@ import { useDispatch } from 'react-redux';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { WineAppPipelineActionType as ActionType } from '@constants';
 import { store } from '@store';
-import { useAppModel, useWineAppConfigModel, useWineAppModel } from '@models';
+import {
+  useAppModel,
+  useWineAppConfigModel,
+  useWineAppModel,
+  useWineEngineModel,
+} from '@models';
 
 export const useWineAppPipelineModel = () => {
   const appModel = useAppModel();
   const wineAppModel = useWineAppModel();
   const wineAppConfigModel = useWineAppConfigModel();
+  const wineEngineModel = useWineEngineModel();
   const { createWineAppPipeline, ...context } = useWineAppPipeline();
   const dispatch = useDispatch<Dispatch<WineAppPipelineAction>>();
 
@@ -42,11 +48,27 @@ export const useWineAppPipelineModel = () => {
   };
 
   const runWineAppPipeline = async (
-    appConfig: WineAppConfig & { name: string; iconURL: string },
+    appConfig: Omit<WineAppConfig, 'engineURLs'> & {
+      engineURLs?: string[];
+      name: string;
+      iconURL: string;
+    },
   ) => {
     try {
+      let config = {
+        ...appConfig,
+        engineURLs: [...(appConfig.engineURLs || [])],
+      };
+
+      if (!config.engineURLs.length) {
+        config = {
+          ...appConfig,
+          engineURLs: wineEngineModel.findEngineURLs(appConfig.engineVersion),
+        };
+      }
+
       const pipeline = await createWineAppPipeline({
-        appConfig,
+        appConfig: config,
         debug: true,
         outputEveryMs: 1000,
       });

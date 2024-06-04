@@ -15,6 +15,7 @@ export * from './WineAppPipelineState';
 export * from './WineAppPipelineStatus';
 export * from './WineAppState';
 export * from './WineEngineAction';
+export * from './WineEngineDownloadable';
 export * from './WineEngineState';
 export * from './WineInstalledApp';
 export * from './WineInstalledAppAction';

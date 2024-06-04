@@ -2,7 +2,7 @@ import { WineEngineState } from '@interfaces';
 
 export const list = (
   wineEngines: WineEngineState['wineEngines'],
-  state: WineEngineState
+  state: WineEngineState,
 ): WineEngineState => {
   return {
     ...state,
@@ -10,9 +10,19 @@ export const list = (
   };
 };
 
+export const listDownloadables = (
+  wineEnginesDownloadables: WineEngineState['wineEnginesDownloadables'],
+  state: WineEngineState,
+): WineEngineState => {
+  return {
+    ...state,
+    wineEnginesDownloadables,
+  };
+};
+
 export const loaders = (
   loaders: Partial<WineEngineState['loaders']>,
-  state: WineEngineState
+  state: WineEngineState,
 ): WineEngineState => {
   return {
     ...state,

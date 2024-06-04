@@ -5,6 +5,7 @@ export enum WinetrickActionType {
 
 export enum WineEngineActionType {
   LIST = 'WINE_ENGINE:LIST',
+  LIST_DOWNLOADABLES = 'WINE_ENGINE:LIST_DOWNLOADABLES',
   LOADING = 'WINE_ENGINE:LOADING',
 }
 

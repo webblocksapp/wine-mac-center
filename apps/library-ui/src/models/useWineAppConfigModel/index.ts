@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useWineAppConfigApiClient } from '@api-clients';
 import { WineAppConfigActionType as ActionType } from '@constants';
 import { RootState, WineAppConfig, WineAppConfigAction } from '@interfaces';
-import { useAppModel, useWineAppModel } from '@models';
+import { useAppModel, useWineAppModel, useWineEngineModel } from '@models';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { store } from '@store';
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,7 @@ export const useWineAppConfigModel = () => {
   });
   const appModel = useAppModel();
   const wineAppModel = useWineAppModel();
+  const wineEngineModel = useWineEngineModel();
   const wineAppConfigApiClient = useWineAppConfigApiClient();
   const dispatch = useDispatch<Dispatch<WineAppConfigAction>>();
 
@@ -25,7 +26,15 @@ export const useWineAppConfigModel = () => {
         throw new Error('Application not found.');
       }
 
-      dispatchPatch(await wineAppConfigApiClient.read(wineApp.scriptUrl));
+      const wineAppConfig = await wineAppConfigApiClient.read(
+        wineApp.scriptUrl,
+      );
+
+      const engineURLs = wineEngineModel.findEngineURLs(
+        wineAppConfig.engineVersion,
+      );
+
+      dispatchPatch({ ...wineAppConfig, engineURLs });
     } catch (error) {
       appModel.dispatchError(error);
     } finally {

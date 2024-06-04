@@ -1,5 +1,5 @@
 import { useWineAppModel, useWineEngineModel } from '@models';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface AppSetupProps {
   children?: React.ReactNode;
@@ -8,14 +8,21 @@ export interface AppSetupProps {
 export const AppSetup: React.FC<AppSetupProps> = ({ children }) => {
   const wineAppModel = useWineAppModel();
   const wineEngineModel = useWineEngineModel();
+  const [starting, setStarting] = useState(true);
 
-  const asyncSetup = () => {
-    Promise.allSettled([wineAppModel.listAll(), wineEngineModel.list()]);
+  const asyncSetup = async () => {
+    setStarting(true);
+    await Promise.allSettled([
+      wineAppModel.listAll(),
+      wineEngineModel.list(),
+      wineEngineModel.listDownloadables(),
+    ]);
+    setStarting(false);
   };
 
   useEffect(() => {
     asyncSetup();
   }, []);
 
-  return <>{children}</>;
+  return starting ? <>Starting...</> : <>{children}</>;
 };

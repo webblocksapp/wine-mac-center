@@ -34,5 +34,11 @@
     "keyName": "spelunky2",
     "name": "Spelunky 2",
     "version": "steam"
+  },
+  {
+    "appConfigId": "3753d152-22de-11ef-a022-685b35922e40",
+    "keyName": "erraex",
+    "name": "Erra Exordium",
+    "version": "steam"
   }
 ]

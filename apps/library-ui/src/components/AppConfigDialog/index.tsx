@@ -61,6 +61,9 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                   name="engineVersion"
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField control={form.control} name="icon" type="file" />
+              </Grid>
               <Grid item xs={4}>
                 <Checkbox
                   control={form.control}

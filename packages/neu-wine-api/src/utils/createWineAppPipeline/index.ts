@@ -13,6 +13,7 @@ export const createWineAppPipeline = async (options: {
 
   const {
     iconURL,
+    iconFile,
     name,
     engineVersion,
     engineURLs,
@@ -104,7 +105,11 @@ export const createWineAppPipeline = async (options: {
         steps: [
           {
             name: 'Creating wine app',
-            script: (args) => wineApp.scaffold(iconURL, args),
+            script: (args) =>
+              wineApp.scaffold(
+                { appIconURL: iconURL, appIconFile: iconFile },
+                args,
+              ),
             status: ProcessStatus.Pending,
             output: '',
           },

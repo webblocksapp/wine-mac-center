@@ -3,7 +3,8 @@ import { WineAppExecutable, WinetricksOptions } from '@interfaces';
 export type WineAppConfig = {
   id: string;
   appId?: string;
-  iconURL: string;
+  iconURL?: string;
+  iconFile?: ArrayBuffer;
   name: string;
   engineVersion: string;
   engineURLs: string[];

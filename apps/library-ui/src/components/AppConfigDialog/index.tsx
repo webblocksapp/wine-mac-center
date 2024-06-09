@@ -8,7 +8,7 @@ import {
   Stack,
 } from 'reactjs-ui-core';
 import { TextField, Checkbox, useForm } from 'reactjs-ui-form-fields';
-import { WineEnginesSelect, WinetricksSelector } from '@components';
+import { FileInput, WineEnginesSelect, WinetricksSelector } from '@components';
 import { useWineAppPipelineModel } from '@models';
 import { v4 as uuid } from 'uuid';
 import { FormSchema, useSchema } from './useSchema';
@@ -25,7 +25,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
   const form = useForm(schema);
   const wineAppPipelineModel = useWineAppPipelineModel();
 
-  const submit = (data: FormSchema) => {
+  const submit = async (data: FormSchema) => {
     form.reset();
     const { name, dxvkEnabled, engineVersion } = data;
     wineAppPipelineModel.runWineAppPipeline({
@@ -33,7 +33,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
       name,
       dxvkEnabled,
       engineVersion,
-      iconURL: '',
+      iconFile: await data.iconFile.arrayBuffer(),
     });
   };
 
@@ -62,7 +62,13 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField control={form.control} name="icon" type="file" />
+                <FileInput
+                  noSelectedFileLabel="Select Icon"
+                  selectedFileLabel="Change Icon"
+                  control={form.control}
+                  name="iconFile"
+                  accept="image/png"
+                />
               </Grid>
               <Grid item xs={4}>
                 <Checkbox
@@ -91,11 +97,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
             </Grid>
           </Box>
           <Stack direction="row" spacing={1} justifyContent="flex-end">
-            <Button
-              type="submit"
-              color="primary"
-              onClick={() => setOpen(false)}
-            >
+            <Button color="primary" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button disabled={form.isInvalid} type="submit" color="primary">

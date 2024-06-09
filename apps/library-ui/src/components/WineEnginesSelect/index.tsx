@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Select, SelectProps } from 'reactjs-ui-form-fields';
 
-export type WineEnginesSelectProps = SelectProps & {};
+export type WineEnginesSelectProps = SelectProps;
 
 export const WineEnginesSelect: React.FC<WineEnginesSelectProps> = (props) => {
   const wineEngineModel = useWineEngineModel();

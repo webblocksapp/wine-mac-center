@@ -9,14 +9,17 @@ export const ScaffoldApp: React.FC = () => {
 
   const scaffoldApp = async () => {
     setLoading(true);
-    await wineApp.scaffold('', {
-      onStdOut: (data) => {
-        setData(data);
+    await wineApp.scaffold(
+      { appIconURL: '' },
+      {
+        onStdOut: (data) => {
+          setData(data);
+        },
+        onStdErr: (data) => {
+          setData(data);
+        },
       },
-      onStdErr: (data) => {
-        setData(data);
-      },
-    });
+    );
 
     setLoading(false);
   };

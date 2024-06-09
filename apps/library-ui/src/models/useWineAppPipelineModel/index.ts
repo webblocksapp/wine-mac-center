@@ -51,7 +51,6 @@ export const useWineAppPipelineModel = () => {
     appConfig: Omit<WineAppConfig, 'engineURLs'> & {
       engineURLs?: string[];
       name: string;
-      iconURL: string;
     },
   ) => {
     try {

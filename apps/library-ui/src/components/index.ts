@@ -5,6 +5,7 @@ export * from './AppPipeline';
 export * from './AppSetup';
 export * from './CircularProgress';
 export * from './EnvProvider';
+export * from './FileInput';
 export * from './InstallAppButton';
 export * from './InstalledAppCard';
 export * from './NotificationsProvider';

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AppPipeline } from '@components';
+import { AppPipelineDialog } from '@components';
 import {
   useWineAppConfigModel,
   useWineAppModel,
@@ -8,9 +8,9 @@ import {
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-const meta: Meta<typeof AppPipeline> = {
-  title: 'App Components/AppPipeline',
-  component: AppPipeline,
+const meta: Meta<typeof AppPipelineDialog> = {
+  title: 'App Components/AppPipelineDialog',
+  component: AppPipelineDialog,
   decorators: [
     (Story) => {
       const [loading, setLoading] = useState(true);
@@ -44,7 +44,7 @@ const meta: Meta<typeof AppPipeline> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof AppPipeline>;
+type Story = StoryObj<typeof AppPipelineDialog>;
 
 export const Overview: Story = {
   render: (_) => {
@@ -53,6 +53,10 @@ export const Overview: Story = {
       wineAppPipelineModel.selectWineAppPipelineWithMeta,
     );
 
-    return wineAppPipeline ? <AppPipeline /> : <>Loading...</>;
+    return wineAppPipeline ? (
+      <AppPipelineDialog open={true} />
+    ) : (
+      <>Loading...</>
+    );
   },
 };

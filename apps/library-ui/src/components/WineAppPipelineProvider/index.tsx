@@ -1,53 +1,30 @@
-import { createContext, useContext, useRef } from 'react';
-import { WineAppPipeline } from 'neu-wine-api';
-import { createWineAppPipeline as baseCreateWineAppPipeline } from '@utils';
+import { AppPipelineDialog } from '@components';
+import { withWineAppPipelineProvider } from '@hocs';
+import { RootState } from '@interfaces';
+import { useWineAppPipelineModel } from '@models';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export interface WineAppPipelineProviderProps {
   children?: React.ReactNode;
 }
 
-export type WineAppPipelineContextType = {
-  createWineAppPipeline: typeof baseCreateWineAppPipeline;
-  findWineAppPipeline: (id: string | undefined) => WineAppPipeline | undefined;
-  killWineAppPipeline: (id: string | undefined) => void;
-};
+export const WineAppPipelineProvider: React.FC<WineAppPipelineProviderProps> =
+  withWineAppPipelineProvider(({ children }) => {
+    const [open, setOpen] = useState(false);
+    const wineAppPipelineModel = useWineAppPipelineModel();
+    const pipeline = useSelector((state: RootState) =>
+      wineAppPipelineModel.selectWineAppPipelineStatus(state),
+    );
 
-export const WineAppPipelineContext = createContext<WineAppPipelineContextType>(
-  {} as any,
-);
-export const useWineAppPipeline = () => useContext(WineAppPipelineContext);
+    useEffect(() => {
+      pipeline?.pipelineId && setOpen(true);
+    }, [pipeline?.pipelineId]);
 
-export const WineAppPipelineProvider: React.FC<
-  WineAppPipelineProviderProps
-> = ({ children }) => {
-  const store = useRef<{
-    pipelines: Array<WineAppPipeline>;
-  }>({ pipelines: [] });
-
-  const createWineAppPipeline: WineAppPipelineContextType['createWineAppPipeline'] =
-    async (args) => {
-      const pipeline = await baseCreateWineAppPipeline(args);
-      store.current.pipelines.push(pipeline);
-      return pipeline;
-    };
-
-  const findWineAppPipeline = (id: string | undefined) =>
-    store.current.pipelines.find((item) => item.id === id);
-
-  const killWineAppPipeline = (id: string | undefined) => {
-    const foundPipeline = findWineAppPipeline(id);
-    foundPipeline?.kill();
-  };
-
-  return (
-    <WineAppPipelineContext.Provider
-      value={{
-        createWineAppPipeline,
-        findWineAppPipeline,
-        killWineAppPipeline,
-      }}
-    >
-      {children}
-    </WineAppPipelineContext.Provider>
-  );
-};
+    return (
+      <>
+        <AppPipelineDialog open={open} />
+        {children}
+      </>
+    );
+  });

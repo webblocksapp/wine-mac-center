@@ -1,15 +1,9 @@
 import { InstallIcon } from '@assets/icons';
-import { AppPipeline, CircularProgress } from '@components';
+import { CircularProgress } from '@components';
 import { useWineAppConfigModel, useWineAppPipelineModel } from '@models';
-import {
-  Button,
-  ButtonProps,
-  Icon,
-  useDialogFactoryContext,
-} from 'reactjs-ui-core';
-import { RootState } from '@interfaces';
-import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { Button, ButtonProps, Icon } from 'reactjs-ui-core';
+
+import { useState } from 'react';
 
 export interface InstallAppButtonProps extends ButtonProps {
   appConfigId?: string;
@@ -22,11 +16,7 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
 }) => {
   const wineAppConfigModel = useWineAppConfigModel();
   const wineAppPipelineModel = useWineAppPipelineModel();
-  const pipeline = useSelector((state: RootState) =>
-    wineAppPipelineModel.selectWineAppPipelineByAppConfigId(state, appConfigId),
-  );
   const [loading, setLoading] = useState(false);
-  const { createDialog } = useDialogFactoryContext();
 
   const onClick: InstallAppButtonProps['onClick'] = async (event) => {
     setLoading(true);
@@ -35,14 +25,6 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
     onClickProp?.(event);
     setLoading(false);
   };
-
-  useEffect(() => {
-    pipeline &&
-      createDialog({
-        template: <AppPipeline pipelineId={pipeline.pipelineId} />,
-        options: { disableBackdropClick: true, disableEscapeKeyDown: true },
-      });
-  }, [pipeline?.pipelineId]);
 
   return (
     <Button

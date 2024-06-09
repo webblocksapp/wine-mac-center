@@ -4,7 +4,7 @@ import {
   WineAppPipelineAction,
   WineAppPipelineStatus,
 } from '@interfaces';
-import { useWineAppPipeline } from '@components';
+import { useWineAppPipeline } from '@hocs';
 import { useDispatch } from 'react-redux';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { WineAppPipelineActionType as ActionType } from '@constants';
@@ -89,10 +89,9 @@ export const useWineAppPipelineModel = () => {
   const killWineAppPipeline = (id: string | undefined) =>
     context.killWineAppPipeline(id);
 
-  const clearWineAppPipeline = (id: string | undefined) => {
+  const clearWineAppPipeline = () => {
     dispatch({
       type: ActionType.REMOVE,
-      id,
     });
   };
 
@@ -105,28 +104,12 @@ export const useWineAppPipelineModel = () => {
 
   const selectWineAppPipelineState = (state: RootState) =>
     state.wineAppPipelineState;
-  const selectWineAppPipelines = createSelector(
+  const selectWineAppPipelineStatus = createSelector(
     [selectWineAppPipelineState],
-    (wineAppPipelineState) => wineAppPipelineState.pipelines,
-  );
-  const selectWineAppPipeline = createSelector(
-    [
-      selectWineAppPipelines,
-      (_: RootState, appConfigId?: string) => appConfigId,
-    ],
-    (wineAppPipelines, appConfigId) =>
-      wineAppPipelines?.find((item) => item.pipelineId == appConfigId),
-  );
-  const selectWineAppPipelineByAppConfigId = createSelector(
-    [
-      selectWineAppPipelines,
-      (_: RootState, appConfigId?: string) => appConfigId,
-    ],
-    (wineAppPipelines, appConfigId) =>
-      wineAppPipelines?.find((item) => item.appConfigId == appConfigId),
+    (wineAppPipelineState) => wineAppPipelineState.pipelineStatus,
   );
   const selectWineAppPipelineMeta = createSelector(
-    [selectWineAppPipeline],
+    [selectWineAppPipelineStatus],
     (wineAppPipeline) => {
       return {
         wineApp: wineAppModel.selectWineApp(
@@ -141,7 +124,7 @@ export const useWineAppPipelineModel = () => {
     },
   );
   const selectWineAppPipelineWithMeta = createSelector(
-    [selectWineAppPipeline, selectWineAppPipelineMeta],
+    [selectWineAppPipelineStatus, selectWineAppPipelineMeta],
     (wineAppsPipeline, meta) => ({ ...wineAppsPipeline, meta }),
   );
 
@@ -151,9 +134,7 @@ export const useWineAppPipelineModel = () => {
     killWineAppPipeline,
     clearWineAppPipeline,
     dispatchPatch,
-    selectWineAppPipelines,
-    selectWineAppPipeline,
-    selectWineAppPipelineByAppConfigId,
+    selectWineAppPipelineStatus,
     selectWineAppPipelineMeta,
     selectWineAppPipelineWithMeta,
   };

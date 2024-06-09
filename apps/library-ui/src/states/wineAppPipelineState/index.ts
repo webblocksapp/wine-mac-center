@@ -3,7 +3,7 @@ import { WineAppPipelineAction, WineAppPipelineState } from '@interfaces';
 import { patch, remove } from './handlers';
 
 const initialState: WineAppPipelineState = {
-  pipelines: [],
+  pipelineStatus: undefined,
 };
 
 export const wineAppPipelineState = (
@@ -14,7 +14,7 @@ export const wineAppPipelineState = (
     case WineAppPipelineActionType.PATCH:
       return patch(action.pipelineStatus, state);
     case WineAppPipelineActionType.REMOVE:
-      return remove(action.id, state);
+      return remove(state);
     default:
       return state;
   }

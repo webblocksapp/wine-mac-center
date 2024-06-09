@@ -49,15 +49,10 @@ type Story = StoryObj<typeof AppPipeline>;
 export const Overview: Story = {
   render: (_) => {
     const wineAppPipelineModel = useWineAppPipelineModel();
-    const wineAppPipelines = useSelector(
-      wineAppPipelineModel.selectWineAppPipelines,
+    const wineAppPipeline = useSelector(
+      wineAppPipelineModel.selectWineAppPipelineWithMeta,
     );
-    const wineAppPipeline = wineAppPipelines?.[0];
 
-    return wineAppPipeline ? (
-      <AppPipeline pipelineId={wineAppPipeline.pipelineId} />
-    ) : (
-      <>Loading...</>
-    );
+    return wineAppPipeline ? <AppPipeline /> : <>Loading...</>;
   },
 };

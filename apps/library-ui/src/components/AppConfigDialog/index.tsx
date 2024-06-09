@@ -26,7 +26,6 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
   const wineAppPipelineModel = useWineAppPipelineModel();
 
   const submit = async (data: FormSchema) => {
-    form.reset();
     const { name, dxvkEnabled, engineVersion } = data;
     wineAppPipelineModel.runWineAppPipeline({
       id: uuid(),
@@ -35,6 +34,8 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
       engineVersion,
       iconFile: await data.iconFile.arrayBuffer(),
     });
+    form.reset();
+    setOpen(false);
   };
 
   return (

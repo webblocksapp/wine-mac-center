@@ -5,7 +5,7 @@ import { schema, Schema } from 'reactjs-ui-form-fields';
 
 export type FormSchema = Pick<
   WineAppConfig,
-  'name' | 'engineVersion' | 'dxvkEnabled'
+  'name' | 'engineVersion' | 'dxvkEnabled' | 'setupExecutablePath'
 > & { iconFile: File };
 
 export const useSchema = () => {
@@ -32,6 +32,7 @@ export const useSchema = () => {
             test: isRequired,
           })
           .required(),
+        setupExecutablePath: schema.string().required(),
       }),
     [],
   );

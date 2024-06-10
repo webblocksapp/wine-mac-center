@@ -12,6 +12,7 @@ import { FileInput, WineEnginesSelect, WinetricksSelector } from '@components';
 import { useWineAppPipelineModel } from '@models';
 import { v4 as uuid } from 'uuid';
 import { FormSchema, useSchema } from './useSchema';
+import { FilePathInput } from '../FilePathInput';
 
 export interface AppConfigDialogProps extends DialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,12 +27,13 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
   const wineAppPipelineModel = useWineAppPipelineModel();
 
   const submit = async (data: FormSchema) => {
-    const { name, dxvkEnabled, engineVersion } = data;
+    const { name, dxvkEnabled, engineVersion, setupExecutablePath } = data;
     wineAppPipelineModel.runWineAppPipeline({
       id: uuid(),
       name,
       dxvkEnabled,
       engineVersion,
+      setupExecutablePath,
       iconFile: await data.iconFile.arrayBuffer(),
     });
     form.reset();
@@ -68,6 +70,15 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                   selectedFileLabel="Change Icon"
                   control={form.control}
                   name="iconFile"
+                  accept="image/png"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FilePathInput
+                  noSelectedFileLabel="Select Setup Executable"
+                  selectedFileLabel="Change Setup Executable"
+                  control={form.control}
+                  name="setupExecutablePath"
                   accept="image/png"
                 />
               </Grid>

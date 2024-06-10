@@ -40,5 +40,11 @@
     "keyName": "erraex",
     "name": "Erra Exordium",
     "version": "steam"
+  },
+  {
+    "appConfigId": "eb29f698-26e9-11ef-8fef-685b35922e40",
+    "keyName": "drg",
+    "name": "Deep Rock Galactic",
+    "version": "steam"
   }
 ]

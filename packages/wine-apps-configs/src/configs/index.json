@@ -46,5 +46,11 @@
     "keyName": "drg",
     "name": "Deep Rock Galactic",
     "version": "steam"
+  },
+  {
+    "appConfigId": "75e68294-7993-4500-be47-14ee3755873d",
+    "keyName": "theforest",
+    "name": "The Forest",
+    "version": "steam"
   }
 ]

@@ -39,5 +39,6 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     'no-unsafe-finally': 'off',
+    'no-async-promise-executor': 'off',
   },
 };

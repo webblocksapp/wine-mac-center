@@ -1,6 +1,7 @@
 import { ExitCode, ProcessStatus } from '@constants';
 import { SpawnProcessArgs, WineAppConfig, WineAppPipeline } from '@interfaces';
-import { clone, createWineApp } from '@utils';
+import { filesystem } from '@neutralinojs/lib';
+import { clone, createWineApp, useEnv } from '@utils';
 import { v4 as uuid } from 'uuid';
 
 export const createWineAppPipeline = async (options: {
@@ -10,6 +11,7 @@ export const createWineAppPipeline = async (options: {
 }) => {
   const id = uuid();
   const store = { outputEnabled: true, killAllProcesses: false };
+  const env = useEnv();
 
   const {
     iconURL,
@@ -22,6 +24,16 @@ export const createWineAppPipeline = async (options: {
     setupExecutableURLs,
     setupExecutablePath,
   } = options.appConfig;
+
+  const checkEngineExists = async () => {
+    const ENGINES_PATH = `${env.get().WINE_ENGINES_PATH}`;
+    const entries = (await filesystem.readDirectory(ENGINES_PATH))
+      .filter((item) => item.type === 'FILE')
+      .map((item) => item.entry);
+    return entries.includes(`${engineVersion}.tar.7z`);
+  };
+
+  const ENGINE_EXISTS = await checkEngineExists();
 
   const handleOutput = (callbackFn: Function) => {
     if (store.outputEnabled) {
@@ -113,13 +125,17 @@ export const createWineAppPipeline = async (options: {
             status: ProcessStatus.Pending,
             output: '',
           },
-          {
-            name: 'Downloading wine engine',
-            script: (args) =>
-              wineApp.downloadWineEngine(engineURLs, engineVersion, args),
-            status: ProcessStatus.Pending,
-            output: '',
-          },
+          ...(ENGINE_EXISTS
+            ? []
+            : [
+                {
+                  name: 'Downloading wine engine',
+                  script: (args: SpawnProcessArgs) =>
+                    wineApp.downloadWineEngine(engineURLs, engineVersion, args),
+                  status: ProcessStatus.Pending,
+                  output: '',
+                },
+              ]),
           {
             name: 'Extracting wine engine',
             script: (args) => wineApp.extractEngine(engineVersion, args),

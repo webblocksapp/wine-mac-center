@@ -6,7 +6,7 @@ import { schema, Schema } from 'reactjs-ui-form-fields';
 export type FormSchema = Pick<
   WineAppConfig,
   'name' | 'engineVersion' | 'dxvkEnabled' | 'setupExecutablePath'
-> & { iconFile: File };
+> & { iconFile: File; useWinetricks: boolean; winetricksVerbs?: Array<string> };
 
 export const useSchema = () => {
   return useMemo<Schema<FormSchema>>(
@@ -33,6 +33,14 @@ export const useSchema = () => {
           })
           .required(),
         setupExecutablePath: schema.string().required(),
+        useWinetricks: schema.bool().required().default(false),
+        winetricksVerbs: schema
+          .array()
+          .when('useWinetricks', {
+            is: true,
+            then: (arrSchema) => arrSchema.of(schema.string()),
+          })
+          .default([]),
       }),
     [],
   );

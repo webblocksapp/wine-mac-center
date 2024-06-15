@@ -18,7 +18,7 @@ export const WineAppPipelineProvider: React.FC<WineAppPipelineProviderProps> =
     );
 
     useEffect(() => {
-      pipeline?.pipelineId && setOpen(true);
+      setOpen(Boolean(pipeline?.pipelineId));
     }, [pipeline?.pipelineId]);
 
     return (

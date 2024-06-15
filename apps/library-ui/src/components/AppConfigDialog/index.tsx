@@ -27,7 +27,14 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
   const wineAppPipelineModel = useWineAppPipelineModel();
 
   const submit = async (data: FormSchema) => {
-    const { name, dxvkEnabled, engineVersion, setupExecutablePath } = data;
+    const {
+      name,
+      dxvkEnabled,
+      engineVersion,
+      setupExecutablePath,
+      useWinetricks,
+      winetricksVerbs,
+    } = data;
     wineAppPipelineModel.runWineAppPipeline({
       id: uuid(),
       name,
@@ -35,6 +42,9 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
       engineVersion,
       setupExecutablePath,
       iconFile: await data.iconFile.arrayBuffer(),
+      winetricks: useWinetricks
+        ? { verbs: [...(winetricksVerbs || [])] }
+        : undefined,
     });
     form.reset();
     setOpen(false);
@@ -100,7 +110,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                 <Grid item xs={12}>
                   <WinetricksSelector
                     control={form.control}
-                    name="winetricks"
+                    name="winetricksVerbs"
                   />
                 </Grid>
               ) : (

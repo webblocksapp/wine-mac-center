@@ -47,9 +47,9 @@ export const useWineEngineModel = () => {
       (item) => item.version == engineVersion,
     )?.urls;
 
-    if (engineURLs === undefined || !engineURLs?.length) {
-      throw new Error('No wine engines available for download.');
-    }
+    // if (engineURLs === undefined || !engineURLs?.length) {
+    //   throw new Error('No wine engines available for download.');
+    // }
 
     return engineURLs;
   };

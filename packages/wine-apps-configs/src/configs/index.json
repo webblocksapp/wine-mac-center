@@ -52,5 +52,11 @@
     "keyName": "theforest",
     "name": "The Forest",
     "version": "steam"
+  },
+  {
+    "appConfigId": "095f0625-21fc-464b-b724-c0d7ad43f830",
+    "keyName": "planetcrafter",
+    "name": "The Planet Crafter",
+    "version": "steam"
   }
 ]

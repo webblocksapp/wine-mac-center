@@ -81,7 +81,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                   selectedFileLabel="Change Artwork"
                   control={form.control}
                   name="artworkFile"
-                  accept="image/png"
+                  accept="image/jpeg"
                 />
               </Grid>
               <Grid item xs={6}>

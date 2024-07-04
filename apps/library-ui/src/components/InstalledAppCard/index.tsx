@@ -3,6 +3,8 @@ import { RunAppButton } from '@components';
 import { useWineAppModel, useWineInstalledAppModel } from '@models';
 import { useSelector } from 'react-redux';
 import { RootState } from '@interfaces';
+import { useEffect, useState } from 'react';
+import { getAppArtwork } from '@utils';
 
 export interface InstalledAppCardProps extends CardProps {
   appId?: string;
@@ -20,6 +22,14 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
   const wineApp = useSelector((state: RootState) =>
     wineAppModel.selectWineApp(state, installedWineApp?.configId),
   );
+  const [artWorkSrc, setArtWorkSrc] = useState(wineApp?.imgSrc);
+
+  useEffect(() => {
+    (async () => {
+      wineApp?.imgSrc === undefined &&
+        setArtWorkSrc(await getAppArtwork(installedWineApp?.appPath));
+    })();
+  }, []);
 
   return (
     <Card sx={{ width: 200, height: 300, borderRadius: 2 }} {...rest}>
@@ -32,7 +42,7 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
         rowGap={'10px'}
       >
         <Image
-          src={wineApp?.imgSrc}
+          src={artWorkSrc}
           height="100%"
           width="100%"
           style={{

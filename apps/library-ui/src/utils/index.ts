@@ -9,6 +9,7 @@ export * from './fileExists';
 export * from './fileMaxSize';
 export * from './flattenObject';
 export * from './formatObjectPath';
+export * from './getAppArtwork';
 export * from './handleError';
 export * from './isDev';
 export * from './isIntegration';

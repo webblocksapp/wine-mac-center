@@ -4,6 +4,7 @@ import {
   InstalledAppCard,
   SearchField,
   SortDirectionSelect,
+  UpdateAppConfigDialog,
 } from '@components';
 import { useWineInstalledAppModel } from '@models';
 import { Button, Icon, SkeletonLoader, Stack } from 'reactjs-ui-core';
@@ -131,13 +132,17 @@ export const WineInstalledAppsList: React.FC = () => {
           setOpen={setShowDialog}
           open={showDialog}
           onClose={() => {
-            console.log('XXXX');
             setShowDialog(false);
           }}
         />
       ) : (
         <></>
       )}
+      <UpdateAppConfigDialog
+        appName="The Forest Test"
+        open
+        setOpen={setShowDialog}
+      />
     </Stack>
   );
 };

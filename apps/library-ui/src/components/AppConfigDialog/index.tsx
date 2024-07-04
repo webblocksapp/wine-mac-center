@@ -42,6 +42,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
       engineVersion,
       setupExecutablePath,
       iconFile: await data.iconFile.arrayBuffer(),
+      artworkFile: await data.artworkFile.arrayBuffer(),
       winetricks: useWinetricks
         ? { verbs: [...(winetricksVerbs || [])] }
         : undefined,
@@ -74,7 +75,16 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                   name="engineVersion"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
+                <FileInput
+                  noSelectedFileLabel="Select Artwork"
+                  selectedFileLabel="Change Artwork"
+                  control={form.control}
+                  name="artworkFile"
+                  accept="image/png"
+                />
+              </Grid>
+              <Grid item xs={6}>
                 <FileInput
                   noSelectedFileLabel="Select Icon"
                   selectedFileLabel="Change Icon"

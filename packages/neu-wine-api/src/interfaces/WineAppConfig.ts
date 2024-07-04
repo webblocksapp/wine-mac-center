@@ -5,6 +5,7 @@ export type WineAppConfig = {
   appId?: string;
   iconURL?: string;
   iconFile?: ArrayBuffer;
+  artworkFile?: ArrayBuffer;
   name: string;
   engineVersion: string;
   engineURLs: string[];

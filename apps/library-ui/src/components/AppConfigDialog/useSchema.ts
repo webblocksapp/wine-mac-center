@@ -6,7 +6,12 @@ import { schema, Schema } from 'reactjs-ui-form-fields';
 export type FormSchema = Pick<
   WineAppConfig,
   'name' | 'engineVersion' | 'dxvkEnabled' | 'setupExecutablePath'
-> & { iconFile: File; useWinetricks: boolean; winetricksVerbs?: Array<string> };
+> & {
+  artworkFile: File;
+  iconFile: File;
+  useWinetricks: boolean;
+  winetricksVerbs?: Array<string>;
+};
 
 export const useSchema = () => {
   return useMemo<Schema<FormSchema>>(
@@ -25,6 +30,19 @@ export const useSchema = () => {
             name: 'fileSize',
             message: 'File exceeds 200kb',
             test: (file) => fileMaxSize(file, 200000),
+          })
+          .test({
+            name: 'isRequired',
+            message: 'File is required',
+            test: isRequired,
+          })
+          .required(),
+        artworkFile: schema
+          .mixed<File>()
+          .test({
+            name: 'fileSize',
+            message: 'File exceeds 1000kb',
+            test: (file) => fileMaxSize(file, 1000000),
           })
           .test({
             name: 'isRequired',

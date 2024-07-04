@@ -131,7 +131,11 @@ export const createWineApp = async (appName: string) => {
    * Logic for creating the wine application structure.
    */
   const scaffold = async (
-    params: { appIconURL?: string; appIconFile?: ArrayBuffer },
+    params: {
+      appIconURL?: string;
+      appIconFile?: ArrayBuffer;
+      appArtWorkFile?: ArrayBuffer;
+    },
     args?: SpawnProcessArgs,
   ) => {
     const { stdOut, stdErr } = await execScript('buildUniqueAppName');
@@ -146,6 +150,7 @@ export const createWineApp = async (appName: string) => {
         await args?.onExit?.(data);
         await updateAppConfig({ name: appName });
         await setupAppIcon(params);
+        await setupAppArtwork(params);
       },
     });
   };
@@ -165,6 +170,19 @@ export const createWineApp = async (appName: string) => {
 
       filesystem.writeBinaryFile(
         `${WINE_ENV.WINE_APP_RESOURCES_PATH}/${FileName.CFBundleIconFile}`,
+        file,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const setupAppArtwork = async (params: { appArtWorkFile?: ArrayBuffer }) => {
+    try {
+      let file = params.appArtWorkFile;
+      if (file === undefined) return;
+      filesystem.writeBinaryFile(
+        `${WINE_ENV.WINE_APP_RESOURCES_PATH}/header.jpeg`,
         file,
       );
     } catch (error) {

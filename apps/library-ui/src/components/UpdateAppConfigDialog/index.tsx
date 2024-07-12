@@ -1,5 +1,10 @@
 import { RegeditIcon } from '@assets/icons';
-import { Cog6ToothIcon, RectangleStackIcon } from '@heroicons/react/24/solid';
+import {
+  Cog6ToothIcon,
+  CommandLineIcon,
+  RectangleStackIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/solid';
 import { createWineApp, WineApp } from 'neu-wine-api';
 import { useEffect, useState } from 'react';
 import { Button, Dialog, DialogProps, Grid, H6, Icon } from 'reactjs-ui-core';
@@ -47,6 +52,30 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
       method: () => {
         setLoading(true);
         wineApp?.taskmgr({
+          onExit: () => {
+            setLoading(false);
+          },
+        });
+      },
+    },
+    {
+      label: 'Command Line',
+      icon: CommandLineIcon,
+      method: () => {
+        setLoading(true);
+        wineApp?.cmd({
+          onExit: () => {
+            setLoading(false);
+          },
+        });
+      },
+    },
+    {
+      label: 'Control Panel',
+      icon: WrenchScrewdriverIcon,
+      method: () => {
+        setLoading(true);
+        wineApp?.control({
           onExit: () => {
             setLoading(false);
           },

@@ -3,6 +3,7 @@ export type BashScript =
   | 'bundleApp'
   | 'joinWineEngine'
   | 'cmd'
+  | 'control'
   | 'scaffoldApp'
   | 'extractWineEngine'
   | 'listAppExecutables'

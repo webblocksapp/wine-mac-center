@@ -319,6 +319,20 @@ export const createWineApp = async (appName: string) => {
   };
 
   /**
+   * Run cmd.
+   */
+  const cmd = (processArgs?: SpawnProcessArgs) => {
+    return spawnScript('cmd', '', processArgs);
+  };
+
+  /**
+   * Run control.
+   */
+  const control = (processArgs?: SpawnProcessArgs) => {
+    return spawnScript('control', '', processArgs);
+  };
+
+  /**
    * Write app config.json in disk.
    */
   const writeAppConfig = async (appConfig: Partial<WineAppConfig>) => {
@@ -434,6 +448,8 @@ export const createWineApp = async (appName: string) => {
     winecfg,
     regedit,
     taskmgr,
+    cmd,
+    control,
     winetrick,
     runExe,
     setSetupExe,

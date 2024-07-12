@@ -305,6 +305,20 @@ export const createWineApp = async (appName: string) => {
   };
 
   /**
+   * Run regedit.
+   */
+  const regedit = (processArgs?: SpawnProcessArgs) => {
+    return spawnScript('regedit', '', processArgs);
+  };
+
+  /**
+   * Run taskmgr.
+   */
+  const taskmgr = (processArgs?: SpawnProcessArgs) => {
+    return spawnScript('taskmgr', '', processArgs);
+  };
+
+  /**
    * Write app config.json in disk.
    */
   const writeAppConfig = async (appConfig: Partial<WineAppConfig>) => {
@@ -418,6 +432,8 @@ export const createWineApp = async (appName: string) => {
     extractEngine,
     wineboot,
     winecfg,
+    regedit,
+    taskmgr,
     winetrick,
     runExe,
     setSetupExe,

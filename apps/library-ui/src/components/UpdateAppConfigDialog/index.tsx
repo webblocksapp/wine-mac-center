@@ -1,4 +1,5 @@
-import { Cog6ToothIcon } from '@heroicons/react/24/solid';
+import { RegeditIcon } from '@assets/icons';
+import { Cog6ToothIcon, RectangleStackIcon } from '@heroicons/react/24/solid';
 import { createWineApp, WineApp } from 'neu-wine-api';
 import { useEffect, useState } from 'react';
 import { Button, Dialog, DialogProps, Grid, H6, Icon } from 'reactjs-ui-core';
@@ -28,6 +29,30 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
         });
       },
     },
+    {
+      label: 'Registry Editor',
+      icon: RegeditIcon,
+      method: () => {
+        setLoading(true);
+        wineApp?.regedit({
+          onExit: () => {
+            setLoading(false);
+          },
+        });
+      },
+    },
+    {
+      label: 'Task Manager',
+      icon: RectangleStackIcon,
+      method: () => {
+        setLoading(true);
+        wineApp?.taskmgr({
+          onExit: () => {
+            setLoading(false);
+          },
+        });
+      },
+    },
   ];
 
   useEffect(() => {
@@ -39,8 +64,8 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
   return (
     <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
       <Grid p={2} container bgcolor="secondary.main" spacing={3}>
-        {options.map((item) => (
-          <Grid item xs={6}>
+        {options.map((item, index) => (
+          <Grid key={index} item xs={6}>
             <Button
               disabled={wineApp === undefined || loading}
               color="secondary"
@@ -50,7 +75,7 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
               fullWidth
               onClick={() => item.method?.()}
             >
-              <Icon size={34} render={item.icon} pr={1} />
+              <Icon strokeWidth={0} size={34} render={item.icon} pr={1} />
               <H6>{item.label}</H6>
             </Button>
           </Grid>

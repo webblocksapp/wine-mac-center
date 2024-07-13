@@ -3,6 +3,7 @@ export * from './AppConfigDialog';
 export * from './AppForm';
 export * from './AppPipelineDialog';
 export * from './AppSetup';
+export * from './ChangeWineEngineDialog';
 export * from './CircularProgress';
 export * from './EnvProvider';
 export * from './FileInput';

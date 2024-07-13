@@ -2,12 +2,14 @@ import { RegeditIcon } from '@assets/icons';
 import {
   Cog6ToothIcon,
   CommandLineIcon,
+  CpuChipIcon,
   RectangleStackIcon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/solid';
 import { createWineApp, WineApp } from 'neu-wine-api';
 import { useEffect, useState } from 'react';
 import { Button, Dialog, DialogProps, Grid, H6, Icon } from 'reactjs-ui-core';
+import { ChangeWineEngineDialog } from '../ChangeWineEngineDialog';
 
 export interface UpdateAppConfigDialogProps extends DialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,6 +22,8 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
   ...rest
 }) => {
   const [loading, setLoading] = useState(false);
+  const [showChangeWineEngineDialog, setShowChangeWineEngineDialog] =
+    useState(false);
   const [wineApp, setWineApp] = useState<WineApp>();
   const options = [
     {
@@ -82,6 +86,13 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
         });
       },
     },
+    {
+      label: 'Change Engine',
+      icon: CpuChipIcon,
+      method: () => {
+        setShowChangeWineEngineDialog(true);
+      },
+    },
   ];
 
   useEffect(() => {
@@ -91,25 +102,39 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
   }, []);
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
-      <Grid p={2} container bgcolor="secondary.main" spacing={3}>
-        {options.map((item, index) => (
-          <Grid key={index} item xs={6}>
-            <Button
-              disabled={wineApp === undefined || loading}
-              color="secondary"
-              sx={{
-                border: (theme) => `1px solid ${theme.palette.primary.main}`,
-              }}
-              fullWidth
-              onClick={() => item.method?.()}
-            >
-              <Icon strokeWidth={0} size={34} render={item.icon} pr={1} />
-              <H6>{item.label}</H6>
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
-    </Dialog>
+    <>
+      <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
+        <Grid p={2} container bgcolor="secondary.main" spacing={3}>
+          {options.map((item, index) => (
+            <Grid key={index} item xs={6}>
+              <Button
+                disabled={wineApp === undefined || loading}
+                color="secondary"
+                sx={{
+                  border: (theme) => `1px solid ${theme.palette.primary.main}`,
+                }}
+                fullWidth
+                onClick={() => item.method?.()}
+              >
+                <Icon strokeWidth={0} size={34} render={item.icon} pr={1} />
+                <H6>{item.label}</H6>
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      </Dialog>
+      {wineApp && showChangeWineEngineDialog ? (
+        <ChangeWineEngineDialog
+          wineApp={wineApp}
+          open={showChangeWineEngineDialog}
+          setOpen={setShowChangeWineEngineDialog}
+          onClose={() => {
+            setShowChangeWineEngineDialog(false);
+          }}
+        />
+      ) : (
+        <></>
+      )}
+    </>
   );
 };

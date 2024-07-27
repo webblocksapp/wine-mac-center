@@ -8,6 +8,7 @@ export const createWineAppPipeline = async (options: {
   appConfig: WineAppConfig;
   debug?: boolean;
   outputEveryMs?: number;
+  promptMainExeCallback?: () => Promise<string>;
 }) => {
   const id = uuid();
   const store = { outputEnabled: true, killAllProcesses: false };
@@ -190,11 +191,12 @@ export const createWineAppPipeline = async (options: {
           },
           {
             name: 'Bundling app',
-            script: (args) => {
+            script: async (args) => {
               let executables = options.appConfig.executables || [];
 
               if (!options.appConfig.executables?.length) {
                 const exePath =
+                  (await options.promptMainExeCallback?.()) ||
                   (window as Window).prompt('Type the main executable path') ||
                   '';
                 executables = [{ path: exePath, main: true }];

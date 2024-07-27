@@ -126,13 +126,18 @@ export const useWineInstalledAppModel = () => {
         );
       }
 
-      return wineInstalledApps;
+      return wineInstalledApps?.map((item) => ({
+        ...item,
+        realAppName: item.appPath.split('/').pop()?.replace(/\.app/, ''),
+      }));
     },
   );
   const selectWineInstalledApp = createSelector(
-    [selectWineInstalledAppState, (_: RootState, id?: string) => id],
-    (wineInstalledAppsState, id) =>
-      wineInstalledAppsState.wineInstalledApps?.find((item) => item.id == id),
+    [
+      (state: RootState) => selectWineInstalledApps(state),
+      (_: RootState, id?: string) => id,
+    ],
+    (wineInstalledApps, id) => wineInstalledApps?.find((item) => item.id == id),
   );
 
   return {

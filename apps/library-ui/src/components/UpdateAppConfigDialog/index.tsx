@@ -8,7 +8,16 @@ import {
 } from '@heroicons/react/24/solid';
 import { createWineApp, WineApp } from 'neu-wine-api';
 import { useEffect, useState } from 'react';
-import { Button, Dialog, DialogProps, Grid, H6, Icon } from 'reactjs-ui-core';
+import {
+  Body1,
+  Button,
+  Dialog,
+  DialogProps,
+  Grid,
+  H6,
+  Icon,
+  Stack,
+} from 'reactjs-ui-core';
 import { ChangeWineEngineDialog } from '../ChangeWineEngineDialog';
 
 export interface UpdateAppConfigDialogProps extends DialogProps {
@@ -105,6 +114,9 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
     <>
       <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
         <Grid p={2} container bgcolor="secondary.main" spacing={3}>
+          <Grid xs={12} item>
+            <Body1 fontWeight={500}>{appName}</Body1>
+          </Grid>
           {options.map((item, index) => (
             <Grid key={index} item xs={6}>
               <Button
@@ -121,6 +133,18 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
               </Button>
             </Grid>
           ))}
+          <Grid xs={12} item>
+            <Stack direction="row" justifyContent="flex-end">
+              <Button
+                focusRipple={false}
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                Close
+              </Button>
+            </Stack>
+          </Grid>
         </Grid>
       </Dialog>
       {wineApp && showChangeWineEngineDialog ? (

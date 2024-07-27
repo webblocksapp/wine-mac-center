@@ -52,7 +52,13 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
   };
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
+    <Dialog
+      disableEscapeKeyDown
+      disableBackdropClick
+      fullWidth
+      maxWidth="md"
+      {...rest}
+    >
       <form
         onSubmit={form.handleSubmit(submit)}
         style={{ display: 'contents' }}

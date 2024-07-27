@@ -2,6 +2,7 @@ export * from './BashScript';
 export * from './CommandOptions';
 export * from './CommonObject';
 export * from './Env';
+export * from './FilePath';
 export * from './Job';
 export * from './JobStep';
 export * from './ScriptOptions';

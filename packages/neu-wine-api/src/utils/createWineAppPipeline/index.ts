@@ -1,5 +1,10 @@
 import { ExitCode, ProcessStatus } from '@constants';
-import { SpawnProcessArgs, WineAppConfig, WineAppPipeline } from '@interfaces';
+import {
+  FilePath,
+  SpawnProcessArgs,
+  WineAppConfig,
+  WineAppPipeline,
+} from '@interfaces';
 import { filesystem } from '@neutralinojs/lib';
 import { clone, createWineApp, useEnv } from '@utils';
 import { v4 as uuid } from 'uuid';
@@ -8,7 +13,7 @@ export const createWineAppPipeline = async (options: {
   appConfig: WineAppConfig;
   debug?: boolean;
   outputEveryMs?: number;
-  promptMainExeCallback?: () => Promise<string>;
+  promptMainExeCallback?: (appExecutables: Array<FilePath>) => Promise<string>;
 }) => {
   const id = uuid();
   const store = { outputEnabled: true, killAllProcesses: false };
@@ -195,10 +200,18 @@ export const createWineAppPipeline = async (options: {
               let executables = options.appConfig.executables || [];
 
               if (!options.appConfig.executables?.length) {
-                const exePath =
-                  (await options.promptMainExeCallback?.()) ||
-                  (window as Window).prompt('Type the main executable path') ||
-                  '';
+                let exePath = '';
+
+                if (options.promptMainExeCallback) {
+                  const appExecutables = await wineApp.listAppExecutables();
+                  exePath = await options.promptMainExeCallback(appExecutables);
+                } else {
+                  exePath =
+                    (window as Window).prompt(
+                      'Type the main executable path',
+                    ) || '';
+                }
+
                 executables = [{ path: exePath, main: true }];
               }
 

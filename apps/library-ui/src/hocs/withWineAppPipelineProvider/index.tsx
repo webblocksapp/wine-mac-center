@@ -49,6 +49,7 @@ export const withWineAppPipelineProvider = <T,>(Component: React.FC<T>) => {
         const pipeline = await baseCreateWineAppPipeline({
           ...args,
           promptMainExeCallback: async (appExecutables) => {
+            setOpenSelectExecutableDialog(true);
             setExecutables(appExecutables);
             const mainExe = await mainExecutableSelection();
             resetMainExecutable();

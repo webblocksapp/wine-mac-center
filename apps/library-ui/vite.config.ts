@@ -7,9 +7,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 import checker from 'vite-plugin-checker';
 
-const NEUTRALINOJS_BASE_URL = `${process.env.NODE_ENV === 'production'}`
-  ? ''
-  : 'http://localhost:3002';
+const NEUTRALINOJS_BASE_URL = `http://localhost:3002`;
 
 // https://vitejs.dev/config/
 export default defineConfig({

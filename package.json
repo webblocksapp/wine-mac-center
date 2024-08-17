@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "Mauricio Rivera",
-  "license": "ISC"
+  "license": "ISC",
+  "resolutions": {
+    "rollup": "4.15.0"
+  }
 }

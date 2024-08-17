@@ -5,10 +5,9 @@
   "port": 3002,
   "documentRoot": "/dist/",
   "url": "/",
-  "singlePageServe": true,
   "enableServer": true,
   "enableNativeAPI": true,
-  "tokenSecurity": "one-time",
+  "singlePageServe": true,
   "logging": {
     "enabled": true,
     "writeToLogFile": true

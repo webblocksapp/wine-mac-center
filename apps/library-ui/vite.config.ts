@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { PluginOption, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
@@ -8,6 +9,9 @@ import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 import checker from 'vite-plugin-checker';
 
 const NEUTRALINOJS_BASE_URL = `http://localhost:3002`;
+const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
+const { devDependencies } = packageJson;
+const external = [...Object.keys(devDependencies), '/public/.*'];
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -56,6 +60,7 @@ export default defineConfig({
     minify: false,
     rollupOptions: {
       plugins: [rollupNodePolyFill() as PluginOption],
+      external,
     },
   },
   server: {

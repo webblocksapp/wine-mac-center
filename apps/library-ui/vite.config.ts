@@ -7,6 +7,10 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 import checker from 'vite-plugin-checker';
 
+const NEUTRALINOJS_BASE_URL = `${process.env.NODE_ENV === 'production'}`
+  ? ''
+  : 'http://localhost:3002';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -25,7 +29,7 @@ export default defineConfig({
             template: 'index.html',
             inject: {
               data: {
-                neutralinoScript: `<script src="http://localhost:3002/neutralino.js"></script>`,
+                neutralinoScript: `<script src="${NEUTRALINOJS_BASE_URL}/neutralino.js"></script>`,
               },
             },
           }),

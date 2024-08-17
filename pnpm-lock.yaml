@@ -66,11 +66,11 @@ importers:
         specifier: ^8.4.1
         version: 8.4.1
       '@neutralinojs/lib':
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.3.0
+        version: 5.3.0
       '@neutralinojs/neu':
-        specifier: ^11.2.0
-        version: 11.2.0
+        specifier: ^11.2.2
+        version: 11.2.2
       '@storybook/addon-essentials':
         specifier: ^8.0.8
         version: 8.0.8(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
@@ -2581,8 +2581,36 @@ packages:
     resolution: {integrity: sha512-RlKpkPZSy3BD4ZOgX//LcLBOcffoErLL2xxYplco5fUvYv0BFNW1POGg/Iw7PdhleJMjSfgZavQe4+Kre8/D0w==}
     dev: true
 
+  /@neutralinojs/lib@5.3.0:
+    resolution: {integrity: sha512-WBoht+/GXzhmmLEVwwG0A0dIfwFBYZyW+hS4vrYW6SiEo49LlWmUFjhGGey5+8dnjdy1DGnzqp9GAAM4gOKOpA==}
+    dev: true
+
   /@neutralinojs/neu@11.2.0:
     resolution: {integrity: sha512-an52gOfJN7FCa7TPzBA9A3oir0wRTTwVzHa5EQYQseekQ0pFjCjjodVOSwSDZQkv760kjsUTRuOsX0HIQNiQew==}
+    hasBin: true
+    dependencies:
+      '@electron/asar': 3.2.10
+      archiver: 4.0.2
+      chalk: 4.1.2
+      chokidar: 3.6.0
+      commander: 7.2.0
+      configstore: 5.0.1
+      decompress: 4.2.1
+      edit-json-file: 1.8.0
+      follow-redirects: 1.15.6
+      fs-extra: 9.1.0
+      recursive-readdir: 2.2.3
+      spawn-command: 0.0.2-1
+      tcp-port-used: 1.0.2
+      uuid: 8.3.2
+      websocket: 1.0.34
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+    dev: true
+
+  /@neutralinojs/neu@11.2.2:
+    resolution: {integrity: sha512-2oLCcksIkAOJiebQox2NxRENRwqaV4hgfNck6Zdd4Wi5PMG825Jl1RH/yC3yODyVwNM1SOlFXowuUU9efofX7A==}
     hasBin: true
     dependencies:
       '@electron/asar': 3.2.10

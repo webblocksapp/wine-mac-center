@@ -5,6 +5,7 @@
   "port": 3002,
   "documentRoot": "/dist/",
   "url": "/",
+  "singlePageServe": true,
   "enableServer": true,
   "enableNativeAPI": true,
   "tokenSecurity": "one-time",
@@ -35,7 +36,7 @@
     "resourcesPath": "/dist/",
     "extensionsPath": "/extensions/",
     "clientLibrary": "/public/neutralino.js",
-    "binaryVersion": "5.1.0",
-    "clientVersion": "5.1.0"
+    "binaryVersion": "5.3.0",
+    "clientVersion": "5.3.0"
   }
 }

@@ -15,10 +15,10 @@
     "copy-wine-deps": "rm -rf ./Contents && cp -r ../../packages/neu-wine-api/Contents ./Contents",
     "copy-neu-extensions": "rm -rf ./extensions && cp -r ../../packages/neu-wine-api/extensions ./extensions",
     "project-setup": "pnpm neu-setup && pnpm copy-wine-deps && pnpm copy-neu-extensions",
+    "bundle-mac-app": "ts-node --esm ./scripts/bundleMacApp.ts",
     "neu-server": "pnpm neu run -- --mode=cloud",
     "neu-setup": "pnpm neu update && pnpm build",
-    "neu-build": "pnpm project-setup && pnpm build && pnpm neu build",
-    "bundle-mac-app": "ts-node --esm ./scripts/bundleMacApp.ts"
+    "neu-build": "pnpm project-setup && pnpm build && pnpm neu build && pnpm bundle-mac-app"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -37,7 +37,7 @@
     "react-redux": "^8.1.3",
     "react-router-dom": "^6.26.1",
     "react-virtuoso": "^4.7.10",
-    "reactjs-ui-core": "^0.0.2",
+    "reactjs-ui-core": "^0.0.3",
     "reactjs-ui-form-fields": "^0.0.0",
     "uuid": "^9.0.1"
   },

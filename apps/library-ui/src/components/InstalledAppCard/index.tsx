@@ -59,6 +59,7 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
             equalSize={40}
             color="secondary"
             onClick={() => setShowConfigDialog(true)}
+            title="Configure App"
           >
             <Icon render={Cog6ToothIcon} />
           </Button>

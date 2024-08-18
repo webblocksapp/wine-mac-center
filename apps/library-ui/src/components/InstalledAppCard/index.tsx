@@ -1,4 +1,12 @@
-import { Box, Button, Card, CardProps, Icon, Image } from 'reactjs-ui-core';
+import {
+  Body1,
+  Box,
+  Button,
+  Card,
+  CardProps,
+  Icon,
+  Image,
+} from 'reactjs-ui-core';
 import { UpdateAppConfigDialog } from '@components';
 import { useWineAppModel, useWineInstalledAppModel } from '@models';
 import { useSelector } from 'react-redux';
@@ -6,6 +14,7 @@ import { RootState } from '@interfaces';
 import { useEffect, useState } from 'react';
 import { getAppArtwork } from '@utils';
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
+import defaultArtwork from '@assets/imgs/header.jpg';
 
 export interface InstalledAppCardProps extends CardProps {
   appId?: string;
@@ -25,11 +34,15 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
     wineAppModel.selectWineApp(state, installedWineApp?.configId),
   );
   const [artWorkSrc, setArtWorkSrc] = useState(wineApp?.imgSrc);
+  const [noArtWork, setNoArtWork] = useState(false);
 
   useEffect(() => {
     (async () => {
-      wineApp?.imgSrc === undefined &&
-        setArtWorkSrc(await getAppArtwork(installedWineApp?.appPath));
+      if (wineApp?.imgSrc === undefined) {
+        const artWork = await getAppArtwork(installedWineApp?.appPath);
+        setNoArtWork(!artWork);
+        setArtWorkSrc(artWork || defaultArtwork);
+      }
     })();
   }, []);
 
@@ -43,16 +56,36 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
         gridTemplateRows="230px 40px"
         rowGap={'10px'}
       >
-        <Image
-          src={artWorkSrc}
-          height="100%"
-          width="100%"
-          style={{
-            objectFit: 'cover',
-            maxWidth: '100%',
-            borderRadius: 12,
-          }}
-        />
+        <Box position="relative">
+          <Image
+            src={artWorkSrc}
+            height="100%"
+            width="100%"
+            style={{
+              objectFit: 'cover',
+              maxWidth: '100%',
+              borderRadius: 12,
+            }}
+          />
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            width="100%"
+            height="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {noArtWork ? (
+              <Body1 textAlign="center" p={1} fontWeight={500}>
+                {installedWineApp?.realAppName}
+              </Body1>
+            ) : (
+              <></>
+            )}
+          </Box>
+        </Box>
         <Box display="flex" justifyContent="end">
           <Button
             sx={{ borderRadius: 2 }}

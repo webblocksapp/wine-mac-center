@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AppCard } from '@components';
+import { InstalledAppCard } from '@components';
 
-const meta: Meta<typeof AppCard> = {
-  title: 'App Components/AppCard',
-  component: AppCard,
+const meta: Meta<typeof InstalledAppCard> = {
+  title: 'App Components/InstalledAppCard',
+  component: InstalledAppCard,
 };
 
 export default meta;
-type Story = StoryObj<typeof AppCard>;
+type Story = StoryObj<typeof InstalledAppCard>;
 
 export const Overview: Story = {
-  render: () => <AppCard />,
+  render: () => <InstalledAppCard />,
 };

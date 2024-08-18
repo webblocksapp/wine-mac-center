@@ -1,6 +1,5 @@
 export * from './AppCard';
 export * from './AppConfigDialog';
-export * from './AppForm';
 export * from './AppPipelineDialog';
 export * from './AppSetup';
 export * from './ChangeWineEngineDialog';

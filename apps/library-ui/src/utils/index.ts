@@ -16,4 +16,5 @@ export * from './isIntegration';
 export * from './isRequired';
 export * from './objectMatchCriteria';
 export * from './parseJSON';
+export * from './readFile';
 export * from './useEnv';

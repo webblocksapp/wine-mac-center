@@ -7,7 +7,6 @@ import { os } from '@neutralinojs/lib';
 export type FilePathInputProps = Omit<TextFieldProps, 'type' | 'label'> & {
   noSelectedFileLabel?: string;
   selectedFileLabel?: string;
-  accept?: string;
 };
 
 export const FilePathInput: React.FC<FilePathInputProps> = ({
@@ -18,7 +17,6 @@ export const FilePathInput: React.FC<FilePathInputProps> = ({
   value: _,
   noSelectedFileLabel,
   selectedFileLabel,
-  accept,
   ...rest
 }) => {
   const [filePath, setFilePath] = useState('');

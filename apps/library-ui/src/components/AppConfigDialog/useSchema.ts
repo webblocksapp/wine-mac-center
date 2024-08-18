@@ -1,4 +1,4 @@
-import { fileMaxSize, isRequired } from '@utils';
+import { fileMaxSize } from '@utils';
 import { WineAppConfig } from 'neu-wine-api';
 import { useMemo } from 'react';
 import { schema, Schema } from 'reactjs-ui-form-fields';
@@ -7,8 +7,8 @@ export type FormSchema = Pick<
   WineAppConfig,
   'name' | 'engineVersion' | 'dxvkEnabled' | 'setupExecutablePath'
 > & {
-  artworkFile: File;
-  iconFile: File;
+  artworkFile?: File;
+  iconFile?: File;
   useWinetricks: boolean;
   winetricksVerbs?: Array<string>;
 };
@@ -24,32 +24,16 @@ export const useSchema = () => {
           .required()
           .oneOf([true, false])
           .default(true),
-        iconFile: schema
-          .mixed<File>()
-          .test({
-            name: 'fileSize',
-            message: 'File exceeds 200kb',
-            test: (file) => fileMaxSize(file, 200000),
-          })
-          .test({
-            name: 'isRequired',
-            message: 'File is required',
-            test: isRequired,
-          })
-          .required(),
-        artworkFile: schema
-          .mixed<File>()
-          .test({
-            name: 'fileSize',
-            message: 'File exceeds 1000kb',
-            test: (file) => fileMaxSize(file, 1000000),
-          })
-          .test({
-            name: 'isRequired',
-            message: 'File is required',
-            test: isRequired,
-          })
-          .required(),
+        iconFile: schema.mixed<File>().test({
+          name: 'fileSize',
+          message: 'File exceeds 200kb',
+          test: (file) => fileMaxSize(file, 200000),
+        }),
+        artworkFile: schema.mixed<File>().test({
+          name: 'fileSize',
+          message: 'File exceeds 1000kb',
+          test: (file) => fileMaxSize(file, 1000000),
+        }),
         setupExecutablePath: schema.string().required(),
         useWinetricks: schema.bool().required().default(false),
         winetricksVerbs: schema

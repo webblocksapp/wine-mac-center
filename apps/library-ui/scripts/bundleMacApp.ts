@@ -6,8 +6,14 @@ import {
   copyFileSync,
   chmodSync,
   renameSync,
+  readdirSync,
+  writeFileSync,
 } from 'fs';
 import path from 'path';
+import plist from 'plist';
+
+const CFBundleExecutable = 'winemacapps';
+const CFBundleName = 'Wine Mac Apps';
 
 const run = () => {
   const DIST_FOLDER_PATH = path.join('./dist');
@@ -16,13 +22,18 @@ const run = () => {
   const EXTENSIONS_PATH = `${BUILD_PATH}/extensions`;
   const RESOURCES_NEU_PATH = `${BUILD_PATH}/resources.neu`;
   const RESOURCES_PATH = `./Contents/Resources`;
+  const FOLDERS_PATH_TO_KEEP: string[] = [];
 
   for (const BINARY of BINARIES_PATHS) {
     const SUFFIX = BINARY.split('_').pop();
     if (SUFFIX === undefined) continue;
-    const APP_PATH = `${DIST_FOLDER_PATH}/${SUFFIX}/WineMacApps`;
-    const APP_DOTAPP_PATH = `${DIST_FOLDER_PATH}/${SUFFIX}/WineMacApps.app`;
+
+    FOLDERS_PATH_TO_KEEP.push(SUFFIX);
+
+    const APP_PATH = `${DIST_FOLDER_PATH}/${SUFFIX}/${CFBundleName}`;
+    const APP_DOTAPP_PATH = `${DIST_FOLDER_PATH}/${SUFFIX}/${CFBundleName}.app`;
     const APP_CONTENTS_PATH = `${APP_PATH}/Contents`;
+    const APP_PLIST_PATH = `${APP_CONTENTS_PATH}/info.plist`;
     const APP_MACOS_PATH = `${APP_CONTENTS_PATH}/MacOS`;
 
     existsSync(APP_PATH) && rmSync(APP_PATH, { recursive: true });
@@ -39,9 +50,29 @@ const run = () => {
       recursive: true,
     });
     copyFileSync(RESOURCES_NEU_PATH, `${APP_MACOS_PATH}/resources.neu`);
-    copyFileSync(BINARY, `${APP_MACOS_PATH}/winemacapps`);
-    chmodSync(`${APP_MACOS_PATH}/winemacapps`, '755');
+    copyFileSync(BINARY, `${APP_MACOS_PATH}/${CFBundleExecutable}`);
+    chmodSync(`${APP_MACOS_PATH}/${CFBundleExecutable}`, '755');
+
+    const infoPlistXML = plist
+      .build({
+        CFBundleExecutable,
+        CFBundleName,
+      })
+      .replace(/\n/gi, '');
+
+    writeFileSync(APP_PLIST_PATH, infoPlistXML);
     renameSync(APP_PATH, `${APP_PATH}.app`);
+
+    const files = readdirSync(DIST_FOLDER_PATH);
+    const filesToDelete = files.filter(
+      (file) => !FOLDERS_PATH_TO_KEEP.includes(file),
+    );
+
+    filesToDelete.forEach((file) => {
+      const filePath = path.join(DIST_FOLDER_PATH, file);
+      existsSync(filePath) &&
+        rmSync(filePath, { recursive: true, force: true });
+    });
   }
 };
 

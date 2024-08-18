@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { AppCard, SearchField, SortDirectionSelect } from '@components';
 import { useWineAppModel } from '@models';
-import { SkeletonLoader, Stack } from 'reactjs-ui-core';
+import { Box, SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { RootState } from '@interfaces';
@@ -58,7 +58,7 @@ export const WineAppsList: React.FC = () => {
   }, []);
 
   return (
-    <Stack display="grid" gridTemplateRows="auto 1fr" spacing={1}>
+    <Box display="grid" gridTemplateRows="auto 1fr">
       <Stack direction="row" spacing={1} pt={2} px={3}>
         <Stack spacing={1} direction="row" width="100%" maxWidth={450}>
           <SearchField
@@ -93,6 +93,6 @@ export const WineAppsList: React.FC = () => {
           )}
         />
       </SkeletonLoader>
-    </Stack>
+    </Box>
   );
 };

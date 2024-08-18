@@ -111,54 +111,48 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
   }, []);
 
   return (
-    <>
-      <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
-        <Grid p={2} container bgcolor="secondary.main" spacing={3}>
-          <Grid xs={12} item>
-            <Body1 fontWeight={500}>{appName}</Body1>
-          </Grid>
-          {options.map((item, index) => (
-            <Grid key={index} item xs={6}>
-              <Button
-                disabled={wineApp === undefined || loading}
-                color="secondary"
-                sx={{
-                  border: (theme) => `1px solid ${theme.palette.primary.main}`,
-                }}
-                fullWidth
-                onClick={() => item.method?.()}
-              >
-                <Icon strokeWidth={0} size={34} render={item.icon} pr={1} />
-                <H6>{item.label}</H6>
-              </Button>
-            </Grid>
-          ))}
-          <Grid xs={12} item>
-            <Stack direction="row" justifyContent="flex-end">
-              <Button
-                focusRipple={false}
-                onClick={() => {
-                  setOpen(false);
-                }}
-              >
-                Close
-              </Button>
-            </Stack>
-          </Grid>
+    <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
+      <Grid p={2} container bgcolor="secondary.main" spacing={3}>
+        <Grid xs={12} item>
+          <Body1 fontWeight={500}>{appName}</Body1>
         </Grid>
-      </Dialog>
-      {wineApp && showChangeWineEngineDialog ? (
-        <ChangeWineEngineDialog
-          wineApp={wineApp}
-          open={showChangeWineEngineDialog}
-          setOpen={setShowChangeWineEngineDialog}
-          onClose={() => {
-            setShowChangeWineEngineDialog(false);
-          }}
-        />
-      ) : (
-        <></>
-      )}
-    </>
+        {options.map((item, index) => (
+          <Grid key={index} item xs={6}>
+            <Button
+              disabled={wineApp === undefined || loading}
+              color="secondary"
+              sx={{
+                border: (theme) => `1px solid ${theme.palette.primary.main}`,
+              }}
+              fullWidth
+              onClick={() => item.method?.()}
+            >
+              <Icon strokeWidth={0} size={34} render={item.icon} pr={1} />
+              <H6>{item.label}</H6>
+            </Button>
+          </Grid>
+        ))}
+        <Grid xs={12} item>
+          <Stack direction="row" justifyContent="flex-end">
+            <Button
+              focusRipple={false}
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              Close
+            </Button>
+          </Stack>
+        </Grid>
+      </Grid>
+      <ChangeWineEngineDialog
+        wineApp={wineApp}
+        open={showChangeWineEngineDialog}
+        setOpen={setShowChangeWineEngineDialog}
+        onClose={() => {
+          setShowChangeWineEngineDialog(false);
+        }}
+      />
+    </Dialog>
   );
 };

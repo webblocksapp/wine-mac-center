@@ -6,7 +6,7 @@ import {
   SortDirectionSelect,
 } from '@components';
 import { useWineInstalledAppModel } from '@models';
-import { Button, Icon, SkeletonLoader, Stack } from 'reactjs-ui-core';
+import { Box, Button, Icon, SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { RootState } from '@interfaces';
@@ -65,7 +65,7 @@ export const WineInstalledAppsList: React.FC = () => {
   }, []);
 
   return (
-    <Stack display="grid" gridTemplateRows="auto 1fr" spacing={1}>
+    <Box display="grid" gridTemplateRows="auto 1fr">
       <Stack
         direction="row"
         spacing={1}
@@ -133,6 +133,6 @@ export const WineInstalledAppsList: React.FC = () => {
           setShowDialog(false);
         }}
       />
-    </Stack>
+    </Box>
   );
 };

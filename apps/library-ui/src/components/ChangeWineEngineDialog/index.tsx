@@ -14,7 +14,7 @@ import { FormSchema, useSchema } from './useSchema';
 import { handleError } from '@utils';
 
 export interface ChangeWineEngineDialogProps extends DialogProps {
-  wineApp: WineApp;
+  wineApp: WineApp | undefined;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -28,7 +28,7 @@ export const ChangeWineEngineDialog: React.FC<ChangeWineEngineDialogProps> = ({
   const [error, setError] = useState('');
   const schema = useSchema();
   const form = useForm(schema);
-  const config = wineApp.getAppConfig();
+  const config = wineApp?.getAppConfig();
 
   const submit = async (data: FormSchema) => {
     try {
@@ -102,7 +102,7 @@ export const ChangeWineEngineDialog: React.FC<ChangeWineEngineDialogProps> = ({
             <Stack spacing={2}>
               <Body1 fontWeight={500}>Change Wine Engine</Body1>
               <WineEnginesSelect
-                value={config.engineVersion}
+                value={config?.engineVersion}
                 control={form.control}
                 name="engineVersion"
               />

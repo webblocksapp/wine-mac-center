@@ -34,44 +34,41 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({
   }, []);
 
   return (
-    <>
-      <Card sx={{ width: 200, height: 300, borderRadius: 2 }} {...rest}>
-        <Box
+    <Card sx={{ width: 200, height: 300, borderRadius: 2 }} {...rest}>
+      <Box
+        height="100%"
+        width="100%"
+        p={1}
+        display="grid"
+        gridTemplateRows="230px 40px"
+        rowGap={'10px'}
+      >
+        <Image
+          src={artWorkSrc}
           height="100%"
           width="100%"
-          p={1}
-          display="grid"
-          gridTemplateRows="230px 40px"
-          rowGap={'10px'}
-        >
-          <Image
-            src={artWorkSrc}
-            height="100%"
-            width="100%"
-            style={{
-              objectFit: 'cover',
-              maxWidth: '100%',
-              borderRadius: 12,
-            }}
-          />
-          <Box display="flex" justifyContent="end">
-            <Button
-              sx={{ borderRadius: 2 }}
-              title="Configure App"
-              equalSize={40}
-              color="secondary"
-              onClick={() => setShowConfigDialog(true)}
-            >
-              <Icon render={Cog6ToothIcon} />
-            </Button>
-          </Box>
+          style={{
+            objectFit: 'cover',
+            maxWidth: '100%',
+            borderRadius: 12,
+          }}
+        />
+        <Box display="flex" justifyContent="end">
+          <Button
+            sx={{ borderRadius: 2 }}
+            equalSize={40}
+            color="secondary"
+            onClick={() => setShowConfigDialog(true)}
+          >
+            <Icon render={Cog6ToothIcon} />
+          </Button>
         </Box>
-      </Card>
-      <UpdateAppConfigDialog
-        appName={installedWineApp?.realAppName || ''}
-        open={showConfigDialog}
-        setOpen={setShowConfigDialog}
-      />
-    </>
+        <UpdateAppConfigDialog
+          appName={installedWineApp?.realAppName || ''}
+          open={showConfigDialog}
+          setOpen={setShowConfigDialog}
+        />
+      </Box>
+    </Card>
   );
 };

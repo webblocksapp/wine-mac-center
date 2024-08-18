@@ -17,7 +17,8 @@
     "project-setup": "pnpm neu-setup && pnpm copy-wine-deps && pnpm copy-neu-extensions",
     "neu-server": "pnpm neu run -- --mode=cloud",
     "neu-setup": "pnpm neu update && pnpm build",
-    "neu-build": "pnpm project-setup && pnpm build && pnpm neu build"
+    "neu-build": "pnpm project-setup && pnpm build && pnpm neu build",
+    "bundle-mac-app": "ts-node --esm ./scripts/bundleMacApp.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -66,6 +67,7 @@
     "msw": "^2.2.14",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "storybook": "^8.0.8",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
     "vite-plugin-checker": "^0.6.4",

@@ -4,9 +4,14 @@ import { Field, TextFieldProps } from 'reactjs-ui-form-fields';
 import { InputAdornment } from '@mui/material';
 import { os } from '@neutralinojs/lib';
 
-export type FilePathInputProps = Omit<TextFieldProps, 'type' | 'label'> & {
+export type FilePathInputProps = Omit<
+  TextFieldProps,
+  'type' | 'label' | 'accept'
+> & {
   noSelectedFileLabel?: string;
   selectedFileLabel?: string;
+  filters?: os.Filter[];
+  dialogText?: string;
 };
 
 export const FilePathInput: React.FC<FilePathInputProps> = ({
@@ -17,15 +22,15 @@ export const FilePathInput: React.FC<FilePathInputProps> = ({
   value: _,
   noSelectedFileLabel,
   selectedFileLabel,
+  dialogText = 'Select file',
+  filters,
   ...rest
 }) => {
   const [filePath, setFilePath] = useState('');
 
   const selectFile = () => {
-    return os.showOpenDialog('Select setup executable', {
-      filters: [
-        { name: 'All Files', extensions: ['exe', 'msi', 'bat', 'cmd'] },
-      ],
+    return os.showOpenDialog(dialogText, {
+      filters,
     });
   };
 

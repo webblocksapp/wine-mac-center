@@ -106,6 +106,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                   selectedFileLabel="Change Setup Executable"
                   control={form.control}
                   name="setupExecutablePath"
+                  filters={FileFilter.WindowsExecutables}
                 />
               </Grid>
               <Grid item xs={4}>

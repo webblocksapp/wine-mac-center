@@ -1,10 +1,13 @@
 {
   "name": "wine-mac-center",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "library-ui:dev": "pnpm --filter library-ui dev"
+    "library-ui:dev": "pnpm --filter library-ui dev",
+    "neu-wine-api:build": "pnpm --filter neu-wine-api build",
+    "library-ui:neu-build": "pnpm --filter library-ui neu-build",
+    "build": "pnpm neu-wine-api:build && pnpm library-ui:neu-build"
   },
   "keywords": [],
   "author": "Mauricio Rivera",

@@ -9,6 +9,7 @@ import {
   readdirSync,
   writeFileSync,
 } from 'fs';
+import { execSync } from 'child_process';
 import path from 'path';
 import plist from 'plist';
 
@@ -63,17 +64,22 @@ const run = () => {
     writeFileSync(APP_PLIST_PATH, infoPlistXML);
     renameSync(APP_PATH, `${APP_PATH}.app`);
 
-    const files = readdirSync(DIST_FOLDER_PATH);
-    const filesToDelete = files.filter(
-      (file) => !FOLDERS_PATH_TO_KEEP.includes(file),
-    );
-
-    filesToDelete.forEach((file) => {
-      const filePath = path.join(DIST_FOLDER_PATH, file);
-      existsSync(filePath) &&
-        rmSync(filePath, { recursive: true, force: true });
-    });
+    const zipApp = `
+      cd ${DIST_FOLDER_PATH}/${SUFFIX} && zip -r Wine_Mac_Apps_${SUFFIX}.zip "${CFBundleName}.app"
+    `;
+    execSync(zipApp);
+    rmSync(APP_DOTAPP_PATH, { recursive: true, force: true });
   }
+
+  const files = readdirSync(DIST_FOLDER_PATH);
+  const filesToDelete = files.filter(
+    (file) => !FOLDERS_PATH_TO_KEEP.includes(file),
+  );
+
+  filesToDelete.forEach((file) => {
+    const filePath = path.join(DIST_FOLDER_PATH, file);
+    existsSync(filePath) && rmSync(filePath, { recursive: true, force: true });
+  });
 };
 
 run();

@@ -60,10 +60,6 @@ jobs:
           body: 'Automatically generated release for version ${{ env.VERSION }}'
           draft: false
           prerelease: false
-      - name: Compress the .app bundle
-        run: |
-          cd ./apps/library-ui/dist/x64
-          zip -r Wine_Mac_Apps_x64.zip Wine\ Mac\ Apps.app
       - name: Upload bundled files
         if: steps.check_tag.outputs.result == 'proceed'
         uses: actions/upload-release-asset@v1

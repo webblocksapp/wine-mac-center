@@ -58,5 +58,11 @@
     "keyName": "planetcrafter",
     "name": "The Planet Crafter",
     "version": "steam"
+  },
+  {
+    "appConfigId": "bbfd85bc-5e6e-11ef-9d99-685b35922e40",
+    "keyName": "gtasa",
+    "name": "Grand Theft Auto San Andreas",
+    "version": "steam"
   }
 ]

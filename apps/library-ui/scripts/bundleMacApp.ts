@@ -15,6 +15,8 @@ import plist from 'plist';
 
 const CFBundleExecutable = 'winemacapps';
 const CFBundleName = 'Wine Mac Apps';
+const CFBundleIdentifier = 'com.webblocksapp';
+const CFBundleSignature = '????';
 
 const run = () => {
   const DIST_FOLDER_PATH = path.join('./dist');
@@ -58,6 +60,8 @@ const run = () => {
       .build({
         CFBundleExecutable,
         CFBundleName,
+        CFBundleIdentifier,
+        CFBundleSignature,
       })
       .replace(/\n/gi, '');
 

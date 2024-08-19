@@ -61,7 +61,9 @@ jobs:
           draft: false
           prerelease: false
       - name: Compress the .app bundle
-        run: zip Wine_Mac_Apps_x64.zip ./apps/library-ui/dist/x64/Wine\ Mac\ Apps.app
+        run: |
+          cd ./apps/library-ui/dist/x64
+          zip -r Wine_Mac_Apps_x64.zip Wine\ Mac\ Apps.app
       - name: Upload bundled files
         if: steps.check_tag.outputs.result == 'proceed'
         uses: actions/upload-release-asset@v1
@@ -69,6 +71,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Wine_Mac_Apps_x64.zip
+          asset_path: './apps/library-ui/dist/x64/Wine_Mac_Apps_x64.zip'
           asset_name: Wine Mac Apps x64.zip
           asset_content_type: application/zip

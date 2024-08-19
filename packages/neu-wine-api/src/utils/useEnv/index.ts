@@ -20,7 +20,7 @@ export const useEnv = () => {
         ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, 'Contents/Resources');
         break;
       default:
-        ENV.DIRNAME = NL_PATH.trim();
+        ENV.DIRNAME = NL_PATH;
         ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, '../Resources');
         break;
     }

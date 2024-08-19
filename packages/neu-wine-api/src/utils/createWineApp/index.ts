@@ -243,7 +243,7 @@ export const createWineApp = async (appName: string) => {
   /**
    * Builds the wine env source by using the env.sh script.
    */
-  const wineEnvSource = () => `source ${SCRIPTS_PATH}/env.sh;`;
+  const wineEnvSource = () => `source "${SCRIPTS_PATH}/env.sh";`;
 
   /**
    * Winetrick
@@ -408,13 +408,14 @@ export const createWineApp = async (appName: string) => {
     `${ENV_EXPORTS} ${WINE_EXPORTS} ${wineEnvSource()} ${cmd}`;
 
   const execScript = (name: BashScript, args: string = '') =>
-    execCommand(s(`${SCRIPTS_PATH}/${name}.sh ${args}`));
+    execCommand(s(`"${SCRIPTS_PATH}/${name}.sh" ${args}`));
 
   const spawnScript = (
     name: BashScript,
     scriptArgs: string = '',
     processArgs?: SpawnProcessArgs,
-  ) => spawnProcess(s(`${SCRIPTS_PATH}/${name}.sh ${scriptArgs}`), processArgs);
+  ) =>
+    spawnProcess(s(`"${SCRIPTS_PATH}/${name}.sh" ${scriptArgs}`), processArgs);
 
   const execCommand: typeof os.execCommand = (command, options) =>
     os.execCommand(s(command), options);

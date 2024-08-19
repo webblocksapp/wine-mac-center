@@ -61,7 +61,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Compress the .app bundle
-        run: zip -r Wine_Mac_Apps_x64.zip ./apps/library-ui/dist/x64/Wine\ Mac\ Apps.app
+        run: zip Wine_Mac_Apps_x64.zip ./apps/library-ui/dist/x64/Wine\ Mac\ Apps.app
       - name: Upload bundled files
         if: steps.check_tag.outputs.result == 'proceed'
         uses: actions/upload-release-asset@v1

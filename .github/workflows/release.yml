@@ -63,6 +63,8 @@ jobs:
       - name: Upload bundled files
         if: steps.check_tag.outputs.result == 'proceed'
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: './apps/library-ui/dist/x64/Wine Mac Apps.app'

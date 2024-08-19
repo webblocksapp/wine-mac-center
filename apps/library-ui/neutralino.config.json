@@ -12,13 +12,7 @@
     "enabled": true,
     "writeToLogFile": true
   },
-  "nativeAllowList": [
-    "app.*",
-    "os.*",
-    "debug.log",
-    "filesystem.*",
-    "computer.*"
-  ],
+  "nativeAllowList": ["app.*", "os.*", "filesystem.*", "computer.*"],
   "modes": {
     "window": {
       "title": "Wine Mac Apps",
@@ -26,8 +20,7 @@
       "height": 800,
       "minWidth": 1280,
       "minHeight": 800,
-      "icon": "/public/icon.png",
-      "enableInspector": true
+      "icon": "/public/icon.png"
     }
   },
   "cli": {

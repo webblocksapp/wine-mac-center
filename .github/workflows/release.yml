@@ -1,12 +1,12 @@
 name: Release
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    branches: 'main'
 jobs:
-  lib-workflow:
+  env-setup:
     runs-on: ubuntu-latest
-    name: Wine Mac Apps Application workflow
+    name: Wine Mac Apps Env Setup
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,6 +19,39 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: '8.9.2'
+      - name: Get package version
+        run: |
+          VERSION=$(jq -r .version < package.json)
+          echo $VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Check if tag exists
+        id: check_tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const tag = `v${{ env.VERSION }}`
+            const { data: tags } = await github.rest.git.listMatchingRefs({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `tags/${tag}`,
+            });            
+            if (tags.some(t => t.ref === `refs/tags/${tag}`)) {
+              console.log(`Tag v${tag} already exists. Skipping release.`);
+              return 'skip';
+            }
+            console.log(`Tag ${tag} does not exist. Proceeding with release.`);
+            return 'proceed';
+          result-encoding: string
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      tag_check_result: ${{ steps.check_tag.outputs.result }}
+  release:
+    needs: env-setup
+    if: needs.env-setup.outputs.tag_check_result == 'proceed'
+    runs-on: ubuntu-latest
+    name: Wine Mac Apps Env Release
+    steps:
       - name: Install dependencies and build
         run: pnpm install --no-frozen-lockfile && pnpm build
         shell: bash
@@ -28,9 +61,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name}}
-          release_name: Release ${{ github.ref_name }}
-          body: 'Automatically generated release for version ${{ github.ref_name }}'
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          body: 'Automatically generated release for version ${{ env.VERSION }}'
           draft: false
           prerelease: false
       - name: Upload bundled files

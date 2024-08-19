@@ -36,7 +36,7 @@ jobs:
               ref: `tags/${tag}`,
             });            
             if (tags.some(t => t.ref === `refs/tags/${tag}`)) {
-              console.log(`Tag v${tag} already exists. Skipping release.`);
+              console.log(`Tag ${tag} already exists. Skipping release.`);
               return 'skip';
             }
             console.log(`Tag ${tag} does not exist. Proceeding with release.`);

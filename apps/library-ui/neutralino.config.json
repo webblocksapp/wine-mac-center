@@ -20,7 +20,8 @@
       "height": 800,
       "minWidth": 1280,
       "minHeight": 800,
-      "icon": "/public/icon.png"
+      "icon": "/public/icon.png",
+      "enableInspector": true
     }
   },
   "cli": {

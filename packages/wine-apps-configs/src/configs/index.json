@@ -64,5 +64,11 @@
     "keyName": "gtasa",
     "name": "Grand Theft Auto San Andreas",
     "version": "steam"
+  },
+  {
+    "appConfigId": "07e891d8-5ea6-11ef-9eb2-685b35922e40",
+    "keyName": "wworld",
+    "name": "Wall Word",
+    "version": "steam"
   }
 ]

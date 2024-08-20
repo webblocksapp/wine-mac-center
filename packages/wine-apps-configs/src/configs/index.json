@@ -70,5 +70,11 @@
     "keyName": "wworld",
     "name": "Wall Word",
     "version": "steam"
+  },
+  {
+    "appConfigId": "c8e0aaaa-5ea7-11ef-8503-685b35922e40",
+    "keyName": "gtaiv",
+    "name": "Grand Theft Auto IV The Complete Edition",
+    "version": "steam"
   }
 ]

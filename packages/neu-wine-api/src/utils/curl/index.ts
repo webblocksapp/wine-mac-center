@@ -107,7 +107,7 @@ export class NeutralinoCurl {
       } else {
         // Download as
         await this.run(
-          `--progress-bar -k ${ftpSSL} -u ${auth} -o ${dst} ${src}`,
+          `--progress-bar -k ${ftpSSL} -u ${auth} -o ${dst} ${src}`
         );
       }
     }
@@ -149,9 +149,11 @@ export class NeutralinoCurl {
     };
     document.dispatchEvent(eStart);
 
-    let cmd = await os.spawnProcess(
-      this.appResourcesEXT + `/${architectures[NL_ARCH]}/bin/curl ${args}`,
-    );
+    const curlCmd = `${this.appResourcesEXT.replace(/\s/g, '\\ ')}/${
+      architectures[NL_ARCH]
+    }/bin/curl ${args}`;
+    console.log(curlCmd);
+    let cmd = await os.spawnProcess(curlCmd);
 
     return new Promise((resolve, reject) => {
       events.on('spawnedProcess', (e) => {

@@ -15,7 +15,7 @@
     "copy-wine-deps": "rm -rf ./Contents && cp -r ../../packages/neu-wine-api/Contents ./Contents",
     "copy-neu-extensions": "rm -rf ./extensions && cp -r ../../packages/neu-wine-api/extensions ./extensions",
     "project-setup": "pnpm neu-setup && pnpm copy-wine-deps && pnpm copy-neu-extensions",
-    "bundle-mac-app": "ts-node --esm ./scripts/bundleMacApp.ts",
+    "bundle-mac-app": "TS_NODE_PROJECT='./tsconfig.tsnode.json' node --loader ts-node/esm ./scripts/bundleMacApp.ts",
     "neu-server": "pnpm neu run -- --mode=cloud",
     "neu-setup": "pnpm neu update && pnpm build",
     "neu-build": "pnpm project-setup && pnpm build && pnpm neu build && pnpm bundle-mac-app"

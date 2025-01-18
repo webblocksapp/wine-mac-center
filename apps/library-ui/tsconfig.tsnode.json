@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "types": ["node"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "lib": ["ES2020"]
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true
+  },
+  "include": ["scripts/**/*.ts"],
+  "exclude": ["node_modules"]
+}

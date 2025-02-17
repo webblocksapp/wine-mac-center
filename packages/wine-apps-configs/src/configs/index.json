@@ -76,5 +76,11 @@
     "keyName": "gtaiv",
     "name": "Grand Theft Auto IV The Complete Edition",
     "version": "steam"
+  },
+  {
+    "appConfigId": "3e67c5c1-1d6b-435a-b4ff-00a71cc8fbc3",
+    "keyName": "dga",
+    "name": "Death's Gambit: Afterlife",
+    "version": "steam"
   }
 ]

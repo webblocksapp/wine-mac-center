@@ -24,7 +24,7 @@ export const useWinetrickApiClient = () => {
 
   const getWinetricks = async (cmd: string) => {
     const { stdOut, stdErr } = await execScript(cmd);
-    if (stdErr) throw new Error(stdErr);
+    console.warn(stdErr);
     return mapResponse(stdOut);
   };
 

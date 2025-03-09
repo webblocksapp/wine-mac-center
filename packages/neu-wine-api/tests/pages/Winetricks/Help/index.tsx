@@ -8,8 +8,11 @@ export const Help: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      setData(await help());
-      setLoading(false);
+      try {
+        setData(await help());
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 

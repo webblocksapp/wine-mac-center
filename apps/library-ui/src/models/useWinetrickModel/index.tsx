@@ -22,7 +22,7 @@ export const useWinetrickModel = () => {
   };
 
   const dispatchWinetricks = (
-    winetricks: Partial<WinetrickState['winetricks']>,
+    winetricks: Partial<WinetrickState['winetricks']>
   ) => {
     dispatch({ type: ActionType.LIST, winetricks });
   };
@@ -33,7 +33,7 @@ export const useWinetrickModel = () => {
   const selectWinetrickState = (state: RootState) => state.winetrickState;
   const selectWinetricks = createSelector(
     [selectWinetrickState],
-    (winetrickState) => winetrickState.winetricks,
+    (winetrickState) => winetrickState.winetricks
   );
 
   return {

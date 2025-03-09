@@ -45,6 +45,6 @@
       "neu-wine-api": ["src"]
     }
   },
-  "include": ["./src"],
+  "exclude": ["vite.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

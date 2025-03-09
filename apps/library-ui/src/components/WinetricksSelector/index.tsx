@@ -25,7 +25,7 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
 }) => {
   const winetrickModel = useWinetrickModel();
   const { loaders, winetricks } = useSelector(
-    winetrickModel.selectWinetrickState,
+    winetrickModel.selectWinetrickState
   );
 
   useEffect(() => {
@@ -35,8 +35,8 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
   return (
     <SkeletonLoader loading={loaders.listingAll}>
       <Stack spacing={1}>
-        {CATEGORIES.map((category) => (
-          <Box key={category.key}>
+        {CATEGORIES.map((category, index) => (
+          <Box key={index}>
             <Accordion label={category.label}>
               <Field
                 control={control}
@@ -47,8 +47,8 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
                 render={(field) => (
                   <Grid container spacing={0}>
                     {winetricks[category.key as keyof Winetricks].map(
-                      (winetrick) => (
-                        <Grid key={winetrick.verb} item xs={4}>
+                      (winetrick, index) => (
+                        <Grid key={index} item xs={4}>
                           <Checkbox
                             name={name}
                             label={winetrick.verb}
@@ -60,7 +60,7 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
                             onBlur={field.props.onBlur}
                           />
                         </Grid>
-                      ),
+                      )
                     )}
                   </Grid>
                 )}

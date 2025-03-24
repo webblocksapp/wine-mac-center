@@ -9,5 +9,5 @@ export const ENV = {
   WINE_ASSETS_PATH: '',
   WINE_ENGINES_PATH: '',
   WINE_LIBS_PATH: '',
-  WINE_TMP_PATH: '',
+  WINE_TMP_PATH: ''
 };

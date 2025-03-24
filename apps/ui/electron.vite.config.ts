@@ -1,6 +1,8 @@
-import { resolve } from 'path'
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-import react from '@vitejs/plugin-react'
+import { resolve } from 'path';
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import react from '@vitejs/plugin-react';
+import EnvironmentPlugin from 'vite-plugin-environment';
 
 export default defineConfig({
   main: {
@@ -15,6 +17,6 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
-    plugins: [react()]
+    plugins: [react(), tsconfigPaths(), EnvironmentPlugin('all')]
   }
-})
+});

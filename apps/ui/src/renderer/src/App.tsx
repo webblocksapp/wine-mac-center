@@ -1,5 +1,15 @@
-export const App: React.FC = () => {
-  return <>Hello World</>
-}
+import { createEnv } from '@utils/createEnv';
+import { useEffect } from 'react';
 
-export default App
+export const App: React.FC = () => {
+  useEffect(() => {
+    const env = createEnv();
+    env.init().then(() => {
+      console.log(env.get());
+    });
+  }, []);
+
+  return <>Hello World</>;
+};
+
+export default App;

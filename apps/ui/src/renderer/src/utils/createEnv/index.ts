@@ -1,7 +1,8 @@
+import path from 'path';
 import { ENV } from '@constants/envs';
 import { buildEnvExports } from '@utils/buildEnvExports';
 import { execCommand } from '@utils/execCommand';
-import path from 'path';
+import { getAppPath } from '@utils/getAppPath';
 
 export const createEnv = () => {
   const get = () => ENV;
@@ -12,14 +13,14 @@ export const createEnv = () => {
   };
 
   const initEnv = async (mode: string | undefined) => {
+    ENV.DIRNAME = await getAppPath();
+
     switch (mode) {
       case 'development':
       case 'integration':
-        ENV.DIRNAME = (await execCommand('pwd')).stdOut.trim();
         ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, 'Contents/Resources');
         break;
       default:
-        ENV.DIRNAME = NL_PATH;
         ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, '../Resources');
         break;
     }

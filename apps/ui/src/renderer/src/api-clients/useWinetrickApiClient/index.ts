@@ -1,19 +1,23 @@
-import { Winetrick, Winetricks } from '@interfaces';
+import { Winetrick } from '@interfaces/Winetrick';
+import { Winetricks } from '@interfaces/Winetricks';
 import { filesystem, os } from '@neutralinojs/lib';
-import { dirExists, fileExists, parseJson, useEnv } from '@utils';
+import { createEnv } from '@utils/createEnv';
+import { dirExists } from '@utils/dirExists';
+import { fileExists } from '@utils/fileExists';
+import { parseJson } from '@utils/parseJson';
 
 export const useWinetrickApiClient = () => {
-  const env = useEnv();
+  const env = createEnv();
   const mapResponse = (data: string = ''): Winetrick[] => {
     const mappedData: Winetrick[] = [];
     const rows = data.split('\n');
-    for (let row of rows) {
+    for (const row of rows) {
       if (!row) continue;
       const [verb, description] = row.replace(/\s/, '--_--').split('--_--');
 
       mappedData.push({
         verb,
-        description: description?.replace?.(/^\s+/, ''),
+        description: description?.replace?.(/^\s+/, '')
       });
     }
     return mappedData;
@@ -61,7 +65,7 @@ export const useWinetrickApiClient = () => {
       benchmarks: [],
       dlls: [],
       fonts: [],
-      settings: [],
+      settings: []
     };
 
     if (!(await dirExists(WINE_ASSETS_PATH))) {
@@ -74,7 +78,7 @@ export const useWinetrickApiClient = () => {
         await listBenchmarks(),
         await listDlls(),
         await listFonts(),
-        await listSettings(),
+        await listSettings()
       ]);
 
       const [apps, benchmarks, dlls, fonts, settings] = promises;
@@ -83,7 +87,7 @@ export const useWinetrickApiClient = () => {
     } else {
       winetricks = {
         ...winetricks,
-        ...parseJson<Winetricks>(await filesystem.readFile(WINETRICKS_PATH)),
+        ...parseJson<Winetricks>(await filesystem.readFile(WINETRICKS_PATH))
       };
     }
 
@@ -97,6 +101,6 @@ export const useWinetrickApiClient = () => {
     listBenchmarks,
     listDlls,
     listFonts,
-    listSettings,
+    listSettings
   };
 };

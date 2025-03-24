@@ -1,13 +1,12 @@
 import { ENV } from '@constants/envs';
-import { os, init as initNeutralino } from '@neutralinojs/lib';
 import { buildEnvExports } from '@utils/buildEnvExports';
+import { execCommand } from '@utils/execCommand';
 import path from 'path';
 
 export const createEnv = () => {
   const get = () => ENV;
 
   const init = async (mode = process.env.NODE_ENV) => {
-    initNeutralino();
     const promises = [initEnv(mode)];
     await Promise.allSettled(promises);
   };
@@ -16,7 +15,7 @@ export const createEnv = () => {
     switch (mode) {
       case 'development':
       case 'integration':
-        ENV.DIRNAME = (await os.execCommand('pwd')).stdOut.trim();
+        ENV.DIRNAME = (await execCommand('pwd')).stdOut.trim();
         ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, 'Contents/Resources');
         break;
       default:
@@ -25,7 +24,7 @@ export const createEnv = () => {
         break;
     }
 
-    ENV.HOME = (await os.execCommand('echo $HOME')).stdOut.trim();
+    ENV.HOME = (await execCommand('echo $HOME')).stdOut.trim();
     ENV.WINE_APPS_PATH = `${ENV.HOME}/Wine/apps`;
     ENV.WINE_ASSETS_PATH = `${ENV.HOME}/Wine/assets`;
     ENV.WINE_ENGINES_PATH = `${ENV.HOME}/Wine/engines`;

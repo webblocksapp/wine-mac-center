@@ -1,4 +1,4 @@
-import { WineAppStep } from '@interfaces';
+import { WineAppStep } from '@interfaces/WineAppStep';
 
 export type WineAppJob = {
   name: string;

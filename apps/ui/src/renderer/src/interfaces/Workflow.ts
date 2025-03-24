@@ -1,5 +1,5 @@
-import { ProcessStatus } from '@constants';
-import { Job } from '@interfaces';
+import { ProcessStatus } from '@constants/enums';
+import { Job } from '@interfaces/Job';
 
 export type Workflow = {
   name: string;

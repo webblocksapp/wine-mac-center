@@ -1,4 +1,5 @@
-import { WineAppExecutable, WinetricksOptions } from '@interfaces';
+import { WineAppExecutable } from '@interfaces/WineAppExecutable';
+import { WinetricksOptions } from '@interfaces/WinetricksOptions';
 
 export type WineAppConfig = {
   id: string;

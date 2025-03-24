@@ -1,4 +1,4 @@
-import { ProcessStatus } from '@constants';
+import { ProcessStatus } from '@constants/enums';
 
 export type WineAppStep = {
   name: string;

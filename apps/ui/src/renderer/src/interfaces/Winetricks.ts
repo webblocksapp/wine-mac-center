@@ -1,4 +1,4 @@
-import { Winetrick } from '@interfaces';
+import { Winetrick } from '@interfaces/Winetrick';
 
 export type Winetricks = {
   apps: Winetrick[];

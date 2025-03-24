@@ -1,10 +1,7 @@
-import {
-  SpawnProcessArgs,
-  UpdateProcess,
-  WineAppJobWithScript,
-  WineAppPipelineStatus,
-  WineAppStep,
-} from '@interfaces';
+import { SpawnProcessArgs, UpdateProcess } from '@interfaces/SpawnProcessArgs';
+import { WineAppJobWithScript } from '@interfaces/WineAppJobWithScript';
+import { WineAppPipelineStatus } from '@interfaces/WineAppPipelineStatus';
+import { WineAppStep } from '@interfaces/WineAppStep';
 
 export type WineAppPipeline = {
   _: {
@@ -15,7 +12,7 @@ export type WineAppPipeline = {
         script: (args: SpawnProcessArgs) => Promise<void>;
       },
       data: string | number,
-      updateProcess?: UpdateProcess,
+      updateProcess?: UpdateProcess
     ) => void;
   };
   id: string;

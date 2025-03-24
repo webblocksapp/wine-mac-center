@@ -1,4 +1,4 @@
-import { Env } from '@interfaces';
+import { Env } from '@interfaces/Env';
 
 export type ScriptOptions = {
   force?: boolean;

@@ -11,9 +11,23 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@renderer/*": [
-        "src/renderer/src/*"
-      ]
+      "@api-clients/*": ["src/renderer/src/api-clients"],
+      "@assets/*": ["src/renderer/src/assets/*"],
+      "@components/*": ["src/renderer/src/components/*"],
+      "@constants/*": ["src/renderer/src/constants/*"],
+      "@hocs/*": ["src/renderer/src/hocs/*"],
+      "@icons/*": ["src/renderer/src/assets/icons/*"],
+      "@interfaces/*": ["src/renderer/src/interfaces/*"],
+      "@layouts/*": ["src/renderer/src/layouts/*"],
+      "@mocks/*": ["src/renderer/src/mocks/*"],
+      "@models/*": ["src/renderer/src/models/*"],
+      "@pages/*": ["src/renderer/src/pages/*"],
+      "@routes": ["src/renderer/src/routes"],
+      "@states/*": ["src/renderer/src/states/*"],
+      "@store": ["src/renderer/src/store"],
+      "@themes": ["src/renderer/src/themes"],
+      "@utils/*": ["src/renderer/src/utils/*"],
+      "@renderer/*": ["src/renderer/src/*"]
     }
   }
 }

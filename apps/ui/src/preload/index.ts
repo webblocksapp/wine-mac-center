@@ -7,7 +7,7 @@ export type Api = {
     stdOut: string;
     stdErr: string;
   }>;
-  pathJoin: (...paths: string[]) => string;
+  pathJoin: (...paths: string[]) => Promise<string>;
 };
 
 type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;

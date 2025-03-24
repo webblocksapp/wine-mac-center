@@ -18,10 +18,10 @@ export const createEnv = () => {
     switch (mode) {
       case 'development':
       case 'integration':
-        ENV.RESOURCES_PATH = pathJoin(ENV.DIRNAME, 'Contents/Resources');
+        ENV.RESOURCES_PATH = await pathJoin(ENV.DIRNAME, 'Contents/Resources');
         break;
       default:
-        ENV.RESOURCES_PATH = pathJoin(ENV.DIRNAME, '../Resources');
+        ENV.RESOURCES_PATH = await pathJoin(ENV.DIRNAME, '../Resources');
         break;
     }
 

@@ -1,1 +1,1 @@
-export const pathJoin = (...paths: string[]) => window.api.pathJoin(...paths);
+export const pathJoin = (...paths: string[]): Promise<string> => window.api.pathJoin(...paths);

@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { exec } from 'child_process';
 
-ipcMain.handle('get-app-path', () => {
+ipcMain.handle('get-app-path', async () => {
   return app.getAppPath(); // or __dirname
 });
 ipcMain.handle('exec-command', async (_, cmd: string) => {
@@ -18,7 +18,7 @@ ipcMain.handle('exec-command', async (_, cmd: string) => {
     });
   });
 });
-ipcMain.handle('path-join', async (_, ...paths: string[]) => path.join(...paths));
+ipcMain.handle('path-join', (_, ...paths: string[]) => path.join(...paths));
 
 function createWindow(): void {
   // Create the browser window.

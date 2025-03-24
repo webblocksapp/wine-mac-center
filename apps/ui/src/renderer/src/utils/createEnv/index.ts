@@ -1,8 +1,8 @@
-import path from 'path';
 import { ENV } from '@constants/envs';
 import { buildEnvExports } from '@utils/buildEnvExports';
 import { execCommand } from '@utils/execCommand';
 import { getAppPath } from '@utils/getAppPath';
+import { pathJoin } from '@utils/pathJoin';
 
 export const createEnv = () => {
   const get = () => ENV;
@@ -18,10 +18,10 @@ export const createEnv = () => {
     switch (mode) {
       case 'development':
       case 'integration':
-        ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, 'Contents/Resources');
+        ENV.RESOURCES_PATH = pathJoin(ENV.DIRNAME, 'Contents/Resources');
         break;
       default:
-        ENV.RESOURCES_PATH = path.join(ENV.DIRNAME, '../Resources');
+        ENV.RESOURCES_PATH = pathJoin(ENV.DIRNAME, '../Resources');
         break;
     }
 

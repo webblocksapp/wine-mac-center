@@ -1,10 +1,22 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 
+export type Api = {
+  getAppPath: () => Promise<string>;
+  execCommand: (cmd: string) => Promise<{
+    stdOut: string;
+    stdErr: string;
+  }>;
+  pathJoin: (...paths: string[]) => string;
+};
+
+type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
+
 // Custom APIs for renderer
-const api = {
+const api: RendererApi = {
   getAppPath: () => ipcRenderer.invoke('get-app-path'),
-  runCommand: (cmd: string) => ipcRenderer.invoke('run-command', cmd)
+  execCommand: (cmd: string) => ipcRenderer.invoke('exec-command', cmd),
+  pathJoin: (...paths: string[]) => ipcRenderer.invoke('path-join', ...paths)
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

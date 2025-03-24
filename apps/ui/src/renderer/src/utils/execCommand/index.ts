@@ -3,4 +3,4 @@ export const execCommand = (
 ): Promise<{
   stdOut: string;
   stdErr: string;
-}> => window.api.runCommand(cmd);
+}> => window.api.execCommand(cmd);

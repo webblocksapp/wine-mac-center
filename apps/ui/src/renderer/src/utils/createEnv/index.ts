@@ -18,10 +18,10 @@ export const createEnv = () => {
     switch (mode) {
       case 'development':
       case 'integration':
-        ENV.RESOURCES_PATH = await pathJoin(ENV.DIRNAME, 'Contents/Resources');
+        ENV.RESOURCES_PATH = await pathJoin(ENV.DIRNAME, 'resources');
         break;
       default:
-        ENV.RESOURCES_PATH = await pathJoin(ENV.DIRNAME, '../Resources');
+        ENV.RESOURCES_PATH = await pathJoin(ENV.DIRNAME, '..');
         break;
     }
 
@@ -32,7 +32,6 @@ export const createEnv = () => {
     ENV.WINE_TMP_PATH = `${ENV.HOME}/Wine/tmp`;
     ENV.WINE_LIBS_PATH = `${ENV.HOME}/Wine/libs`;
     ENV.SCRIPTS_PATH = `${ENV.RESOURCES_PATH}/bash`;
-    ENV.INTERNAL_APPS_PATH = `${ENV.RESOURCES_PATH}/apps`;
     ENV.COMPRESSED_PATH = `${ENV.RESOURCES_PATH}/compressed`;
   };
 

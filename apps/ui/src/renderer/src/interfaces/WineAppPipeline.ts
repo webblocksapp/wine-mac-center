@@ -11,7 +11,7 @@ export type WineAppPipeline = {
       step: WineAppStep & {
         script: (args: SpawnProcessArgs) => Promise<void>;
       },
-      data: string | number,
+      data: string | number | null,
       updateProcess?: UpdateProcess
     ) => void;
   };

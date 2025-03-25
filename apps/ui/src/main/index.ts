@@ -3,6 +3,9 @@ import path, { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { exec } from 'child_process';
+import { spawn } from 'child_process';
+// @ts-ignore (renderer type)
+import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 
 ipcMain.handle('get-app-path', async () => {
   return app.getAppPath(); // or __dirname
@@ -19,6 +22,44 @@ ipcMain.handle('exec-command', async (_, cmd: string) => {
   });
 });
 ipcMain.handle('path-join', (_, ...paths: string[]) => path.join(...paths));
+ipcMain.handle('spawn-process', (_, command: string, args?: SpawnProcessArgs): Promise<void> => {
+  const child = spawn(command, {
+    stdio: 'pipe',
+    shell: true // Required to run the whole string in a shell
+  });
+
+  const updateProcess: UpdateProcess = async (action, data) => {
+    if (action === 'stdIn') {
+      child.stdin.write(data);
+    }
+
+    if (action === 'stdInEnd') {
+      child.stdin.write(data);
+    }
+
+    if (action === 'exit') {
+      child.stdin.write(data);
+    }
+  };
+
+  args?.action && updateProcess(args.action.type, args.action.data);
+
+  return new Promise((resolve) => {
+    child.stdout.on('data', async (data) => {
+      await args?.onStdOut?.(data, updateProcess);
+    });
+
+    child.stderr.on('data', async (data) => {
+      await args?.onStdErr?.(data, updateProcess);
+    });
+
+    child.on('close', async (code) => {
+      await args?.onExit?.(code);
+      if (args) args = {}; //Callback is cleaned from subscription
+      resolve(undefined);
+    });
+  });
+});
 
 function createWindow(): void {
   // Create the browser window.

@@ -1,5 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
+// @ts-ignore (renderer type)
+import { SpawnProcessArgs } from '../renderer/src/interfaces';
 
 export type Api = {
   getAppPath: () => Promise<string>;
@@ -8,6 +10,7 @@ export type Api = {
     stdErr: string;
   }>;
   pathJoin: (...paths: string[]) => Promise<string>;
+  spawnProcess: (command: string, args?: SpawnProcessArgs) => Promise<void>;
 };
 
 type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
@@ -16,7 +19,8 @@ type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
 const api: RendererApi = {
   getAppPath: () => ipcRenderer.invoke('get-app-path'),
   execCommand: (cmd: string) => ipcRenderer.invoke('exec-command', cmd),
-  pathJoin: (...paths: string[]) => ipcRenderer.invoke('path-join', ...paths)
+  pathJoin: (...paths: string[]) => ipcRenderer.invoke('path-join', ...paths),
+  spawnProcess: (...args) => ipcRenderer.invoke('spawn-process', ...args)
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

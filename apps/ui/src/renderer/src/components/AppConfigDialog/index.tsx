@@ -1,28 +1,19 @@
-import {
-  Body1,
-  Box,
-  Button,
-  Dialog,
-  DialogProps,
-  Grid,
-  Stack,
-} from 'reactjs-ui-core';
+import { Body1, Box, Button, Dialog, DialogProps, Grid, Stack } from 'reactjs-ui-core';
 import { TextField, Checkbox, useForm } from 'reactjs-ui-form-fields';
-import { FileInput, WineEnginesSelect, WinetricksSelector } from '@components';
-import { useWineAppPipelineModel } from '@models';
 import { v4 as uuid } from 'uuid';
 import { FormSchema, useSchema } from './useSchema';
 import { FilePathInput } from '../FilePathInput';
-import { FileFilter } from '@constants';
+import { useWineAppPipelineModel } from '@models/useWineAppPipelineModel';
+import { FileInput } from '@components/FileInput';
+import { WineEnginesSelect } from '@components/WineEnginesSelect';
+import { WinetricksSelector } from '@components/WinetricksSelector';
+import { FileFilter } from '@constants/enums';
 
 export interface AppConfigDialogProps extends DialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
-  setOpen,
-  ...rest
-}) => {
+export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({ setOpen, ...rest }) => {
   const schema = useSchema();
   const form = useForm(schema);
   const wineAppPipelineModel = useWineAppPipelineModel();
@@ -34,7 +25,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
       engineVersion,
       setupExecutablePath,
       useWinetricks,
-      winetricksVerbs,
+      winetricksVerbs
     } = data;
     wineAppPipelineModel.runWineAppPipeline({
       id: uuid(),
@@ -44,26 +35,15 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
       setupExecutablePath,
       iconFile: await data.iconFile?.arrayBuffer(),
       artworkFile: await data.artworkFile?.arrayBuffer(),
-      winetricks: useWinetricks
-        ? { verbs: [...(winetricksVerbs || [])] }
-        : undefined,
+      winetricks: useWinetricks ? { verbs: [...(winetricksVerbs || [])] } : undefined
     });
     form.reset();
     setOpen(false);
   };
 
   return (
-    <Dialog
-      disableEscapeKeyDown
-      disableBackdropClick
-      fullWidth
-      maxWidth="md"
-      {...rest}
-    >
-      <form
-        onSubmit={form.handleSubmit(submit)}
-        style={{ display: 'contents' }}
-      >
+    <Dialog disableEscapeKeyDown disableBackdropClick fullWidth maxWidth="md" {...rest}>
+      <form onSubmit={form.handleSubmit(submit)} style={{ display: 'contents' }}>
         <Stack p={2} spacing={2} bgcolor="secondary.main">
           <Body1 fontWeight={500}>Create Application</Body1>
           <Box>
@@ -77,10 +57,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                 />
               </Grid>
               <Grid item xs={12}>
-                <WineEnginesSelect
-                  control={form.control}
-                  name="engineVersion"
-                />
+                <WineEnginesSelect control={form.control} name="engineVersion" />
               </Grid>
               <Grid item xs={6}>
                 <FileInput
@@ -110,25 +87,14 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({
                 />
               </Grid>
               <Grid item xs={4}>
-                <Checkbox
-                  control={form.control}
-                  name="dxvkEnabled"
-                  label="Enable DXVK"
-                />
+                <Checkbox control={form.control} name="dxvkEnabled" label="Enable DXVK" />
               </Grid>
               <Grid item xs={4}>
-                <Checkbox
-                  control={form.control}
-                  name="useWinetricks"
-                  label="Winetricks"
-                />
+                <Checkbox control={form.control} name="useWinetricks" label="Winetricks" />
               </Grid>
               {form.watch('useWinetricks') ? (
                 <Grid item xs={12}>
-                  <WinetricksSelector
-                    control={form.control}
-                    name="winetricksVerbs"
-                  />
+                  <WinetricksSelector control={form.control} name="winetricksVerbs" />
                 </Grid>
               ) : (
                 <></>

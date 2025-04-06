@@ -1,8 +1,8 @@
 import { Box, Card, CardProps, Image } from 'reactjs-ui-core';
-import { InstallAppButton } from '@components';
-import { useWineAppModel } from '@models';
 import { useSelector } from 'react-redux';
-import { RootState } from '@interfaces';
+import { InstallAppButton } from '@components/InstallAppButton';
+import { RootState } from '@interfaces/RootState';
+import { useWineAppModel } from '@models/useWineAppModel';
 
 export interface AppCardProps extends CardProps {
   appConfigId?: string;
@@ -10,9 +10,7 @@ export interface AppCardProps extends CardProps {
 
 export const AppCard: React.FC<AppCardProps> = ({ appConfigId, ...rest }) => {
   const wineAppModel = useWineAppModel();
-  const wineApp = useSelector((state: RootState) =>
-    wineAppModel.selectWineApp(state, appConfigId),
-  );
+  const wineApp = useSelector((state: RootState) => wineAppModel.selectWineApp(state, appConfigId));
 
   return (
     <Card sx={{ width: 200, height: 300, borderRadius: 2 }} {...rest}>
@@ -31,7 +29,7 @@ export const AppCard: React.FC<AppCardProps> = ({ appConfigId, ...rest }) => {
           style={{
             objectFit: 'cover',
             maxWidth: '100%',
-            borderRadius: 12,
+            borderRadius: 12
           }}
         />
         <Box display="flex" justifyContent="end">

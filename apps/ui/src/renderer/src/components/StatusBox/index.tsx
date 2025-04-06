@@ -1,7 +1,7 @@
 import { Body2, Box, BoxProps } from 'reactjs-ui-core';
-import { PROCESS_STATUS_COLORS } from '@constants';
-import { ProcessStatus } from 'neu-wine-api';
 import { useMemo } from 'react';
+import { PROCESS_STATUS_COLORS } from '@constants/colors';
+import { ProcessStatus } from '@constants/enums';
 
 export interface StatusBoxProps extends BoxProps {
   status?: ProcessStatus;
@@ -17,7 +17,7 @@ export const StatusBox: React.FC<StatusBoxProps> = ({
       error: 'Error',
       inProgress: 'In progress',
       pending: 'Pending',
-      success: 'Success',
+      success: 'Success'
     }),
     []
   );

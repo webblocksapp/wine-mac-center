@@ -1,5 +1,6 @@
-import { WineInstalledAppActionType as ActionType } from '@constants';
-import { Flatten, WineInstalledAppState } from '@interfaces';
+import { WineInstalledAppActionType as ActionType } from '@constants/actionTypes';
+import { Flatten } from '@interfaces/Flatten';
+import { WineInstalledAppState } from '@interfaces/WineInstalledAppState';
 
 export type WineInstalledAppAction =
   | {
@@ -9,7 +10,5 @@ export type WineInstalledAppAction =
   | {
       type: ActionType.PATCH;
       appId: string;
-      wineInstalledApp: Partial<
-        Flatten<WineInstalledAppState['wineInstalledApps']>
-      >;
+      wineInstalledApp: Partial<Flatten<WineInstalledAppState['wineInstalledApps']>>;
     };

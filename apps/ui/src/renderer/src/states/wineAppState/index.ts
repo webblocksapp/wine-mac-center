@@ -1,9 +1,10 @@
-import { WineAppActionType as ActionType } from '@constants';
-import { WineAppAction, WineAppState } from '@interfaces';
+import { WineAppActionType as ActionType } from '@constants/actionTypes';
+import { WineAppAction } from '@interfaces/WineAppAction';
+import { WineAppState } from '@interfaces/WineAppState';
 import { listAll } from './handlers';
 
 const initialState: WineAppState = {
-  wineApps: [],
+  wineApps: []
 };
 
 export const wineAppState = (state = initialState, action: WineAppAction) => {

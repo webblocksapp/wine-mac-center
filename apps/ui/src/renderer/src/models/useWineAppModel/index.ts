@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { useWineAppApiClient } from '@api-clients';
-import { WineAppActionType as ActionType } from '@constants';
-import { RootState, SortDirection, WineApp, WineAppAction } from '@interfaces';
-import { useAppModel } from '@models';
+import { WineAppActionType as ActionType } from '@constants/actionTypes';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { store } from '@store';
-import { objectMatchCriteria } from '@utils';
+import { useWineAppApiClient } from '@api-clients/useWineAppApiClient';
+import { RootState } from '@interfaces/RootState';
+import { SortDirection } from '@interfaces/SortDirection';
+import { WineApp } from '@interfaces/WineApp';
+import { WineAppAction } from '@interfaces/WineAppAction';
+import { useAppModel } from '@models/useAppModel';
+import { objectMatchCriteria } from '@utils/objectMatchCriteria';
 
 export const useWineAppModel = () => {
   const [state, setState] = useState({
-    loaders: { listingAll: false },
+    loaders: { listingAll: false }
   });
   const appModel = useAppModel();
   const wineAppApiClient = useWineAppApiClient();
@@ -31,7 +34,7 @@ export const useWineAppModel = () => {
   const dispatchListAll = (wineApps: WineApp[]) => {
     dispatch({
       type: ActionType.LIST_ALL,
-      wineApps,
+      wineApps
     });
   };
   const dispatchLoader = (loaders: Partial<(typeof state)['loaders']>) => {
@@ -42,38 +45,31 @@ export const useWineAppModel = () => {
   const selectWineApps = createSelector(
     [
       selectWineAppState,
-      (_: RootState, filters?: { criteria?: string; order?: SortDirection }) =>
-        filters,
+      (_: RootState, filters?: { criteria?: string; order?: SortDirection }) => filters
     ],
     (wineAppState, filters) => {
       let wineApps = wineAppState.wineApps;
       const { criteria, order } = filters || {};
 
       if (criteria) {
-        wineApps = wineApps?.filter((item) =>
-          objectMatchCriteria(item, criteria, ['name']),
-        );
+        wineApps = wineApps?.filter((item) => objectMatchCriteria(item, criteria, ['name']));
       }
 
       if (order === 'asc' || order === undefined) {
-        wineApps = [...(wineApps || [])]?.sort((a, b) =>
-          a.name.localeCompare(b.name),
-        );
+        wineApps = [...(wineApps || [])]?.sort((a, b) => a.name.localeCompare(b.name));
       }
 
       if (order === 'desc') {
-        wineApps = [...(wineApps || [])]?.sort((a, b) =>
-          b.name.localeCompare(a.name),
-        );
+        wineApps = [...(wineApps || [])]?.sort((a, b) => b.name.localeCompare(a.name));
       }
 
       return wineApps;
-    },
+    }
   );
   const selectWineApp = createSelector(
     [selectWineAppState, (_: RootState, appConfigId?: string) => appConfigId],
     (wineAppState, appConfigId) =>
-      wineAppState.wineApps?.find((item) => item.appConfigId == appConfigId),
+      wineAppState.wineApps?.find((item) => item.appConfigId == appConfigId)
   );
 
   return {
@@ -82,6 +78,6 @@ export const useWineAppModel = () => {
     dispatchListAll,
     selectWineAppState,
     selectWineApps,
-    selectWineApp,
+    selectWineApp
   };
 };

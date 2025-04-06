@@ -1,17 +1,13 @@
+import { SidebarItem } from '@components/SidebarItem';
+import { MenuItem } from '@interfaces/MenuItem';
 import { Box, BoxProps, MenuList, Stack, StackProps } from 'reactjs-ui-core';
-import { SidebarItem } from '@components';
-import { MenuItem } from '@interfaces';
 
 export interface SettingsSidebarProps extends BoxProps {
   menu: MenuItem[];
   spacing?: StackProps['spacing'];
 }
 
-export const Sidebar: React.FC<SettingsSidebarProps> = ({
-  menu = [],
-  spacing = 1,
-  ...rest
-}) => {
+export const Sidebar: React.FC<SettingsSidebarProps> = ({ menu = [], spacing = 1, ...rest }) => {
   return (
     <Box display="grid" {...rest}>
       <MenuList sx={{ paddingTop: 0 }}>

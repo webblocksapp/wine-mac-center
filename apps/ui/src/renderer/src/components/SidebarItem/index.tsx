@@ -1,15 +1,10 @@
 import { Body1, Icon, MenuItem, MenuItemProps } from 'reactjs-ui-core';
-import { MenuItem as MenuItemType } from '@interfaces';
+import { MenuItem as MenuItemType } from '@interfaces/MenuItem';
 import { styles } from './styles';
 
 export interface SidebarItemProps extends MenuItemProps, MenuItemType {}
 
-export const SidebarItem: React.FC<SidebarItemProps> = ({
-  text,
-  icon,
-  sx,
-  ...rest
-}) => {
+export const SidebarItem: React.FC<SidebarItemProps> = ({ text, icon, sx, ...rest }) => {
   return (
     <MenuItem sx={styles({ sx })} {...rest}>
       {() => (

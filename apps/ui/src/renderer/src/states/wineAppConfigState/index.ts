@@ -1,15 +1,13 @@
-import { WineAppConfigActionType as ActionType } from '@constants';
-import { WineAppConfigAction, WineAppConfigState } from '@interfaces';
+import { WineAppConfigActionType as ActionType } from '@constants/actionTypes';
+import { WineAppConfigAction } from '@interfaces/WineAppConfigAction';
+import { WineAppConfigState } from '@interfaces/WineAppConfigState';
 import { patch } from './handlers';
 
 const initialState: WineAppConfigState = {
-  wineAppsConfigs: [],
+  wineAppsConfigs: []
 };
 
-export const wineAppConfigState = (
-  state = initialState,
-  action: WineAppConfigAction
-) => {
+export const wineAppConfigState = (state = initialState, action: WineAppConfigAction) => {
   switch (action.type) {
     case ActionType.PATCH:
       return patch(action.wineAppConfig, state);

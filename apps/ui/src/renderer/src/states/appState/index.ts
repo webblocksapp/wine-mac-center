@@ -1,9 +1,10 @@
-import { AppAction, AppState } from '@interfaces';
-import { AppActionType as ActionType } from '@constants';
+import { AppActionType as ActionType } from '@constants/actionTypes';
+import { AppAction } from '@interfaces/AppAction';
+import { AppState } from '@interfaces/AppState';
 import { handleMessages } from './handlers';
 
 const initialState: AppState = {
-  messages: { error: '', success: '', info: '' },
+  messages: { error: '', success: '', info: '' }
 };
 
 export const appState = (state: AppState = initialState, action: AppAction) => {

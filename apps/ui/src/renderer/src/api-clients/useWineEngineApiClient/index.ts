@@ -1,6 +1,6 @@
-import { useWineEngineApiClient as useBaseWineEngineApiClient } from 'neu-wine-api';
-import { WINE_APPS_ENGINES_URL } from '@constants';
-import { axiosWineEngines } from '@utils';
+import { WINE_APPS_ENGINES_URL } from '@constants/urls';
+import { axiosWineEngines } from '@utils/axiosWineEngines';
+import { useWineEngineApiClient as useBaseWineEngineApiClient } from '@api-clients/useWineEngineApiClient';
 import { v4 as uuid } from 'uuid';
 
 export const useWineEngineApiClient = () => {
@@ -16,14 +16,12 @@ export const useWineEngineApiClient = () => {
 
     return data.engines.map((item) => ({
       ...item,
-      urls: item.parts.map(
-        (part) => `${WINE_APPS_ENGINES_URL}/${item.version}/${part}`,
-      ),
+      urls: item.parts.map((part) => `${WINE_APPS_ENGINES_URL}/${item.version}/${part}`)
     }));
   };
 
   return {
     ...baseBaseWineEngineApiClient,
-    listDownloadables,
+    listDownloadables
   };
 };

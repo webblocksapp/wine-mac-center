@@ -1,32 +1,32 @@
 import React, { forwardRef, useEffect, useState } from 'react';
-import { AppCard, SearchField, SortDirectionSelect } from '@components';
-import { useWineAppModel } from '@models';
 import { Box, SkeletonLoader, Stack } from 'reactjs-ui-core';
 import { useSelector } from 'react-redux';
 import { VirtuosoGrid } from 'react-virtuoso';
-import { RootState } from '@interfaces';
+import { useWineAppModel } from '@models/useWineAppModel';
+import { RootState } from '@interfaces/RootState';
+import { AppCard } from '@components/AppCard';
+import { SearchField } from '@components/SearchField';
+import { SortDirectionSelect } from '@components/SortDirectionSelect';
 
 interface ListProps extends React.HTMLAttributes<HTMLDivElement> {}
 interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const List = forwardRef<HTMLDivElement, ListProps>(
-  ({ style, children, ...rest }, ref) => (
-    <div
-      ref={ref}
-      {...rest}
-      style={{
-        display: 'grid',
-        gridAutoColumns: 'minmax(200px, auto)',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-        gridGap: '10px',
-        padding: '10px',
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  ),
-);
+const List = forwardRef<HTMLDivElement, ListProps>(({ style, children, ...rest }, ref) => (
+  <div
+    ref={ref}
+    {...rest}
+    style={{
+      display: 'grid',
+      gridAutoColumns: 'minmax(200px, auto)',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+      gridGap: '10px',
+      padding: '10px',
+      ...style
+    }}
+  >
+    {children}
+  </div>
+));
 
 const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
   <div
@@ -37,6 +37,7 @@ const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
       flex: 'none',
       alignContent: 'stretch',
       boxSizing: 'border-box',
+      ...style
     }}
   >
     {children}
@@ -45,13 +46,12 @@ const Item: React.FC<ItemProps> = ({ style, children, ...rest }) => (
 
 export const WineAppsList: React.FC = () => {
   const wineAppModel = useWineAppModel();
-  const [filters, setFilters] = useState<
-    Parameters<typeof wineAppModel.selectWineApps>[1]
-  >({ criteria: '', order: 'asc' });
+  const [filters, setFilters] = useState<Parameters<typeof wineAppModel.selectWineApps>[1]>({
+    criteria: '',
+    order: 'asc'
+  });
   const { loaders } = wineAppModel;
-  const wineApps = useSelector((state: RootState) =>
-    wineAppModel.selectWineApps(state, filters),
-  );
+  const wineApps = useSelector((state: RootState) => wineAppModel.selectWineApps(state, filters));
 
   useEffect(() => {
     wineAppModel.listAll();
@@ -65,7 +65,7 @@ export const WineAppsList: React.FC = () => {
             onChange={(event) =>
               setFilters((prev) => ({
                 ...prev,
-                criteria: event.currentTarget.value,
+                criteria: event.currentTarget.value
               }))
             }
           />
@@ -74,7 +74,7 @@ export const WineAppsList: React.FC = () => {
             onChange={(order) =>
               setFilters((prev) => ({
                 ...prev,
-                order,
+                order
               }))
             }
           />
@@ -86,10 +86,7 @@ export const WineAppsList: React.FC = () => {
           data={wineApps}
           components={{ List, Item }}
           itemContent={(_, wineApp) => (
-            <AppCard
-              key={wineApp.appConfigId}
-              appConfigId={wineApp.appConfigId}
-            />
+            <AppCard key={wineApp.appConfigId} appConfigId={wineApp.appConfigId} />
           )}
         />
       </SkeletonLoader>

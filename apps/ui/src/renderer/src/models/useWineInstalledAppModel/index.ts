@@ -1,21 +1,19 @@
 import { useState } from 'react';
-import { useWineInstalledAppApiClient } from '@api-clients';
-import { WineInstalledAppActionType as ActionType } from '@constants';
-import {
-  RootState,
-  WineInstalledAppAction,
-  WineInstalledApp,
-  SortDirection,
-} from '@interfaces';
-import { useAppModel } from '@models';
+import { WineInstalledAppActionType as ActionType } from '@constants/actionTypes';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { store } from '@store';
-import { objectMatchCriteria } from '@utils';
+import { useWineInstalledAppApiClient } from '@api-clients/useWineInstalledAppApiClient';
+import { RootState } from '@interfaces/RootState';
+import { SortDirection } from '@interfaces/SortDirection';
+import { WineInstalledApp } from '@interfaces/WineInstalledApp';
+import { WineInstalledAppAction } from '@interfaces/WineInstalledAppAction';
+import { useAppModel } from '@models/useAppModel';
+import { objectMatchCriteria } from '@utils/objectMatchCriteria';
 
 export const useWineInstalledAppModel = () => {
   const [state, setState] = useState({
-    loaders: { listingAll: false },
+    loaders: { listingAll: false }
   });
   const appModel = useAppModel();
   const wineInstalledAppApiClient = useWineInstalledAppApiClient();
@@ -41,9 +39,7 @@ export const useWineInstalledAppModel = () => {
         throw new Error('No installed app found.');
       }
 
-      const process = await wineInstalledAppApiClient.runApp(
-        wineInstalledApp.appPath,
-      );
+      const process = await wineInstalledAppApiClient.runApp(wineInstalledApp.appPath);
 
       dispatchPatch(wineInstalledApp.id, { pid: process.pid });
     } catch (error) {
@@ -78,30 +74,25 @@ export const useWineInstalledAppModel = () => {
   const dispatchListAll = (wineInstalledApps: WineInstalledApp[]) => {
     dispatch({
       type: ActionType.LIST_ALL,
-      wineInstalledApps,
+      wineInstalledApps
     });
   };
-  const dispatchPatch = (
-    appId: string,
-    wineInstalledApp: Partial<WineInstalledApp>,
-  ) => {
+  const dispatchPatch = (appId: string, wineInstalledApp: Partial<WineInstalledApp>) => {
     dispatch({
       type: ActionType.PATCH,
       appId,
-      wineInstalledApp,
+      wineInstalledApp
     });
   };
   const dispatchLoader = (loaders: Partial<(typeof state)['loaders']>) => {
     setState((prev) => ({ ...prev, loaders: { ...prev.loaders, ...loaders } }));
   };
 
-  const selectWineInstalledAppState = (state: RootState) =>
-    state.wineInstalledAppState;
+  const selectWineInstalledAppState = (state: RootState) => state.wineInstalledAppState;
   const selectWineInstalledApps = createSelector(
     [
       selectWineInstalledAppState,
-      (_: RootState, filters?: { criteria?: string; order?: SortDirection }) =>
-        filters,
+      (_: RootState, filters?: { criteria?: string; order?: SortDirection }) => filters
     ],
     (wineInstalledAppState, filters) => {
       let wineInstalledApps = wineInstalledAppState.wineInstalledApps;
@@ -110,34 +101,31 @@ export const useWineInstalledAppModel = () => {
 
       if (criteria) {
         wineInstalledApps = wineInstalledApps?.filter((item) =>
-          objectMatchCriteria(item, criteria, ['name']),
+          objectMatchCriteria(item, criteria, ['name'])
         );
       }
 
       if (order === 'asc' || order === undefined) {
         wineInstalledApps = [...(wineInstalledApps || [])]?.sort((a, b) =>
-          a.name.localeCompare(b.name),
+          a.name.localeCompare(b.name)
         );
       }
 
       if (order === 'desc') {
         wineInstalledApps = [...(wineInstalledApps || [])]?.sort((a, b) =>
-          b.name.localeCompare(a.name),
+          b.name.localeCompare(a.name)
         );
       }
 
       return wineInstalledApps?.map((item) => ({
         ...item,
-        realAppName: item.appPath.split('/').pop()?.replace(/\.app/, ''),
+        realAppName: item.appPath.split('/').pop()?.replace(/\.app/, '')
       }));
-    },
+    }
   );
   const selectWineInstalledApp = createSelector(
-    [
-      (state: RootState) => selectWineInstalledApps(state),
-      (_: RootState, id?: string) => id,
-    ],
-    (wineInstalledApps, id) => wineInstalledApps?.find((item) => item.id == id),
+    [(state: RootState) => selectWineInstalledApps(state), (_: RootState, id?: string) => id],
+    (wineInstalledApps, id) => wineInstalledApps?.find((item) => item.id == id)
   );
 
   return {
@@ -148,6 +136,6 @@ export const useWineInstalledAppModel = () => {
     killApp,
     selectWineInstalledAppState,
     selectWineInstalledApps,
-    selectWineInstalledApp,
+    selectWineInstalledApp
   };
 };

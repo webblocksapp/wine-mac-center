@@ -3,12 +3,9 @@ import { Box, Button, TextField } from 'reactjs-ui-core';
 import { Field, TextFieldProps } from 'reactjs-ui-form-fields';
 import { InputAdornment } from '@mui/material';
 import { os } from '@neutralinojs/lib';
-import { readFile } from '@utils';
+import { readFile } from '@utils/readFile';
 
-export type FileInputProps = Omit<
-  TextFieldProps,
-  'type' | 'label' | 'accept' | 'onInput'
-> & {
+export type FileInputProps = Omit<TextFieldProps, 'type' | 'label' | 'accept' | 'onInput'> & {
   noSelectedFileLabel?: string;
   selectedFileLabel?: string;
   dialogText?: string;
@@ -53,7 +50,7 @@ export const FileInput: React.FC<FileInputProps> = ({
                   </Button>
                 </Box>
               </InputAdornment>
-            ),
+            )
           }}
           value={fileName}
           onClick={async () => {

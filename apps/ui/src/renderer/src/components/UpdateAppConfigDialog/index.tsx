@@ -4,21 +4,13 @@ import {
   CommandLineIcon,
   CpuChipIcon,
   RectangleStackIcon,
-  WrenchScrewdriverIcon,
+  WrenchScrewdriverIcon
 } from '@heroicons/react/24/solid';
-import { createWineApp, WineApp } from 'neu-wine-api';
 import { useEffect, useState } from 'react';
-import {
-  Body1,
-  Button,
-  Dialog,
-  DialogProps,
-  Grid,
-  H6,
-  Icon,
-  Stack,
-} from 'reactjs-ui-core';
+import { Body1, Button, Dialog, DialogProps, Grid, H6, Icon, Stack } from 'reactjs-ui-core';
 import { ChangeWineEngineDialog } from '../ChangeWineEngineDialog';
+import { WineApp } from '@interfaces/WineApp';
+import { createWineApp } from '@utils/createWineApp';
 
 export interface UpdateAppConfigDialogProps extends DialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,8 +23,7 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
   ...rest
 }) => {
   const [loading, setLoading] = useState(false);
-  const [showChangeWineEngineDialog, setShowChangeWineEngineDialog] =
-    useState(false);
+  const [showChangeWineEngineDialog, setShowChangeWineEngineDialog] = useState(false);
   const [wineApp, setWineApp] = useState<WineApp>();
   const options = [
     {
@@ -43,9 +34,9 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
         wineApp?.winecfg({
           onExit: () => {
             setLoading(false);
-          },
+          }
         });
-      },
+      }
     },
     {
       label: 'Registry Editor',
@@ -55,9 +46,9 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
         wineApp?.regedit({
           onExit: () => {
             setLoading(false);
-          },
+          }
         });
-      },
+      }
     },
     {
       label: 'Task Manager',
@@ -67,9 +58,9 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
         wineApp?.taskmgr({
           onExit: () => {
             setLoading(false);
-          },
+          }
         });
-      },
+      }
     },
     {
       label: 'Command Line',
@@ -79,9 +70,9 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
         wineApp?.cmd({
           onExit: () => {
             setLoading(false);
-          },
+          }
         });
-      },
+      }
     },
     {
       label: 'Control Panel',
@@ -91,17 +82,17 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
         wineApp?.control({
           onExit: () => {
             setLoading(false);
-          },
+          }
         });
-      },
+      }
     },
     {
       label: 'Change Engine',
       icon: CpuChipIcon,
       method: () => {
         setShowChangeWineEngineDialog(true);
-      },
-    },
+      }
+    }
   ];
 
   useEffect(() => {
@@ -122,7 +113,7 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
               disabled={wineApp === undefined || loading}
               color="secondary"
               sx={{
-                border: (theme) => `1px solid ${theme.palette.primary.main}`,
+                border: (theme) => `1px solid ${theme.palette.primary.main}`
               }}
               fullWidth
               onClick={() => item.method?.()}

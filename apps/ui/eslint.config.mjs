@@ -34,7 +34,9 @@ export default tseslint.config(
       'react/prop-types': 'off',
       'react-refresh/only-export-components': 'off',
       'react/display-name': 'off',
-      '@typescript-eslint/no-empty-object-type': 'off'
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-async-promise-executor': 'off'
     }
   }
 );

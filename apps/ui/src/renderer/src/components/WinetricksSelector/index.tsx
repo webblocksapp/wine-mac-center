@@ -1,5 +1,5 @@
-import { useWinetrickModel } from '@models';
-import { Winetricks } from 'neu-wine-api';
+import { Winetricks } from '@interfaces/Winetricks';
+import { useWinetrickModel } from '@models/useWinetrickModel';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Accordion, Box, Grid, SkeletonLoader, Stack } from 'reactjs-ui-core';
@@ -14,19 +14,17 @@ const CATEGORIES = [
   { key: 'benchmarks', label: 'Benchmarks' },
   { key: 'dlls', label: 'Dlls' },
   { key: 'fonts', label: 'Fonts' },
-  { key: 'settings', label: 'Settings' },
+  { key: 'settings', label: 'Settings' }
 ];
 
 export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
   name,
   control,
   fieldOptions,
-  value,
+  value
 }) => {
   const winetrickModel = useWinetrickModel();
-  const { loaders, winetricks } = useSelector(
-    winetrickModel.selectWinetrickState
-  );
+  const { loaders, winetricks } = useSelector(winetrickModel.selectWinetrickState);
 
   useEffect(() => {
     winetrickModel.listAll();
@@ -46,22 +44,20 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
                 value={value}
                 render={(field) => (
                   <Grid container spacing={0}>
-                    {winetricks[category.key as keyof Winetricks].map(
-                      (winetrick, index) => (
-                        <Grid key={index} item xs={4}>
-                          <Checkbox
-                            name={name}
-                            label={winetrick.verb}
-                            value={winetrick.verb}
-                            checked={field.helpers.isChecked(winetrick.verb)}
-                            onChange={(event) => {
-                              field.props.onChange(event);
-                            }}
-                            onBlur={field.props.onBlur}
-                          />
-                        </Grid>
-                      )
-                    )}
+                    {winetricks[category.key as keyof Winetricks].map((winetrick, index) => (
+                      <Grid key={index} item xs={4}>
+                        <Checkbox
+                          name={name}
+                          label={winetrick.verb}
+                          value={winetrick.verb}
+                          checked={field.helpers.isChecked(winetrick.verb)}
+                          onChange={(event) => {
+                            field.props.onChange(event);
+                          }}
+                          onBlur={field.props.onBlur}
+                        />
+                      </Grid>
+                    ))}
                   </Grid>
                 )}
               />

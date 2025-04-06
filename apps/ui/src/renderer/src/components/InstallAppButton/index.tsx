@@ -1,9 +1,8 @@
-import { InstallIcon } from '@assets/icons';
-import { CircularProgress } from '@components';
-import { useWineAppConfigModel, useWineAppPipelineModel } from '@models';
-import { Button, ButtonProps, Icon } from 'reactjs-ui-core';
-
 import { useState } from 'react';
+import { Button, ButtonProps, CircularProgress, Icon } from 'reactjs-ui-core';
+import { InstallIcon } from '@assets/icons';
+import { useWineAppConfigModel } from '@models/useWineAppConfigModel';
+import { useWineAppPipelineModel } from '@models/useWineAppPipelineModel';
 
 export interface InstallAppButtonProps extends ButtonProps {
   appConfigId?: string;
@@ -40,12 +39,7 @@ export const InstallAppButton: React.FC<InstallAppButtonProps> = ({
       {loading ? (
         <CircularProgress />
       ) : (
-        <Icon
-          size={24}
-          color="text.primary"
-          strokeWidth={2}
-          render={InstallIcon}
-        />
+        <Icon size={24} color="text.primary" strokeWidth={2} render={InstallIcon} />
       )}
     </Button>
   );

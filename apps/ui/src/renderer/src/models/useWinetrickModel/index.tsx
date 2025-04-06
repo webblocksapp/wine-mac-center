@@ -1,9 +1,11 @@
-import { useWinetrickApiClient } from 'neu-wine-api';
 import { useDispatch } from 'react-redux';
 import { Dispatch, createSelector } from '@reduxjs/toolkit';
-import { WinetrickActionType as ActionType } from '@constants';
-import { RootState, WinetrickAction, WinetrickState } from '@interfaces';
-import { useAppModel } from '@models';
+import { WinetrickActionType as ActionType } from '@constants/actionTypes';
+import { useWinetrickApiClient } from '@api-clients/useWinetrickApiClient';
+import { RootState } from '@interfaces/RootState';
+import { WinetrickAction } from '@interfaces/WinetrickAction';
+import { WinetrickState } from '@interfaces/WinetrickState';
+import { useAppModel } from '@models/useAppModel';
 
 export const useWinetrickModel = () => {
   const appModel = useAppModel();
@@ -21,9 +23,7 @@ export const useWinetrickModel = () => {
     }
   };
 
-  const dispatchWinetricks = (
-    winetricks: Partial<WinetrickState['winetricks']>
-  ) => {
+  const dispatchWinetricks = (winetricks: Partial<WinetrickState['winetricks']>) => {
     dispatch({ type: ActionType.LIST, winetricks });
   };
 
@@ -39,6 +39,6 @@ export const useWinetrickModel = () => {
   return {
     listAll,
     selectWinetrickState,
-    selectWinetricks,
+    selectWinetricks
   };
 };

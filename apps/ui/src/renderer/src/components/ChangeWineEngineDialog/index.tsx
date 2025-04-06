@@ -1,17 +1,11 @@
-import { ExitCode, WineApp } from 'neu-wine-api';
 import { useState } from 'react';
-import {
-  Body1,
-  Body2,
-  Button,
-  Dialog,
-  DialogProps,
-  Stack,
-} from 'reactjs-ui-core';
-import { WineEnginesSelect } from '@components';
+import { Body1, Body2, Button, Dialog, DialogProps, Stack } from 'reactjs-ui-core';
 import { useForm } from 'reactjs-ui-form-fields';
+import { WineEnginesSelect } from '@components/WineEnginesSelect';
+import { ExitCode } from '@constants/enums';
+import { WineApp } from '@interfaces/WineApp';
+import { handleError } from '@utils/handleError';
 import { FormSchema, useSchema } from './useSchema';
-import { handleError } from '@utils';
 
 export interface ChangeWineEngineDialogProps extends DialogProps {
   wineApp: WineApp | undefined;
@@ -46,7 +40,7 @@ export const ChangeWineEngineDialog: React.FC<ChangeWineEngineDialogProps> = ({
               reject(`Failed to Extract the Wine Engine ${data.engineVersion}`);
             }
             resolve(undefined);
-          },
+          }
         });
       });
 
@@ -58,12 +52,10 @@ export const ChangeWineEngineDialog: React.FC<ChangeWineEngineDialogProps> = ({
           onStdErr: console.log,
           onExit: (output) => {
             if (output === ExitCode.Error) {
-              reject(
-                `Failed to initialize the Wine Engine ${data.engineVersion}`,
-              );
+              reject(`Failed to initialize the Wine Engine ${data.engineVersion}`);
             }
             resolve(undefined);
-          },
+          }
         });
       });
 
@@ -88,17 +80,9 @@ export const ChangeWineEngineDialog: React.FC<ChangeWineEngineDialogProps> = ({
       maxWidth="sm"
       {...rest}
     >
-      <Stack
-        justifyContent="center"
-        bgcolor="secondary.main"
-        minHeight={200}
-        p={2}
-      >
+      <Stack justifyContent="center" bgcolor="secondary.main" minHeight={200} p={2}>
         {!running ? (
-          <form
-            onSubmit={form.handleSubmit(submit)}
-            style={{ display: 'contents' }}
-          >
+          <form onSubmit={form.handleSubmit(submit)} style={{ display: 'contents' }}>
             <Stack spacing={2}>
               <Body1 fontWeight={500}>Change Wine Engine</Body1>
               <WineEnginesSelect

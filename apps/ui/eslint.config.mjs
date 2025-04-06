@@ -29,7 +29,12 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       'prettier/prettier': 'off',
-      'no-unsafe-finally': 'off'
+      'no-unsafe-finally': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      'react/prop-types': 'off',
+      'react-refresh/only-export-components': 'off',
+      'react/display-name': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off'
     }
   }
 );

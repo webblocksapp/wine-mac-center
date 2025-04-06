@@ -1,15 +1,14 @@
-import { createEnv } from '@utils/createEnv';
+import { routes } from '@routes';
 import { useEffect } from 'react';
+import { useNavigate, useRoutes } from 'react-router-dom';
 
-export const App: React.FC = () => {
+export const App = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const env = createEnv();
-    env.init().then(() => {
-      console.log(env.get());
-    });
+    navigate('home');
   }, []);
 
-  return <>Hello World</>;
+  //Fix: Outlet not working https://github.com/remix-run/react-router/issues/11480
+  return useRoutes(routes);
 };
-
-export default App;

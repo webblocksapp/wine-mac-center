@@ -11,23 +11,25 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@api-clients/*": ["src/renderer/src/api-clients"],
+      "@api-clients/*": ["src/renderer/src/api-clients/*"],
       "@assets/*": ["src/renderer/src/assets/*"],
       "@components/*": ["src/renderer/src/components/*"],
       "@constants/*": ["src/renderer/src/constants/*"],
       "@hocs/*": ["src/renderer/src/hocs/*"],
       "@icons/*": ["src/renderer/src/assets/icons/*"],
       "@interfaces/*": ["src/renderer/src/interfaces/*"],
+      "@i18n": ["src/renderer/src/i18n"],
+      "@i18n/*": ["src/renderer/src/i18n/*"],
       "@layouts/*": ["src/renderer/src/layouts/*"],
       "@mocks/*": ["src/renderer/src/mocks/*"],
       "@models/*": ["src/renderer/src/models/*"],
       "@pages/*": ["src/renderer/src/pages/*"],
       "@routes": ["src/renderer/src/routes"],
+      "@states": ["src/renderer/src/states"],
       "@states/*": ["src/renderer/src/states/*"],
       "@store": ["src/renderer/src/store"],
       "@themes": ["src/renderer/src/themes"],
-      "@utils/*": ["src/renderer/src/utils/*"],
-      "@renderer/*": ["src/renderer/src/*"]
+      "@utils/*": ["src/renderer/src/utils/*"]
     }
   }
 }

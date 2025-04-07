@@ -4,10 +4,10 @@ import { SpawnProcessArgs } from '@interfaces/SpawnProcessArgs';
 import { WineAppConfig } from '@interfaces/WineAppConfig';
 import { WineAppPipeline } from '@interfaces/WineAppPipeline';
 import { WineAppStep } from '@interfaces/WineAppStep';
-import { filesystem } from '@neutralinojs/lib';
 import { clone } from '@utils/clone';
 import { createEnv } from '@utils/createEnv';
 import { createWineApp } from '@utils/createWineApp';
+import { readDirectory } from '@utils/readDirectory';
 import { v4 as uuid } from 'uuid';
 
 export const createWineAppPipeline = async (options: {
@@ -35,9 +35,9 @@ export const createWineAppPipeline = async (options: {
 
   const checkEngineExists = async () => {
     const ENGINES_PATH = `${env.get().WINE_ENGINES_PATH}`;
-    const entries = (await filesystem.readDirectory(ENGINES_PATH))
-      .filter((item) => item.type === 'FILE')
-      .map((item) => item.entry);
+    const entries = (await readDirectory(ENGINES_PATH))
+      .filter((item) => item !== '.DS_Store')
+      .map((item) => item.replace(/.tar.7z$/, ''));
     return entries.includes(`${engineVersion}.tar.7z`);
   };
 

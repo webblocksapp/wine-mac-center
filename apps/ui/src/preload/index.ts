@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs } from '../renderer/src/interfaces';
+import { writeFile } from 'fs';
 
 export type Api = {
   getAppPath: () => Promise<string>;
@@ -11,6 +12,9 @@ export type Api = {
   }>;
   pathJoin: (...paths: string[]) => Promise<string>;
   spawnProcess: (command: string, args?: SpawnProcessArgs) => Promise<void>;
+  fileExists: (path: string) => Promise<boolean>;
+  writeFile: typeof writeFile;
+  readDirectory: (dirPath: string) => Promise<string[]>;
 };
 
 type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
@@ -20,7 +24,10 @@ const api: RendererApi = {
   getAppPath: () => ipcRenderer.invoke('get-app-path'),
   execCommand: (cmd: string) => ipcRenderer.invoke('exec-command', cmd),
   pathJoin: (...paths: string[]) => ipcRenderer.invoke('path-join', ...paths),
-  spawnProcess: (...args) => ipcRenderer.invoke('spawn-process', ...args)
+  spawnProcess: (...args) => ipcRenderer.invoke('spawn-process', ...args),
+  fileExists: (path: string) => ipcRenderer.invoke('file-exists', path),
+  writeFile: (...args) => ipcRenderer.invoke('spawn-process', ...args),
+  readDirectory: (dirPath: string) => ipcRenderer.invoke('read-directory', dirPath)
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

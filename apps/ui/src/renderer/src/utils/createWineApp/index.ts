@@ -12,9 +12,10 @@ import { dirExists } from '@utils/dirExists';
 import { downloadFile } from '@utils/downloadFile';
 import { fileExists } from '@utils/fileExists';
 import { createEnv } from '@utils/createEnv';
-import { writeFile } from 'fs';
 import { FileName } from '@constants/enums';
 import { createWineEngineApiClient } from '@api-clients/createWineEngineApiClient';
+import { spawnProcess as baseSpawnProcess } from '@utils/spawnProcess';
+import { writeFile } from '@utils/writeFile';
 
 export const createWineApp = async (appName: string) => {
   const env = createEnv();

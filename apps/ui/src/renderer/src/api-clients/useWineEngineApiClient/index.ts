@@ -1,10 +1,18 @@
 import { WINE_APPS_ENGINES_URL } from '@constants/urls';
 import { axiosWineEngines } from '@utils/axiosWineEngines';
-import { useWineEngineApiClient as useBaseWineEngineApiClient } from '@api-clients/useWineEngineApiClient';
 import { v4 as uuid } from 'uuid';
+import { createEnv } from '@utils/createEnv';
+import { readDirectory } from '@utils/readDirectory';
 
 export const useWineEngineApiClient = () => {
-  const baseBaseWineEngineApiClient = useBaseWineEngineApiClient();
+  const env = createEnv();
+
+  const list = async () => {
+    const engines = await readDirectory(env.get().WINE_ENGINES_PATH);
+    return engines
+      .filter((item) => item !== '.DS_Store')
+      .map((item) => item.replace(/.tar.7z$/, ''));
+  };
 
   const listDownloadables = async () => {
     const { data } = await axiosWineEngines.get<{
@@ -21,7 +29,7 @@ export const useWineEngineApiClient = () => {
   };
 
   return {
-    ...baseBaseWineEngineApiClient,
+    list,
     listDownloadables
   };
 };

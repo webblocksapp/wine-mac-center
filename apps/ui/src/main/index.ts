@@ -4,6 +4,8 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { exec } from 'child_process';
 import { spawn } from 'child_process';
+import { promises as fs, writeFile } from 'fs';
+
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 
@@ -59,6 +61,30 @@ ipcMain.handle('spawn-process', (_, command: string, args?: SpawnProcessArgs): P
       resolve(undefined);
     });
   });
+});
+
+ipcMain.handle('file-exists', async (_, filePath: string) => {
+  try {
+    const fullPath = path.resolve(filePath);
+    await fs.access(fullPath);
+    return true;
+  } catch {
+    return false;
+  }
+});
+
+ipcMain.handle('write-file', async (_, ...args: Parameters<typeof writeFile>) =>
+  writeFile(...args)
+);
+
+ipcMain.handle('read-directory', async (_, dirPath: string) => {
+  try {
+    const entries = await fs.readdir(dirPath);
+    return entries;
+  } catch (error) {
+    console.error(`Error reading directory at ${dirPath}:`, error);
+    throw error;
+  }
 });
 
 function createWindow(): void {

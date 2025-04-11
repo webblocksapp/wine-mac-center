@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { exec } from 'child_process';
 import { spawn } from 'child_process';
-import { promises as fs, writeFile } from 'fs';
+import { promises as fs, writeFile, existsSync, readFile } from 'fs';
 
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
@@ -81,6 +81,28 @@ ipcMain.handle('read-directory', async (_, dirPath: string) => {
   try {
     const entries = await fs.readdir(dirPath);
     return entries;
+  } catch (error) {
+    console.error(`Error reading directory at ${dirPath}:`, error);
+    throw error;
+  }
+});
+
+ipcMain.handle('dir-exists', async (_, dirPath: string) => existsSync(dirPath));
+ipcMain.handle('read-file', async (_, filePath: string): Promise<Buffer> => {
+  return new Promise((resolve, reject) => {
+    readFile(filePath, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+});
+
+ipcMain.handle('create-directory', async (_, dirPath: string) => {
+  try {
+    await fs.mkdir(dirPath);
   } catch (error) {
     console.error(`Error reading directory at ${dirPath}:`, error);
     throw error;

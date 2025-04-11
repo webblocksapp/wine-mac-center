@@ -15,6 +15,9 @@ export type Api = {
   fileExists: (path: string) => Promise<boolean>;
   writeFile: typeof writeFile;
   readDirectory: (dirPath: string) => Promise<string[]>;
+  dirExists: (dirPath: string) => Promise<boolean>;
+  readFile: (filePath: string) => Promise<Buffer>;
+  createDirectory: (dirPath: string) => Promise<void>;
 };
 
 type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
@@ -26,8 +29,11 @@ const api: RendererApi = {
   pathJoin: (...paths: string[]) => ipcRenderer.invoke('path-join', ...paths),
   spawnProcess: (...args) => ipcRenderer.invoke('spawn-process', ...args),
   fileExists: (path: string) => ipcRenderer.invoke('file-exists', path),
-  writeFile: (...args) => ipcRenderer.invoke('spawn-process', ...args),
-  readDirectory: (dirPath: string) => ipcRenderer.invoke('read-directory', dirPath)
+  writeFile: (...args) => ipcRenderer.invoke('write-file', ...args),
+  readDirectory: (dirPath: string) => ipcRenderer.invoke('read-directory', dirPath),
+  dirExists: (dirPath: string) => ipcRenderer.invoke('dir-exists', dirPath),
+  readFile: (...args) => ipcRenderer.invoke('read-file', ...args),
+  createDirectory: (dirPath: string) => ipcRenderer.invoke('create-directory', dirPath)
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

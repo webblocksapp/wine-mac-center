@@ -1,10 +1,13 @@
 import { Winetrick } from '@interfaces/Winetrick';
 import { Winetricks } from '@interfaces/Winetricks';
-import { filesystem, os } from '@neutralinojs/lib';
+import { createDirectory } from '@utils/createDirectory';
 import { createEnv } from '@utils/createEnv';
 import { dirExists } from '@utils/dirExists';
+import { execCommand } from '@utils/execCommand';
 import { fileExists } from '@utils/fileExists';
 import { parseJson } from '@utils/parseJson';
+import { readFile } from '@utils/readFile';
+import { writeFile } from '@utils/writeFile';
 
 export const useWinetrickApiClient = () => {
   const env = createEnv();
@@ -24,7 +27,7 @@ export const useWinetrickApiClient = () => {
   };
 
   const execScript = async (args: string) =>
-    os.execCommand(`${env.get().SCRIPTS_PATH}/winetricks.sh ${args}`);
+    execCommand(`${env.get().SCRIPTS_PATH}/winetricks.sh ${args}`);
 
   const getWinetricks = async (cmd: string) => {
     const { stdOut, stdErr } = await execScript(cmd);
@@ -69,7 +72,7 @@ export const useWinetrickApiClient = () => {
     };
 
     if (!(await dirExists(WINE_ASSETS_PATH))) {
-      await filesystem.createDirectory(WINE_ASSETS_PATH);
+      await createDirectory(WINE_ASSETS_PATH);
     }
 
     if (!(await fileExists(WINETRICKS_PATH)) || options?.force) {
@@ -83,11 +86,11 @@ export const useWinetrickApiClient = () => {
 
       const [apps, benchmarks, dlls, fonts, settings] = promises;
       winetricks = { apps, benchmarks, dlls, fonts, settings };
-      await filesystem.writeFile(WINETRICKS_PATH, JSON.stringify(winetricks));
+      await writeFile(WINETRICKS_PATH, JSON.stringify(winetricks));
     } else {
       winetricks = {
         ...winetricks,
-        ...parseJson<Winetricks>(await filesystem.readFile(WINETRICKS_PATH))
+        ...parseJson<Winetricks>(await readFile(WINETRICKS_PATH))
       };
     }
 

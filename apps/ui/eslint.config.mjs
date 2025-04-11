@@ -36,7 +36,8 @@ export default tseslint.config(
       'react/display-name': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
-      'no-async-promise-executor': 'off'
+      'no-async-promise-executor': 'off',
+      'no-useless-catch': 'off'
     }
   }
 );

@@ -1,6 +1,7 @@
+import { readBinaryFile } from '@utils/readBinaryFile';
 import { dialog } from 'electron';
 
-export const readFile = async (
+export const openFile = async (
   title?: string,
   options?: Electron.OpenDialogOptions & { errorMessage?: string }
 ) => {
@@ -14,7 +15,7 @@ export const readFile = async (
     const [filePath] = filePaths;
     fileName = filePath?.split('/')?.pop() || '';
     const ext = fileName?.split('.')?.pop();
-    const byteArray = await window.api.readFile(filePath);
+    const byteArray = await readBinaryFile(filePath);
     const blob = new Blob([byteArray], ext ? { type: `image/${ext}` } : undefined);
     file = new File([blob], fileName);
   } catch (_) {

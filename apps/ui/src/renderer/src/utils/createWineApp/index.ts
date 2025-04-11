@@ -1,4 +1,3 @@
-import { os, filesystem } from '@neutralinojs/lib';
 import plist from 'plist';
 import { v4 as uuid } from 'uuid';
 import { BashScript } from '@interfaces/BashScript';
@@ -13,9 +12,12 @@ import { downloadFile } from '@utils/downloadFile';
 import { fileExists } from '@utils/fileExists';
 import { createEnv } from '@utils/createEnv';
 import { FileName } from '@constants/enums';
-import { createWineEngineApiClient } from '@api-clients/createWineEngineApiClient';
 import { spawnProcess as baseSpawnProcess } from '@utils/spawnProcess';
 import { writeFile } from '@utils/writeFile';
+import { createWineEngineApiClient } from '@api-clients/createWineEngineApiClient';
+import { readFileAsString } from '@utils/readFileAsString';
+import { createDirectory } from '@utils/createDirectory';
+import { execCommand as baseExecCommand } from '@utils/execCommand';
 
 export const createWineApp = async (appName: string) => {
   const env = createEnv();
@@ -97,7 +99,7 @@ export const createWineApp = async (appName: string) => {
     const path = WINE_ENV.WINE_APP_CONFIG_JSON_PATH;
 
     if (await fileExists(path)) {
-      return JSON.parse(await filesystem.readFile(path)) as WineAppConfig;
+      return JSON.parse(await readFileAsString(path)) as WineAppConfig;
     } else {
       return appConfig;
     }
@@ -192,7 +194,7 @@ export const createWineApp = async (appName: string) => {
         fileNamePart = fileNamePart || fileName;
 
         if (!(await dirExists(engineTmpFolder))) {
-          filesystem.createDirectory(engineTmpFolder);
+          createDirectory(engineTmpFolder);
         }
 
         await CURL.download(url, `${WINE_ENV.WINE_TMP_PATH}/${version}/${fileName}`);
@@ -389,8 +391,7 @@ export const createWineApp = async (appName: string) => {
   const spawnScript = (name: BashScript, scriptArgs: string = '', processArgs?: SpawnProcessArgs) =>
     spawnProcess(s(`"${SCRIPTS_PATH}/${name}.sh" ${scriptArgs}`), processArgs);
 
-  const execCommand: typeof os.execCommand = (command, options) =>
-    os.execCommand(s(command), options);
+  const execCommand: typeof baseExecCommand = (command) => baseExecCommand(s(command));
 
   const spawnProcess = (command: string, args?: SpawnProcessArgs) =>
     baseSpawnProcess(s(command), args);

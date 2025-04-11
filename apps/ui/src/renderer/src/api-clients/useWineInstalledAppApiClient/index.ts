@@ -1,9 +1,10 @@
 import { WINE_APP_CONFIG_JSON_PATH } from '@constants/paths';
 import { WineAppConfig } from '@interfaces/WineAppConfig';
 import { WineInstalledApp } from '@interfaces/WineInstalledApp';
-import { filesystem, os } from '@neutralinojs/lib';
 import { fileExists } from '@utils/fileExists';
 import { parseJson } from '@utils/parseJson';
+import { readDirectory } from '@utils/readDirectory';
+import { readFile } from '@utils/openFile';
 import { useEnv } from '@utils/useEnv';
 
 export const useWineInstalledAppApiClient = () => {
@@ -11,18 +12,17 @@ export const useWineInstalledAppApiClient = () => {
   const WINE_APPS_PATH = env.get().WINE_APPS_PATH;
 
   const listAll = async () => {
-    const entries = await filesystem.readDirectory(WINE_APPS_PATH);
-    const directories = entries.filter((item) => item.type === 'DIRECTORY');
+    const directories = await readDirectory(WINE_APPS_PATH);
     let promises: Array<Promise<{ appPath: string; config: string } | undefined>> = [];
     let configs: Array<WineInstalledApp> = [];
 
     for (const dir of directories) {
-      const APP_PATH = `${WINE_APPS_PATH}/${dir.entry}`;
+      const APP_PATH = `${WINE_APPS_PATH}/${dir}`;
       const CONFIG_FILE = `${APP_PATH}/${WINE_APP_CONFIG_JSON_PATH}`;
       const promise = new Promise<{ appPath: string; config: string } | undefined>(
         async (resolve) => {
           if (await fileExists(CONFIG_FILE)) {
-            const config = await filesystem.readFile(CONFIG_FILE);
+            const config = await readFile(CONFIG_FILE);
             resolve({ appPath: APP_PATH, config });
           } else {
             resolve(undefined);

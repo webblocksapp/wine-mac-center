@@ -1,1 +1,1 @@
-export const readBinaryFile = (filePath: string) => window.api.readFile(filePath);
+export const readBinaryFile = (filePath: string) => window.api.readBinaryFile(filePath);

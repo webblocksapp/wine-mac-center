@@ -6,7 +6,7 @@ import { dirExists } from '@utils/dirExists';
 import { execCommand } from '@utils/execCommand';
 import { fileExists } from '@utils/fileExists';
 import { parseJson } from '@utils/parseJson';
-import { readFile } from '@utils/readFile';
+import { readFile } from '@utils/openFile';
 import { writeFile } from '@utils/writeFile';
 
 export const useWinetrickApiClient = () => {

@@ -88,7 +88,7 @@ ipcMain.handle('read-directory', async (_, dirPath: string) => {
 });
 
 ipcMain.handle('dir-exists', async (_, dirPath: string) => existsSync(dirPath));
-ipcMain.handle('read-file', async (_, filePath: string): Promise<Buffer> => {
+ipcMain.handle('read-binary-file', async (_, filePath: string): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
     readFile(filePath, (err, data) => {
       if (err) {
@@ -105,6 +105,14 @@ ipcMain.handle('create-directory', async (_, dirPath: string) => {
     await fs.mkdir(dirPath);
   } catch (error) {
     console.error(`Error reading directory at ${dirPath}:`, error);
+    throw error;
+  }
+});
+
+ipcMain.handle('read-file-as-string', async (_, filePath: string): Promise<string> => {
+  try {
+    return fs.readFile(filePath, 'utf-8');
+  } catch (error) {
     throw error;
   }
 });

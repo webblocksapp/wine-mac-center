@@ -2,15 +2,12 @@ import { useState } from 'react';
 import { Box, Button, TextField } from 'reactjs-ui-core';
 import { Field, TextFieldProps } from 'reactjs-ui-form-fields';
 import { InputAdornment } from '@mui/material';
-import { os } from '@neutralinojs/lib';
+import { dialog } from 'electron';
 
-export type FilePathInputProps = Omit<
-  TextFieldProps,
-  'type' | 'label' | 'accept'
-> & {
+export type FilePathInputProps = Omit<TextFieldProps, 'type' | 'label' | 'accept'> & {
   noSelectedFileLabel?: string;
   selectedFileLabel?: string;
-  filters?: os.Filter[];
+  filters?: Array<{ name: string; extensions: string[] }>;
   dialogText?: string;
 };
 
@@ -28,10 +25,13 @@ export const FilePathInput: React.FC<FilePathInputProps> = ({
 }) => {
   const [filePath, setFilePath] = useState('');
 
-  const selectFile = () => {
-    return os.showOpenDialog(dialogText, {
-      filters,
+  const selectFile = async () => {
+    const result = await dialog.showOpenDialog({
+      title: dialogText,
+      filters
     });
+
+    return result.filePaths;
   };
 
   return (
@@ -59,7 +59,7 @@ export const FilePathInput: React.FC<FilePathInputProps> = ({
                     </Button>
                   </Box>
                 </InputAdornment>
-              ),
+              )
             }}
             onInput={(event) => {
               onInputProp?.(event);

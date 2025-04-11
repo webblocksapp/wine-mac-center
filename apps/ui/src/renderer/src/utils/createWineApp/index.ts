@@ -18,6 +18,7 @@ import { createWineEngineApiClient } from '@api-clients/createWineEngineApiClien
 import { readFileAsString } from '@utils/readFileAsString';
 import { createDirectory } from '@utils/createDirectory';
 import { execCommand as baseExecCommand } from '@utils/execCommand';
+import { writeBinaryFile } from '@utils/writeBinaryFile';
 
 export const createWineApp = async (appName: string) => {
   const env = createEnv();
@@ -163,10 +164,7 @@ export const createWineApp = async (appName: string) => {
 
       if (file === undefined) throw new Error('No icon file provided');
 
-      filesystem.writeBinaryFile(
-        `${WINE_ENV.WINE_APP_RESOURCES_PATH}/${FileName.CFBundleIconFile}`,
-        file
-      );
+      writeBinaryFile(`${WINE_ENV.WINE_APP_RESOURCES_PATH}/${FileName.CFBundleIconFile}`, file);
     } catch (error) {
       console.error(error);
     }
@@ -176,7 +174,7 @@ export const createWineApp = async (appName: string) => {
     try {
       const file = params.appArtWorkFile;
       if (file === undefined) return;
-      filesystem.writeBinaryFile(`${WINE_ENV.WINE_APP_RESOURCES_PATH}/header.jpeg`, file);
+      writeBinaryFile(`${WINE_ENV.WINE_APP_RESOURCES_PATH}/header.jpeg`, file);
     } catch (error) {
       console.error(error);
     }
@@ -258,7 +256,7 @@ export const createWineApp = async (appName: string) => {
       if (fileName === undefined) throw new Error('Invalid filename');
 
       try {
-        filesystem.writeBinaryFile(setupExecutablePath, await downloadFile(exeURL));
+        writeBinaryFile(setupExecutablePath, await downloadFile(exeURL));
         downloadedExe = true;
       } catch (error) {
         console.error(error);

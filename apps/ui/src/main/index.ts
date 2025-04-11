@@ -4,29 +4,30 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { exec } from 'child_process';
 import { spawn } from 'child_process';
-import { promises as fs, writeFile, existsSync, readFile } from 'fs';
+import { promises as fs, writeFile, existsSync, readFile, writeFileSync } from 'fs';
 
 export enum ElectronApi {
   GetAppPath = 'get-app-path',
   ExecCommand = 'exec-command',
   PathJoin = 'path-join',
   SpawnProcess = 'spawn-process',
-  FileExist = 'file-exists',
+  FileExists = 'file-exists',
   WriteFile = 'write-file',
   ReadDirectory = 'read-directory',
   DirExists = 'dir-exists',
   ReadBinaryFile = 'read-binary-file',
   CreateDirectory = 'create-directory',
-  ReadFileAsString = 'read-file-as-string'
+  ReadFileAsString = 'read-file-as-string',
+  WriteBinaryFile = 'write-binary-file'
 }
 
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 
-ipcMain.handle('get-app-path', async () => {
+ipcMain.handle(ElectronApi.GetAppPath, async () => {
   return app.getAppPath(); // or __dirname
 });
-ipcMain.handle('exec-command', async (_, cmd: string) => {
+ipcMain.handle(ElectronApi.ExecCommand, async (_, cmd: string) => {
   return new Promise<{ stdOut: string; stdErr: string }>((resolve, reject) => {
     exec(cmd, (error, stdOut, stdErr) => {
       if (error) {
@@ -37,47 +38,50 @@ ipcMain.handle('exec-command', async (_, cmd: string) => {
     });
   });
 });
-ipcMain.handle('path-join', (_, ...paths: string[]) => path.join(...paths));
-ipcMain.handle('spawn-process', (_, command: string, args?: SpawnProcessArgs): Promise<void> => {
-  const child = spawn(command, {
-    stdio: 'pipe',
-    shell: true // Required to run the whole string in a shell
-  });
-
-  const updateProcess: UpdateProcess = async (action, data) => {
-    if (action === 'stdIn') {
-      child.stdin.write(data);
-    }
-
-    if (action === 'stdInEnd') {
-      child.stdin.write(data);
-    }
-
-    if (action === 'exit') {
-      child.stdin.write(data);
-    }
-  };
-
-  args?.action && updateProcess(args.action.type, args.action.data);
-
-  return new Promise((resolve) => {
-    child.stdout.on('data', async (data) => {
-      await args?.onStdOut?.(data, updateProcess);
+ipcMain.handle(ElectronApi.PathJoin, (_, ...paths: string[]) => path.join(...paths));
+ipcMain.handle(
+  ElectronApi.SpawnProcess,
+  (_, command: string, args?: SpawnProcessArgs): Promise<void> => {
+    const child = spawn(command, {
+      stdio: 'pipe',
+      shell: true // Required to run the whole string in a shell
     });
 
-    child.stderr.on('data', async (data) => {
-      await args?.onStdErr?.(data, updateProcess);
-    });
+    const updateProcess: UpdateProcess = async (action, data) => {
+      if (action === 'stdIn') {
+        child.stdin.write(data);
+      }
 
-    child.on('close', async (code) => {
-      await args?.onExit?.(code);
-      if (args) args = {}; //Callback is cleaned from subscription
-      resolve(undefined);
-    });
-  });
-});
+      if (action === 'stdInEnd') {
+        child.stdin.write(data);
+      }
 
-ipcMain.handle('file-exists', async (_, filePath: string) => {
+      if (action === 'exit') {
+        child.stdin.write(data);
+      }
+    };
+
+    args?.action && updateProcess(args.action.type, args.action.data);
+
+    return new Promise((resolve) => {
+      child.stdout.on('data', async (data) => {
+        await args?.onStdOut?.(data, updateProcess);
+      });
+
+      child.stderr.on('data', async (data) => {
+        await args?.onStdErr?.(data, updateProcess);
+      });
+
+      child.on('close', async (code) => {
+        await args?.onExit?.(code);
+        if (args) args = {}; //Callback is cleaned from subscription
+        resolve(undefined);
+      });
+    });
+  }
+);
+
+ipcMain.handle(ElectronApi.FileExists, async (_, filePath: string) => {
   try {
     const fullPath = path.resolve(filePath);
     await fs.access(fullPath);
@@ -87,11 +91,11 @@ ipcMain.handle('file-exists', async (_, filePath: string) => {
   }
 });
 
-ipcMain.handle('write-file', async (_, ...args: Parameters<typeof writeFile>) =>
+ipcMain.handle(ElectronApi.WriteFile, async (_, ...args: Parameters<typeof writeFile>) =>
   writeFile(...args)
 );
 
-ipcMain.handle('read-directory', async (_, dirPath: string) => {
+ipcMain.handle(ElectronApi.ReadDirectory, async (_, dirPath: string) => {
   try {
     const entries = await fs.readdir(dirPath);
     return entries;
@@ -101,8 +105,8 @@ ipcMain.handle('read-directory', async (_, dirPath: string) => {
   }
 });
 
-ipcMain.handle('dir-exists', async (_, dirPath: string) => existsSync(dirPath));
-ipcMain.handle('read-binary-file', async (_, filePath: string): Promise<Buffer> => {
+ipcMain.handle(ElectronApi.DirExists, async (_, dirPath: string) => existsSync(dirPath));
+ipcMain.handle(ElectronApi.ReadBinaryFile, async (_, filePath: string): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
     readFile(filePath, (err, data) => {
       if (err) {
@@ -114,7 +118,7 @@ ipcMain.handle('read-binary-file', async (_, filePath: string): Promise<Buffer> 
   });
 });
 
-ipcMain.handle('create-directory', async (_, dirPath: string) => {
+ipcMain.handle(ElectronApi.CreateDirectory, async (_, dirPath: string) => {
   try {
     await fs.mkdir(dirPath);
   } catch (error) {
@@ -123,13 +127,21 @@ ipcMain.handle('create-directory', async (_, dirPath: string) => {
   }
 });
 
-ipcMain.handle('read-file-as-string', async (_, filePath: string): Promise<string> => {
+ipcMain.handle(ElectronApi.ReadFileAsString, async (_, filePath: string): Promise<string> => {
   try {
     return fs.readFile(filePath, 'utf-8');
   } catch (error) {
     throw error;
   }
 });
+
+ipcMain.handle(
+  ElectronApi.WriteBinaryFile,
+  async (_, filePath: string, arrayBuffer: ArrayBuffer) => {
+    const buffer = Buffer.from(arrayBuffer);
+    writeFileSync(filePath, buffer);
+  }
+);
 
 function createWindow(): void {
   // Create the browser window.

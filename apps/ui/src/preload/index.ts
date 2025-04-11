@@ -20,6 +20,7 @@ export type Api = {
   readBinaryFile: (filePath: string) => Promise<Buffer>;
   createDirectory: (dirPath: string) => Promise<void>;
   readFileAsString: (filePath: string) => Promise<string>;
+  writeBinaryFile: (filePath: string, arrayBuffer: ArrayBuffer) => Promise<void>;
 };
 
 type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
@@ -27,16 +28,17 @@ type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
 // Custom APIs for renderer
 const api: RendererApi = {
   getAppPath: () => ipcRenderer.invoke(ElectronApi.GetAppPath),
-  execCommand: (cmd: string) => ipcRenderer.invoke(ElectronApi.ExecCommand, cmd),
-  pathJoin: (...paths: string[]) => ipcRenderer.invoke(ElectronApi.PathJoin, ...paths),
+  execCommand: (...args) => ipcRenderer.invoke(ElectronApi.ExecCommand, ...args),
+  pathJoin: (...args) => ipcRenderer.invoke(ElectronApi.PathJoin, ...args),
   spawnProcess: (...args) => ipcRenderer.invoke(ElectronApi.SpawnProcess, ...args),
-  fileExists: (path: string) => ipcRenderer.invoke(ElectronApi.FileExist, path),
+  fileExists: (...args) => ipcRenderer.invoke(ElectronApi.FileExists, ...args),
   writeFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteFile, ...args),
-  readDirectory: (dirPath: string) => ipcRenderer.invoke(ElectronApi.ReadDirectory, dirPath),
-  dirExists: (dirPath: string) => ipcRenderer.invoke(ElectronApi.DirExists, dirPath),
+  readDirectory: (...args) => ipcRenderer.invoke(ElectronApi.ReadDirectory, ...args),
+  dirExists: (...args) => ipcRenderer.invoke(ElectronApi.DirExists, ...args),
   readBinaryFile: (...args) => ipcRenderer.invoke(ElectronApi.ReadBinaryFile, ...args),
-  createDirectory: (dirPath: string) => ipcRenderer.invoke(ElectronApi.CreateDirectory, dirPath),
-  readFileAsString: (filePath: string) => ipcRenderer.invoke(ElectronApi.ReadFileAsString, filePath)
+  createDirectory: (...args) => ipcRenderer.invoke(ElectronApi.CreateDirectory, ...args),
+  readFileAsString: (...args) => ipcRenderer.invoke(ElectronApi.ReadFileAsString, ...args),
+  writeBinaryFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteBinaryFile, ...args)
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

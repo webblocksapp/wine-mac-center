@@ -6,6 +6,20 @@ import { exec } from 'child_process';
 import { spawn } from 'child_process';
 import { promises as fs, writeFile, existsSync, readFile } from 'fs';
 
+export enum ElectronApi {
+  GetAppPath = 'get-app-path',
+  ExecCommand = 'exec-command',
+  PathJoin = 'path-join',
+  SpawnProcess = 'spawn-process',
+  FileExist = 'file-exists',
+  WriteFile = 'write-file',
+  ReadDirectory = 'read-directory',
+  DirExists = 'dir-exists',
+  ReadBinaryFile = 'read-binary-file',
+  CreateDirectory = 'create-directory',
+  ReadFileAsString = 'read-file-as-string'
+}
+
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 

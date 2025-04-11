@@ -3,6 +3,7 @@ import { electronAPI } from '@electron-toolkit/preload';
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs } from '../renderer/src/interfaces';
 import { writeFile } from 'fs';
+import { ElectronApi } from '../main';
 
 export type Api = {
   getAppPath: () => Promise<string>;
@@ -25,17 +26,17 @@ type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
 
 // Custom APIs for renderer
 const api: RendererApi = {
-  getAppPath: () => ipcRenderer.invoke('get-app-path'),
-  execCommand: (cmd: string) => ipcRenderer.invoke('exec-command', cmd),
-  pathJoin: (...paths: string[]) => ipcRenderer.invoke('path-join', ...paths),
-  spawnProcess: (...args) => ipcRenderer.invoke('spawn-process', ...args),
-  fileExists: (path: string) => ipcRenderer.invoke('file-exists', path),
-  writeFile: (...args) => ipcRenderer.invoke('write-file', ...args),
-  readDirectory: (dirPath: string) => ipcRenderer.invoke('read-directory', dirPath),
-  dirExists: (dirPath: string) => ipcRenderer.invoke('dir-exists', dirPath),
-  readBinaryFile: (...args) => ipcRenderer.invoke('read-binary-file', ...args),
-  createDirectory: (dirPath: string) => ipcRenderer.invoke('create-directory', dirPath),
-  readFileAsString: (filePath: string) => ipcRenderer.invoke('read-file-as-string', filePath)
+  getAppPath: () => ipcRenderer.invoke(ElectronApi.GetAppPath),
+  execCommand: (cmd: string) => ipcRenderer.invoke(ElectronApi.ExecCommand, cmd),
+  pathJoin: (...paths: string[]) => ipcRenderer.invoke(ElectronApi.PathJoin, ...paths),
+  spawnProcess: (...args) => ipcRenderer.invoke(ElectronApi.SpawnProcess, ...args),
+  fileExists: (path: string) => ipcRenderer.invoke(ElectronApi.FileExist, path),
+  writeFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteFile, ...args),
+  readDirectory: (dirPath: string) => ipcRenderer.invoke(ElectronApi.ReadDirectory, dirPath),
+  dirExists: (dirPath: string) => ipcRenderer.invoke(ElectronApi.DirExists, dirPath),
+  readBinaryFile: (...args) => ipcRenderer.invoke(ElectronApi.ReadBinaryFile, ...args),
+  createDirectory: (dirPath: string) => ipcRenderer.invoke(ElectronApi.CreateDirectory, dirPath),
+  readFileAsString: (filePath: string) => ipcRenderer.invoke(ElectronApi.ReadFileAsString, filePath)
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -6,24 +6,10 @@ import icon from '../../resources/icon.png?asset';
 import { ChildProcessWithoutNullStreams, exec } from 'child_process';
 import { spawn } from 'child_process';
 import { promises as fs, writeFile, existsSync, readFile, writeFileSync } from 'fs';
-
-export enum ElectronApi {
-  GetAppPath = 'get-app-path',
-  ExecCommand = 'exec-command',
-  PathJoin = 'path-join',
-  SpawnProcess = 'spawn-process',
-  FileExists = 'file-exists',
-  WriteFile = 'write-file',
-  ReadDirectory = 'read-directory',
-  DirExists = 'dir-exists',
-  ReadBinaryFile = 'read-binary-file',
-  CreateDirectory = 'create-directory',
-  ReadFileAsString = 'read-file-as-string',
-  WriteBinaryFile = 'write-binary-file'
-}
-
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
+// @ts-ignore
+import { ElectronApi } from '../types/ElectronApi';
 
 ipcMain.handle(ElectronApi.GetAppPath, async () => {
   return app.getAppPath(); // or __dirname

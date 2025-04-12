@@ -4,8 +4,9 @@ import { electronAPI } from '@electron-toolkit/preload';
 import { SpawnProcessArgs } from '../renderer/src/interfaces';
 import { writeFile } from 'fs';
 // @ts-ignore
-import { ElectronApi } from '../main';
 import { ChildProcessWithoutNullStreams } from 'child_process';
+// @ts-ignore
+import { ElectronApi } from '../types/ElectronApi';
 
 export type Api = {
   getAppPath: () => Promise<string>;

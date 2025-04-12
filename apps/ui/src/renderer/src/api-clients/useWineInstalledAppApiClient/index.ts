@@ -14,7 +14,7 @@ export const useWineInstalledAppApiClient = () => {
 
   const listAll = async () => {
     const directories = await readDirectory(WINE_APPS_PATH);
-    let promises: Array<Promise<{ appPath: string; config: string } | undefined>> = [];
+    const promises: Array<Promise<{ appPath: string; config: string } | undefined>> = [];
     let configs: Array<WineInstalledApp> = [];
 
     for (const dir of directories) {
@@ -33,8 +33,8 @@ export const useWineInstalledAppApiClient = () => {
       promises.push(promise);
     }
 
-    promises = promises.filter((item) => item !== undefined);
     configs = (await Promise.all(promises))
+      .filter((item) => item !== undefined)
       .map((item) => ({
         ...item,
         config: parseJson<WineAppConfig>(item?.config)

@@ -6,7 +6,6 @@ import { WineAppConfig } from '@interfaces/WineAppConfig';
 import { WineAppExecutable } from '@interfaces/WineAppExecutable';
 import { WinetricksOptions } from '@interfaces/WinetricksOptions';
 import { buildEnvExports } from '@utils/buildEnvExports';
-import { NeutralinoCurl } from '@utils/curl';
 import { dirExists } from '@utils/dirExists';
 import { downloadFile } from '@utils/downloadFile';
 import { fileExists } from '@utils/fileExists';
@@ -24,7 +23,6 @@ export const createWineApp = async (appName: string) => {
   const env = createEnv();
   const wineEngineApiClient = createWineEngineApiClient();
   const SCRIPTS_PATH = env.get().SCRIPTS_PATH;
-  const CURL = new NeutralinoCurl({ debug: true });
 
   let appConfig: WineAppConfig = {
     id: '',
@@ -195,7 +193,8 @@ export const createWineApp = async (appName: string) => {
           createDirectory(engineTmpFolder);
         }
 
-        await CURL.download(url, `${WINE_ENV.WINE_TMP_PATH}/${version}/${fileName}`);
+        const file = await downloadFile(url);
+        await writeBinaryFile(`${WINE_ENV.WINE_TMP_PATH}/${version}/${fileName}`, file);
       }
 
       return spawnScript(
@@ -205,6 +204,7 @@ export const createWineApp = async (appName: string) => {
       );
     } catch (error) {
       console.error(error);
+      return;
     }
   };
 

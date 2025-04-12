@@ -3,6 +3,7 @@ import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
 import EnvironmentPlugin from 'vite-plugin-environment';
+import checker from 'vite-plugin-checker';
 
 export default defineConfig({
   main: {
@@ -17,6 +18,16 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
-    plugins: [react(), tsconfigPaths(), EnvironmentPlugin('all')]
+    plugins: [
+      react(),
+      checker({
+        typescript: {
+          tsconfigPath: './tsconfig.web.json' // Specify your custom tsconfig path
+        },
+        overlay: false
+      }),
+      tsconfigPaths(),
+      EnvironmentPlugin('all')
+    ]
   }
 });

@@ -82,7 +82,7 @@ export const ChangeWineEngineDialog: React.FC<ChangeWineEngineDialogProps> = ({
     >
       <Stack justifyContent="center" bgcolor="secondary.main" minHeight={200} p={2}>
         {!running ? (
-          <form onSubmit={form.handleSubmit(submit)} style={{ display: 'contents' }}>
+          <form onSubmit={form.handleSubmit(submit as any)} style={{ display: 'contents' }}>
             <Stack spacing={2}>
               <Body1 fontWeight={500}>Change Wine Engine</Body1>
               <WineEnginesSelect

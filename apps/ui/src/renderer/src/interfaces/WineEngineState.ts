@@ -1,4 +1,4 @@
-import { WineEngineDownloadable } from '@interfaces';
+import { WineEngineDownloadable } from '@interfaces/WineEngineDownloadable';
 
 export type WineEngineState = {
   wineEngines?: string[];

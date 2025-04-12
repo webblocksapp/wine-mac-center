@@ -1,8 +1,8 @@
 import { Button, ButtonProps, Icon } from 'reactjs-ui-core';
 import { PlayIcon, XCircleIcon } from '@assets/icons';
-import { useWineInstalledAppModel } from '@models';
+import { useWineInstalledAppModel } from '@models/useWineInstalledAppModel';
 import { useSelector } from 'react-redux';
-import { RootState } from '@interfaces';
+import { RootState } from '@interfaces/RootState';
 
 export interface RunAppButtonProps extends ButtonProps {
   appId?: string;
@@ -15,14 +15,12 @@ export const RunAppButton: React.FC<RunAppButtonProps> = ({
 }) => {
   const wineInstalledAppModel = useWineInstalledAppModel();
   const wineInstalledApp = useSelector((state: RootState) =>
-    wineInstalledAppModel.selectWineInstalledApp(state, appId),
+    wineInstalledAppModel.selectWineInstalledApp(state, appId)
   );
   const appIsOpened = Boolean(wineInstalledApp?.pid);
 
   const onClick: RunAppButtonProps['onClick'] = (event) => {
-    appIsOpened
-      ? wineInstalledAppModel.killApp(appId)
-      : wineInstalledAppModel.runApp(appId);
+    appIsOpened ? wineInstalledAppModel.killApp(appId) : wineInstalledAppModel.runApp(appId);
     onClickProp?.(event);
   };
 

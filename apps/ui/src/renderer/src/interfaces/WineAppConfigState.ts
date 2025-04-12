@@ -1,5 +1,5 @@
-import { WineAppConfig } from '@interfaces';
+import { WineAppConfigItem } from '@interfaces/WineAppConfigItem';
 
 export type WineAppConfigState = {
-  wineAppsConfigs?: Array<WineAppConfig>;
+  wineAppsConfigs?: Array<WineAppConfigItem>;
 };

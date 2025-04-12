@@ -6,7 +6,7 @@ import { dirExists } from '@utils/dirExists';
 import { execCommand } from '@utils/execCommand';
 import { fileExists } from '@utils/fileExists';
 import { parseJson } from '@utils/parseJson';
-import { readFile } from '@utils/openFile';
+import { readFileAsString } from '@utils/readFileAsString';
 import { writeFile } from '@utils/writeFile';
 
 export const useWinetrickApiClient = () => {
@@ -90,7 +90,7 @@ export const useWinetrickApiClient = () => {
     } else {
       winetricks = {
         ...winetricks,
-        ...parseJson<Winetricks>(await readFile(WINETRICKS_PATH))
+        ...parseJson<Winetricks>(await readFileAsString(WINETRICKS_PATH))
       };
     }
 

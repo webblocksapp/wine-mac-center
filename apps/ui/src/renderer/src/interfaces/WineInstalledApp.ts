@@ -1,4 +1,4 @@
-import { WineAppConfig } from 'neu-wine-api';
+import { WineAppConfig } from '@interfaces/WineAppConfig';
 
 export type WineInstalledApp = Omit<WineAppConfig, 'id' | 'appId'> & {
   id: string;

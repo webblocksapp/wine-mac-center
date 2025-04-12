@@ -6,10 +6,10 @@ import { store } from '@store';
 import { useWineAppApiClient } from '@api-clients/useWineAppApiClient';
 import { RootState } from '@interfaces/RootState';
 import { SortDirection } from '@interfaces/SortDirection';
-import { WineApp } from '@interfaces/WineApp';
 import { WineAppAction } from '@interfaces/WineAppAction';
 import { useAppModel } from '@models/useAppModel';
 import { objectMatchCriteria } from '@utils/objectMatchCriteria';
+import { WineAppItem } from '@interfaces/WineAppItem';
 
 export const useWineAppModel = () => {
   const [state, setState] = useState({
@@ -31,7 +31,7 @@ export const useWineAppModel = () => {
     }
   };
 
-  const dispatchListAll = (wineApps: WineApp[]) => {
+  const dispatchListAll = (wineApps: WineAppItem[]) => {
     dispatch({
       type: ActionType.LIST_ALL,
       wineApps

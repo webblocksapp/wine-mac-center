@@ -56,7 +56,7 @@ export const createWineAppPipeline = async (options: {
   const buildWinetricksSteps = () => {
     const steps: Array<
       WineAppStep & {
-        script: (args: SpawnProcessArgs) => Promise<void>;
+        script: (args: SpawnProcessArgs) => Promise<any>;
       }
     > = [];
     const verbs = winetricks?.verbs || [];

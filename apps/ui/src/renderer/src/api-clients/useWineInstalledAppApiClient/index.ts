@@ -4,8 +4,9 @@ import { WineInstalledApp } from '@interfaces/WineInstalledApp';
 import { fileExists } from '@utils/fileExists';
 import { parseJson } from '@utils/parseJson';
 import { readDirectory } from '@utils/readDirectory';
-import { readFile } from '@utils/openFile';
 import { useEnv } from '@utils/useEnv';
+import { readFileAsString } from '@utils/readFileAsString';
+import { spawnProcess } from '@utils/spawnProcess';
 
 export const useWineInstalledAppApiClient = () => {
   const env = useEnv();
@@ -22,7 +23,7 @@ export const useWineInstalledAppApiClient = () => {
       const promise = new Promise<{ appPath: string; config: string } | undefined>(
         async (resolve) => {
           if (await fileExists(CONFIG_FILE)) {
-            const config = await readFile(CONFIG_FILE);
+            const config = await readFileAsString(CONFIG_FILE);
             resolve({ appPath: APP_PATH, config });
           } else {
             resolve(undefined);
@@ -49,11 +50,11 @@ export const useWineInstalledAppApiClient = () => {
   };
 
   const runApp = (appPath: string) => {
-    return os.spawnProcess(`open "${appPath}"`);
+    return spawnProcess(`open "${appPath}"`);
   };
 
   const killApp = (pid: number) => {
-    return os.spawnProcess(`kill ${pid}`);
+    return spawnProcess(`kill ${pid}`);
   };
 
   return {

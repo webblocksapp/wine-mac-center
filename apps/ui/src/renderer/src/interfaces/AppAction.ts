@@ -1,4 +1,4 @@
-import { AppActionType as ActionType } from '@constants';
+import { AppActionType as ActionType } from '@constants/actionTypes';
 
 export type AppAction = {
   type: ActionType.SHOW_MESSAGE;

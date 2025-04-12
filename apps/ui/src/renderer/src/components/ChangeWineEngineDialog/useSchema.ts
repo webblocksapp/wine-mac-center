@@ -1,4 +1,4 @@
-import { WineAppConfig } from 'neu-wine-api';
+import { WineAppConfig } from '@interfaces/WineAppConfig';
 import { useMemo } from 'react';
 import { schema, Schema } from 'reactjs-ui-form-fields';
 
@@ -8,8 +8,8 @@ export const useSchema = () => {
   return useMemo<Schema<FormSchema>>(
     () =>
       schema.object({
-        engineVersion: schema.string().required(),
+        engineVersion: schema.string().required()
       }),
-    [],
+    []
   );
 };

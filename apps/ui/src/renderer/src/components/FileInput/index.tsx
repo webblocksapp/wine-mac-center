@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { Box, Button, TextField } from 'reactjs-ui-core';
 import { Field, TextFieldProps } from 'reactjs-ui-form-fields';
 import { InputAdornment } from '@mui/material';
-import { os } from '@neutralinojs/lib';
-import { readFile } from '@utils/openFile';
+import { openFile } from '@utils/openFile';
 
 export type FileInputProps = Omit<TextFieldProps, 'type' | 'label' | 'accept' | 'onInput'> & {
   noSelectedFileLabel?: string;
   selectedFileLabel?: string;
   dialogText?: string;
-  filters?: os.Filter[];
+  filters?: Array<{ name: string; extensions: string[] }>;
   onInput?: (file: File | undefined) => void;
 };
 
@@ -54,7 +53,7 @@ export const FileInput: React.FC<FileInputProps> = ({
           }}
           value={fileName}
           onClick={async () => {
-            const { file, fileName } = await readFile(dialogText, { filters });
+            const { file, fileName } = await openFile(dialogText, { filters });
             setFileName(fileName);
             onInput({ target: { value: file } });
             onInputProp?.(file);

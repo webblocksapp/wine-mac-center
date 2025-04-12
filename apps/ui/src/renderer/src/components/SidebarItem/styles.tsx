@@ -1,9 +1,7 @@
-import { SidebarItemProps } from '@components';
+import { SidebarItemProps } from '@components/SidebarItem';
 
-export const styles = ({
-  sx,
-}: Partial<SidebarItemProps>): SidebarItemProps['sx'] => ({
+export const styles = ({ sx }: Partial<SidebarItemProps>): SidebarItemProps['sx'] => ({
   paddingY: 1,
   borderRadius: 2,
-  ...sx,
+  ...sx
 });

@@ -43,7 +43,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({ setOpen, ...re
 
   return (
     <Dialog disableEscapeKeyDown disableBackdropClick fullWidth maxWidth="md" {...rest}>
-      <form onSubmit={form.handleSubmit(submit)} style={{ display: 'contents' }}>
+      <form onSubmit={form.handleSubmit(submit as any)} style={{ display: 'contents' }}>
         <Stack p={2} spacing={2} bgcolor="secondary.main">
           <Body1 fontWeight={500}>Create Application</Body1>
           <Box>

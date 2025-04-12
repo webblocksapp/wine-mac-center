@@ -1,4 +1,4 @@
-import { WinetrickState } from '@interfaces';
+import { WinetrickState } from '@interfaces/WinetrickState';
 
 export const listAll = (
   winetricks: Partial<WinetrickState['winetricks']>,
@@ -13,6 +13,6 @@ export const loaders = (
 ): WinetrickState => {
   return {
     ...state,
-    loaders: { ...state.loaders, ...loaders },
+    loaders: { ...state.loaders, ...loaders }
   };
 };

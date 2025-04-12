@@ -1,18 +1,17 @@
-import { Flatten, WineInstalledAppState } from '@interfaces';
+import { Flatten } from '@interfaces/Flatten';
+import { WineInstalledAppState } from '@interfaces/WineInstalledAppState';
 
 export const listAll = (
   wineInstalledApps: WineInstalledAppState['wineInstalledApps'],
-  state: WineInstalledAppState,
+  state: WineInstalledAppState
 ): WineInstalledAppState => {
   return { ...state, wineInstalledApps };
 };
 
 export const patch = (
   appId: string,
-  wineInstalledApp: Partial<
-    Flatten<WineInstalledAppState['wineInstalledApps']>
-  >,
-  state: WineInstalledAppState,
+  wineInstalledApp: Partial<Flatten<WineInstalledAppState['wineInstalledApps']>>,
+  state: WineInstalledAppState
 ): WineInstalledAppState => {
   return {
     ...state,
@@ -21,6 +20,6 @@ export const patch = (
         return { ...item, ...wineInstalledApp };
       }
       return item;
-    }),
+    })
   };
 };

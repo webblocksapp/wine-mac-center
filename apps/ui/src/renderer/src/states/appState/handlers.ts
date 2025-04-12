@@ -1,4 +1,4 @@
-import { AppState } from '@interfaces';
+import { AppState } from '@interfaces/AppState';
 
 export const handleMessages = (
   messages: Partial<AppState['messages']>,
@@ -6,6 +6,6 @@ export const handleMessages = (
 ): AppState => {
   return {
     ...state,
-    messages: { ...state.messages, ...messages },
+    messages: { ...state.messages, ...messages }
   };
 };

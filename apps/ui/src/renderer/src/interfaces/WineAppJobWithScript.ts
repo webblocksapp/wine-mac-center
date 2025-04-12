@@ -3,5 +3,5 @@ import { WineAppStep } from '@interfaces/WineAppStep';
 
 export type WineAppJobWithScript = {
   name: string;
-  steps: Array<WineAppStep & { script: (args: SpawnProcessArgs) => Promise<void> }>;
+  steps: Array<WineAppStep & { script: (args: SpawnProcessArgs) => Promise<any> }>;
 };

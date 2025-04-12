@@ -1,8 +1,9 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import path, { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
+// @ts-ignore
 import icon from '../../resources/icon.png?asset';
-import { exec } from 'child_process';
+import { ChildProcessWithoutNullStreams, exec } from 'child_process';
 import { spawn } from 'child_process';
 import { promises as fs, writeFile, existsSync, readFile, writeFileSync } from 'fs';
 
@@ -41,7 +42,7 @@ ipcMain.handle(ElectronApi.ExecCommand, async (_, cmd: string) => {
 ipcMain.handle(ElectronApi.PathJoin, (_, ...paths: string[]) => path.join(...paths));
 ipcMain.handle(
   ElectronApi.SpawnProcess,
-  (_, command: string, args?: SpawnProcessArgs): Promise<void> => {
+  (_, command: string, args?: SpawnProcessArgs): Promise<ChildProcessWithoutNullStreams> => {
     const child = spawn(command, {
       stdio: 'pipe',
       shell: true // Required to run the whole string in a shell
@@ -75,7 +76,7 @@ ipcMain.handle(
       child.on('close', async (code) => {
         await args?.onExit?.(code);
         if (args) args = {}; //Callback is cleaned from subscription
-        resolve(undefined);
+        resolve(child);
       });
     });
   }
@@ -156,7 +157,8 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      webSecurity: false
     }
   });
 

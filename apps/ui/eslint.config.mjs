@@ -37,7 +37,8 @@ export default tseslint.config(
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       'no-async-promise-executor': 'off',
-      'no-useless-catch': 'off'
+      'no-useless-catch': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off'
     }
   }
 );

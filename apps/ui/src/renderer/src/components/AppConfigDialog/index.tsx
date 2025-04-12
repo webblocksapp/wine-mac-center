@@ -2,7 +2,7 @@ import { Body1, Box, Button, Dialog, DialogProps, Grid, Stack } from 'reactjs-ui
 import { TextField, Checkbox, useForm } from 'reactjs-ui-form-fields';
 import { v4 as uuid } from 'uuid';
 import { FormSchema, useSchema } from './useSchema';
-import { FilePathInput } from '../FilePathInput';
+import { FilePathInput } from '@components/FilePathInput';
 import { useWineAppPipelineModel } from '@models/useWineAppPipelineModel';
 import { FileInput } from '@components/FileInput';
 import { WineEnginesSelect } from '@components/WineEnginesSelect';

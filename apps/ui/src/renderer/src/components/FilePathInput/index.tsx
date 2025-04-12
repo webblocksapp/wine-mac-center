@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Button, TextField } from 'reactjs-ui-core';
 import { Field, TextFieldProps } from 'reactjs-ui-form-fields';
 import { InputAdornment } from '@mui/material';
-import { dialog } from 'electron';
+// import { dialog } from 'electron';
 
 export type FilePathInputProps = Omit<TextFieldProps, 'type' | 'label' | 'accept'> & {
   noSelectedFileLabel?: string;
@@ -26,12 +26,14 @@ export const FilePathInput: React.FC<FilePathInputProps> = ({
   const [filePath, setFilePath] = useState('');
 
   const selectFile = async () => {
-    const result = await dialog.showOpenDialog({
-      title: dialogText,
-      filters
-    });
+    // const result = await dialog.showOpenDialog({
+    //   title: dialogText,
+    //   filters
+    // });
 
-    return result.filePaths;
+    // return result.filePaths;
+
+    return [];
   };
 
   return (

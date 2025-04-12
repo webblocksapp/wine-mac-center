@@ -11,6 +11,7 @@ import { InitApp } from './InitApp';
 import { WineCfg } from './WineCfg';
 import { SetSetupExe } from './SetSetupExe';
 import { DownloadEngine } from './DownloadEngine';
+import { Stack } from 'reactjs-ui-core';
 
 export const WineAppContext = createContext<{
   wineApp: WineApp;
@@ -23,10 +24,10 @@ export const Test: React.FC = () => {
   const [wineApp, setWineApp] = useState<WineApp>(null as any);
 
   return (
-    <div>
+    <Stack p={2}>
       <WineAppContext.Provider value={{ wineApp, setWineApp }}>
         {wineApp ? (
-          <>
+          <Stack spacing={1}>
             <ScaffoldApp />
             <DownloadEngine />
             <ExtractEngine />
@@ -37,11 +38,11 @@ export const Test: React.FC = () => {
             <RunExe />
             <BundleApp />
             <WineCfg />
-          </>
+          </Stack>
         ) : (
           <InitApp />
         )}
       </WineAppContext.Provider>
-    </div>
+    </Stack>
   );
 };

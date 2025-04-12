@@ -30,6 +30,10 @@ ipcMain.handle(ElectronApi.PathJoin, (_, ...paths: string[]) => path.join(...pat
 ipcMain.handle(
   ElectronApi.SpawnProcess,
   (_, command: string, args?: SpawnProcessArgs): Promise<ChildProcessWithoutNullStreams> => {
+    if (args?.debug) {
+      console.log('Spawn process command:', { command, args });
+    }
+
     const child = spawn(command, {
       stdio: 'pipe',
       shell: true // Required to run the whole string in a shell
@@ -53,14 +57,17 @@ ipcMain.handle(
 
     return new Promise((resolve) => {
       child.stdout.on('data', async (data) => {
+        args?.debug && console.log('stdout:', data);
         await args?.onStdOut?.(data, updateProcess);
       });
 
       child.stderr.on('data', async (data) => {
+        args?.debug && console.log('stderr:', data);
         await args?.onStdErr?.(data, updateProcess);
       });
 
       child.on('close', async (code) => {
+        args?.debug && console.log('close:', code);
         await args?.onExit?.(code);
         if (args) args = {}; //Callback is cleaned from subscription
         resolve(child);

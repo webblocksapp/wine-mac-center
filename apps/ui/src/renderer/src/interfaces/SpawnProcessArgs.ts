@@ -7,4 +7,5 @@ export type SpawnProcessArgs = {
   onStdErr?: (data: string, updateProcess: UpdateProcess) => void | Promise<void>;
   onExit?: (data: string | number | null) => void | Promise<void>;
   action?: { type: ActionType; data: string };
+  debug?: boolean;
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, TextField } from 'reactjs-ui-core';
+import { Button, Stack, TextField } from 'reactjs-ui-core';
 import { useWineAppContext } from '@pages/Test';
 import { Code } from '@components/Code';
 
@@ -26,7 +26,7 @@ export const ScaffoldApp: React.FC = () => {
   };
 
   return (
-    <div>
+    <Stack spacing={2}>
       <div style={{ marginBottom: 10 }}>
         <h3>Scaffold App</h3>
         <hr />
@@ -50,6 +50,6 @@ export const ScaffoldApp: React.FC = () => {
         {loading ? 'Scaffolding' : 'Scaffold'} App
       </Button>
       <Code label="Output" content={JSON.stringify(data, null, 2)} />
-    </div>
+    </Stack>
   );
 };

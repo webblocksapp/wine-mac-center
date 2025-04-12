@@ -1,6 +1,5 @@
 import { readBinaryFile } from '@utils/readBinaryFile';
-//TODO refactor dialog
-// import { dialog } from 'electron';
+import { showOpenDialog } from '@utils/showOpenDialog';
 
 export const openFile = async (
   title?: string,
@@ -12,8 +11,8 @@ export const openFile = async (
   const { errorMessage: givenErrorMessage, ...restOptions } = options || {};
 
   try {
-    // const { filePaths } = await dialog.showOpenDialog({ title, ...restOptions });
-    const [filePath] = [''];
+    const { filePaths } = await showOpenDialog({ title, ...restOptions });
+    const [filePath] = filePaths;
     fileName = filePath?.split('/')?.pop() || '';
     const ext = fileName?.split('.')?.pop();
     const byteArray = await readBinaryFile(filePath);

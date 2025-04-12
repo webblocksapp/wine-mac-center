@@ -10,6 +10,7 @@ import { promises as fs, writeFile, existsSync, readFile, writeFileSync } from '
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 // @ts-ignore
 import { ElectronApi } from '../types/ElectronApi';
+import { dialog } from 'electron';
 
 ipcMain.handle(ElectronApi.GetAppPath, async () => {
   return app.getAppPath(); // or __dirname
@@ -128,6 +129,11 @@ ipcMain.handle(
     const buffer = Buffer.from(arrayBuffer);
     writeFileSync(filePath, buffer);
   }
+);
+
+ipcMain.handle(
+  ElectronApi.ShowOpenDialog,
+  async (_, ...args: Parameters<typeof dialog.showOpenDialog>) => dialog.showOpenDialog(...args)
 );
 
 function createWindow(): void {

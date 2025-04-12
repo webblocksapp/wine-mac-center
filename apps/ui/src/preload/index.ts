@@ -7,6 +7,7 @@ import { writeFile } from 'fs';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 // @ts-ignore
 import { ElectronApi } from '../types/ElectronApi';
+import { dialog } from 'electron';
 
 export type Api = {
   getAppPath: () => Promise<string>;
@@ -27,6 +28,7 @@ export type Api = {
   createDirectory: (dirPath: string) => Promise<void>;
   readFileAsString: (filePath: string) => Promise<string>;
   writeBinaryFile: (filePath: string, arrayBuffer: ArrayBuffer) => Promise<void>;
+  showOpenDialog: typeof dialog.showOpenDialog;
 };
 
 type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
@@ -44,7 +46,8 @@ const api: RendererApi = {
   readBinaryFile: (...args) => ipcRenderer.invoke(ElectronApi.ReadBinaryFile, ...args),
   createDirectory: (...args) => ipcRenderer.invoke(ElectronApi.CreateDirectory, ...args),
   readFileAsString: (...args) => ipcRenderer.invoke(ElectronApi.ReadFileAsString, ...args),
-  writeBinaryFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteBinaryFile, ...args)
+  writeBinaryFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteBinaryFile, ...args),
+  showOpenDialog: (...args) => ipcRenderer.invoke(ElectronApi.ShowOpenDialog, ...args)
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

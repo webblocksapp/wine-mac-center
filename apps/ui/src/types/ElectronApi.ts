@@ -10,5 +10,6 @@ export enum ElectronApi {
   ReadBinaryFile = 'read-binary-file',
   CreateDirectory = 'create-directory',
   ReadFileAsString = 'read-file-as-string',
-  WriteBinaryFile = 'write-binary-file'
+  WriteBinaryFile = 'write-binary-file',
+  ShowOpenDialog = 'show-open-dialog'
 }

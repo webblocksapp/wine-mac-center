@@ -19,7 +19,7 @@ export const WineAppContext = createContext<{
 
 export const useWineAppContext = () => useContext(WineAppContext);
 
-export const Wine: React.FC = () => {
+export const Test: React.FC = () => {
   const [wineApp, setWineApp] = useState<WineApp>(null as any);
 
   return (

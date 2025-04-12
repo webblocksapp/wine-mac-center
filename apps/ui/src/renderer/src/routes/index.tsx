@@ -3,6 +3,7 @@ import { Apps } from '@pages/Apps';
 import { Home } from '@pages/Home';
 import { Settings } from '@pages/Settings';
 import { Tasks } from '@pages/Tasks';
+import { Test } from '@pages/Test';
 import { RouteObject } from 'react-router-dom';
 
 export const routes: RouteObject[] = [
@@ -14,7 +15,8 @@ export const routes: RouteObject[] = [
       { path: 'home', element: <Home /> },
       { path: 'apps', element: <Apps /> },
       { path: 'settings', element: <Settings /> },
-      { path: 'tasks', element: <Tasks /> }
+      { path: 'tasks', element: <Tasks /> },
+      { path: 'test', element: <Test /> }
     ]
   }
 ];

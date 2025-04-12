@@ -38,7 +38,8 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'off',
       'no-async-promise-executor': 'off',
       'no-useless-catch': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off'
+      '@typescript-eslint/ban-ts-comment': 'off',
+      'no-extra-boolean-cast': 'off'
     }
   }
 );

@@ -49,22 +49,23 @@ ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProces
     }
   };
   args?.action && updateProcess(args.action.type, args.action.data);
-  new Promise((resolve) => {
-    child.stdout.on('data', async (data) => {
-      args?.debug && console.log('stdout:', data);
-      mainWindow.webContents.send('spawn-stdout', data.toString());
-    });
-    child.stderr.on('data', async (data) => {
-      args?.debug && console.log('stderr:', data);
-      mainWindow.webContents.send('spawn-stderr', data.toString());
-    });
-    child.on('close', async (code) => {
-      args?.debug && console.log('close:', code);
-      mainWindow.webContents.send('spawn-exit', code);
-      if (args) args = {}; //Callback is cleaned from subscription
-      resolve(child);
-    });
+
+  child.stdout.on('data', async (data) => {
+    args?.debug && console.log('stdout:', data);
+    mainWindow.webContents.send('spawn-stdout', data.toString());
   });
+
+  child.stderr.on('data', async (data) => {
+    args?.debug && console.log('stderr:', data);
+    mainWindow.webContents.send('spawn-stderr', data.toString());
+  });
+
+  child.on('close', async (code) => {
+    args?.debug && console.log('close:', code);
+    mainWindow.webContents.send('spawn-exit', code);
+  });
+
+  return { pid: child.pid };
 });
 
 ipcMain.handle(ElectronApi.FileExists, async (_, filePath: string) => {

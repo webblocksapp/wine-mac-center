@@ -16,7 +16,7 @@ export type Api = {
     stdErr: string;
   }>;
   pathJoin: (...paths: string[]) => Promise<string>;
-  spawnProcess: (command: string) => Promise<ChildProcessWithoutNullStreams>;
+  spawnProcess: (command: string) => Promise<{ pid: number }>;
   fileExists: (path: string) => Promise<boolean>;
   writeFile: typeof writeFile;
   readDirectory: (dirPath: string) => Promise<string[]>;

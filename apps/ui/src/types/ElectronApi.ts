@@ -11,5 +11,8 @@ export enum ElectronApi {
   CreateDirectory = 'create-directory',
   ReadFileAsString = 'read-file-as-string',
   WriteBinaryFile = 'write-binary-file',
-  ShowOpenDialog = 'show-open-dialog'
+  ShowOpenDialog = 'show-open-dialog',
+  SpawnStdout = 'spawn-stdout',
+  SpawnStderr = 'spawn-stderr',
+  SpawnExit = 'spawn-exit'
 }

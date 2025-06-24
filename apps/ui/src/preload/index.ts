@@ -16,10 +16,7 @@ export type Api = {
     stdErr: string;
   }>;
   pathJoin: (...paths: string[]) => Promise<string>;
-  spawnProcess: (
-    command: string,
-    args?: SpawnProcessArgs
-  ) => Promise<ChildProcessWithoutNullStreams>;
+  spawnProcess: (command: string) => Promise<ChildProcessWithoutNullStreams>;
   fileExists: (path: string) => Promise<boolean>;
   writeFile: typeof writeFile;
   readDirectory: (dirPath: string) => Promise<string[]>;
@@ -29,9 +26,14 @@ export type Api = {
   readFileAsString: (filePath: string) => Promise<string>;
   writeBinaryFile: (filePath: string, arrayBuffer: ArrayBuffer) => Promise<void>;
   showOpenDialog: typeof dialog.showOpenDialog;
+  onStdOut: (callback: (data: string) => void) => void;
+  onStdErr: (callback: (data: string) => void) => void;
+  onExit: (callback: (code: number) => void) => void;
 };
 
-type RendererApi = Record<keyof Api, (...args: any) => Promise<any>>;
+type RendererApi = {
+  [K in keyof Api]: (...args: Parameters<Api[K]>) => ReturnType<Api[K]>;
+};
 
 // Custom APIs for renderer
 const api: RendererApi = {
@@ -39,6 +41,21 @@ const api: RendererApi = {
   execCommand: (...args) => ipcRenderer.invoke(ElectronApi.ExecCommand, ...args),
   pathJoin: (...args) => ipcRenderer.invoke(ElectronApi.PathJoin, ...args),
   spawnProcess: (...args) => ipcRenderer.invoke(ElectronApi.SpawnProcess, ...args),
+  onStdOut: (callback: (data: string) => void) => {
+    const listener = (_, data) => callback(data);
+    ipcRenderer.on(ElectronApi.SpawnStdout, listener);
+    return () => ipcRenderer.removeListener(ElectronApi.SpawnStdout, listener);
+  },
+  onStdErr: (callback: (data: string) => void) => {
+    const listener = (_, data) => callback(data);
+    ipcRenderer.on(ElectronApi.SpawnStderr, listener);
+    return () => ipcRenderer.removeListener(ElectronApi.SpawnStderr, listener);
+  },
+  onExit: (callback: (code: number) => void) => {
+    const listener = (_, data) => callback(data);
+    ipcRenderer.on(ElectronApi.SpawnExit, listener);
+    return () => ipcRenderer.removeListener(ElectronApi.SpawnExit, listener);
+  },
   fileExists: (...args) => ipcRenderer.invoke(ElectronApi.FileExists, ...args),
   writeFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteFile, ...args),
   readDirectory: (...args) => ipcRenderer.invoke(ElectronApi.ReadDirectory, ...args),

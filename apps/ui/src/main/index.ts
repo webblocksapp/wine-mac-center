@@ -3,7 +3,7 @@ import path, { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 // @ts-ignore
 import icon from '../../resources/icon.png?asset';
-import { ChildProcessWithoutNullStreams, exec } from 'child_process';
+import { exec } from 'child_process';
 import { spawn } from 'child_process';
 import { promises as fs, writeFile, existsSync, readFile, writeFileSync } from 'fs';
 // @ts-ignore (renderer type)
@@ -11,6 +11,8 @@ import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 // @ts-ignore
 import { ElectronApi } from '../types/ElectronApi';
 import { dialog } from 'electron';
+
+let mainWindow: BrowserWindow;
 
 ipcMain.handle(ElectronApi.GetAppPath, async () => {
   return app.getAppPath(); // or __dirname
@@ -27,54 +29,43 @@ ipcMain.handle(ElectronApi.ExecCommand, async (_, cmd: string) => {
   });
 });
 ipcMain.handle(ElectronApi.PathJoin, (_, ...paths: string[]) => path.join(...paths));
-ipcMain.handle(
-  ElectronApi.SpawnProcess,
-  (_, command: string, args?: SpawnProcessArgs): Promise<ChildProcessWithoutNullStreams> => {
-    if (args?.debug) {
-      console.log('Spawn process command:', { command, args });
-    }
-
-    const child = spawn(command, {
-      stdio: 'pipe',
-      shell: true // Required to run the whole string in a shell
-    });
-
-    const updateProcess: UpdateProcess = async (action, data) => {
-      if (action === 'stdIn') {
-        child.stdin.write(data);
-      }
-
-      if (action === 'stdInEnd') {
-        child.stdin.write(data);
-      }
-
-      if (action === 'exit') {
-        child.stdin.write(data);
-      }
-    };
-
-    args?.action && updateProcess(args.action.type, args.action.data);
-
-    return new Promise((resolve) => {
-      child.stdout.on('data', async (data) => {
-        args?.debug && console.log('stdout:', data);
-        await args?.onStdOut?.(data, updateProcess);
-      });
-
-      child.stderr.on('data', async (data) => {
-        args?.debug && console.log('stderr:', data);
-        await args?.onStdErr?.(data, updateProcess);
-      });
-
-      child.on('close', async (code) => {
-        args?.debug && console.log('close:', code);
-        await args?.onExit?.(code);
-        if (args) args = {}; //Callback is cleaned from subscription
-        resolve(child);
-      });
-    });
+ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProcessArgs) => {
+  if (args?.debug) {
+    console.log('Spawn process command:', { command, args });
   }
-);
+  const child = spawn(command, {
+    stdio: 'pipe',
+    shell: true // Required to run the whole string in a shell
+  });
+  const updateProcess: UpdateProcess = async (action, data) => {
+    if (action === 'stdIn') {
+      child.stdin.write(data);
+    }
+    if (action === 'stdInEnd') {
+      child.stdin.write(data);
+    }
+    if (action === 'exit') {
+      child.stdin.write(data);
+    }
+  };
+  args?.action && updateProcess(args.action.type, args.action.data);
+  new Promise((resolve) => {
+    child.stdout.on('data', async (data) => {
+      args?.debug && console.log('stdout:', data);
+      mainWindow.webContents.send('spawn-stdout', data.toString());
+    });
+    child.stderr.on('data', async (data) => {
+      args?.debug && console.log('stderr:', data);
+      mainWindow.webContents.send('spawn-stderr', data.toString());
+    });
+    child.on('close', async (code) => {
+      args?.debug && console.log('close:', code);
+      mainWindow.webContents.send('spawn-exit', code);
+      if (args) args = {}; //Callback is cleaned from subscription
+      resolve(child);
+    });
+  });
+});
 
 ipcMain.handle(ElectronApi.FileExists, async (_, filePath: string) => {
   try {
@@ -145,7 +136,7 @@ ipcMain.handle(
 
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,

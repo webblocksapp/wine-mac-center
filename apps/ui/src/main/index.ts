@@ -3,7 +3,7 @@ import path, { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 // @ts-ignore
 import icon from '../../resources/icon.png?asset';
-import { exec } from 'child_process';
+import { ChildProcessWithoutNullStreams, exec } from 'child_process';
 import { spawn } from 'child_process';
 import { promises as fs, existsSync, readFile, writeFileSync, PathOrFileDescriptor } from 'fs';
 // @ts-ignore (renderer type)
@@ -11,8 +11,10 @@ import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 // @ts-ignore
 import { ElectronApi } from '../types/ElectronApi';
 import { dialog } from 'electron';
+import { v4 as uuid } from 'uuid';
 
 let mainWindow: BrowserWindow;
+const processMap = new Map<string, ChildProcessWithoutNullStreams>();
 
 ipcMain.handle(ElectronApi.GetAppPath, async () => {
   return app.getAppPath(); // or __dirname
@@ -37,6 +39,10 @@ ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProces
     stdio: 'pipe',
     shell: true // Required to run the whole string in a shell
   });
+
+  const processId = String(child.pid || uuid());
+  child.pid && processMap.set(processId, child);
+
   const updateProcess: UpdateProcess = async (action, data) => {
     if (action === 'stdIn') {
       child.stdin.write(data);
@@ -50,22 +56,21 @@ ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProces
   };
   args?.action && updateProcess(args.action.type, args.action.data);
 
-  child.stdout.on('data', async (data) => {
-    args?.debug && console.log('stdout:', data);
-    mainWindow.webContents.send('spawn-stdout', data.toString());
-  });
+  return new Promise((resolve) => {
+    child.stdout.on('data', async (data) => {
+      mainWindow.webContents.send('spawn-stdout', data.toString());
+    });
 
-  child.stderr.on('data', async (data) => {
-    args?.debug && console.log('stderr:', data);
-    mainWindow.webContents.send('spawn-stderr', data.toString());
-  });
+    child.stderr.on('data', async (data) => {
+      mainWindow.webContents.send('spawn-stderr', data.toString());
+    });
 
-  child.on('close', async (code) => {
-    args?.debug && console.log('close:', code);
-    mainWindow.webContents.send('spawn-exit', code);
+    child.on('exit', async (code) => {
+      mainWindow.webContents.send('spawn-exit', code);
+      processMap.delete(processId);
+      resolve({ pid: child.pid });
+    });
   });
-
-  return { pid: child.pid };
 });
 
 ipcMain.handle(ElectronApi.FileExists, async (_, filePath: string) => {

@@ -56,6 +56,9 @@ importers:
       '@electron-toolkit/tsconfig':
         specifier: ^1.0.1
         version: 1.0.1(@types/node@22.13.13)
+      '@esbuild-plugins/node-globals-polyfill':
+        specifier: ^0.2.3
+        version: 0.2.3(esbuild@0.25.2)
       '@types/node':
         specifier: ^22.13.4
         version: 22.13.13
@@ -198,7 +201,7 @@ importers:
     devDependencies:
       '@esbuild-plugins/node-globals-polyfill':
         specifier: ^0.2.3
-        version: 0.2.3(esbuild@0.25.0)
+        version: 0.2.3(esbuild@0.25.2)
       '@types/node':
         specifier: ^20.12.7
         version: 20.17.24
@@ -855,12 +858,12 @@ packages:
     resolution: {integrity: sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==}
     dev: false
 
-  /@esbuild-plugins/node-globals-polyfill@0.2.3(esbuild@0.25.0):
+  /@esbuild-plugins/node-globals-polyfill@0.2.3(esbuild@0.25.2):
     resolution: {integrity: sha512-r3MIryXDeXDOZh7ih1l/yE9ZLORCd5e8vWg02azWRGj5SPTuoh69A2AIyn0Z31V/kHBfZ4HgWJ+OK3GTTwLmnw==}
     peerDependencies:
       esbuild: '*'
     dependencies:
-      esbuild: 0.25.0
+      esbuild: 0.25.2
     dev: true
 
   /@esbuild/aix-ppc64@0.21.5:

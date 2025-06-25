@@ -44,17 +44,29 @@ const api: RendererApi = {
   onStdOut: (callback: (data: string) => void) => {
     const listener = (_, data) => callback(data);
     ipcRenderer.on(ElectronApi.SpawnStdout, listener);
-    return () => ipcRenderer.removeListener(ElectronApi.SpawnStdout, listener);
+    const cleanupOnExit = (_: Electron.IpcRendererEvent, _exitCode: number) => {
+      ipcRenderer.removeListener(ElectronApi.SpawnStdout, listener);
+      ipcRenderer.removeListener(ElectronApi.SpawnExit, cleanupOnExit);
+    };
+    ipcRenderer.on(ElectronApi.SpawnExit, cleanupOnExit);
   },
   onStdErr: (callback: (data: string) => void) => {
     const listener = (_, data) => callback(data);
     ipcRenderer.on(ElectronApi.SpawnStderr, listener);
-    return () => ipcRenderer.removeListener(ElectronApi.SpawnStderr, listener);
+    const cleanupOnExit = (_: Electron.IpcRendererEvent, _exitCode: number) => {
+      ipcRenderer.removeListener(ElectronApi.SpawnStderr, listener);
+      ipcRenderer.removeListener(ElectronApi.SpawnExit, cleanupOnExit);
+    };
+    ipcRenderer.on(ElectronApi.SpawnExit, cleanupOnExit);
   },
   onExit: (callback: (code: number) => void) => {
     const listener = (_, data) => callback(data);
     ipcRenderer.on(ElectronApi.SpawnExit, listener);
-    return () => ipcRenderer.removeListener(ElectronApi.SpawnExit, listener);
+    const cleanupOnExit = (_: Electron.IpcRendererEvent, _exitCode: number) => {
+      ipcRenderer.removeListener(ElectronApi.SpawnExit, listener);
+      ipcRenderer.removeListener(ElectronApi.SpawnExit, cleanupOnExit);
+    };
+    ipcRenderer.on(ElectronApi.SpawnExit, cleanupOnExit);
   },
   fileExists: (...args) => ipcRenderer.invoke(ElectronApi.FileExists, ...args),
   writeFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteFile, ...args),

@@ -72,7 +72,7 @@ const api: RendererApi = {
   },
   spawnStdin: (args: { pid: number; data: string }) =>
     ipcRenderer.send(ElectronApi.SpawnStdin, args),
-  spawnStdinEnd: (args: { pid: number }) => ipcRenderer.send(ElectronApi.SpawnStdin, args),
+  spawnStdinEnd: (args: { pid: number }) => ipcRenderer.send(ElectronApi.SpawnStdinEnd, args),
   fileExists: (...args) => ipcRenderer.invoke(ElectronApi.FileExists, ...args),
   writeFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteFile, ...args),
   readDirectory: (...args) => ipcRenderer.invoke(ElectronApi.ReadDirectory, ...args),

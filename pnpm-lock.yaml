@@ -77,6 +77,9 @@ importers:
       electron-builder:
         specifier: ^25.1.8
         version: 25.1.8(electron-builder-squirrel-windows@25.1.8)
+      electron-log:
+        specifier: ^5.4.1
+        version: 5.4.1
       electron-vite:
         specifier: ^3.0.0
         version: 3.0.0(vite@6.2.3)
@@ -4269,6 +4272,11 @@ packages:
       - bluebird
       - electron-builder-squirrel-windows
       - supports-color
+    dev: true
+
+  /electron-log@5.4.1:
+    resolution: {integrity: sha512-QvisA18Z++8E3Th0zmhUelys9dEv7aIeXJlbFw3UrxCc8H9qSRW0j8/ooTef/EtHui8tVmbKSL+EIQzP9GoRLg==}
+    engines: {node: '>= 14'}
     dev: true
 
   /electron-publish@25.1.7:

@@ -8,6 +8,7 @@ export const spawnProcess = async (command: string, args?: SpawnProcessArgs) => 
     switch (action.type) {
       case 'stdIn':
         window.api.spawnStdin({ pid, data: action.data });
+        window.api.spawnStdinEnd({ pid });
         break;
       case 'stdInEnd':
       case 'exit':

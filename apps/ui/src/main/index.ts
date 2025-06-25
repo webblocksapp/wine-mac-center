@@ -45,15 +45,15 @@ ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProces
 
   return new Promise((resolve) => {
     child.stdout.on('data', async (data) => {
-      mainWindow.webContents.send('spawn-stdout', data.toString());
+      mainWindow.webContents.send(ElectronApi.SpawnStdout, data.toString());
     });
 
     child.stderr.on('data', async (data) => {
-      mainWindow.webContents.send('spawn-stderr', data.toString());
+      mainWindow.webContents.send(ElectronApi.SpawnStderr, data.toString());
     });
 
     child.on('exit', async (code) => {
-      mainWindow.webContents.send('spawn-exit', code);
+      mainWindow.webContents.send(ElectronApi.SpawnExit, code);
       processMap.delete(processId);
       resolve({ pid: child.pid });
     });

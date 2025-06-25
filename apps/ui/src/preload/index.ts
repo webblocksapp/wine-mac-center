@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 // @ts-ignore
 import { SpawnProcessArgs } from '../renderer/src/interfaces';
-import { writeFile } from 'fs';
+import { PathOrFileDescriptor } from 'fs';
 // @ts-ignore
 import { ChildProcessWithoutNullStreams } from 'child_process';
 // @ts-ignore
@@ -18,7 +18,7 @@ export type Api = {
   pathJoin: (...paths: string[]) => Promise<string>;
   spawnProcess: (command: string) => Promise<{ pid: number }>;
   fileExists: (path: string) => Promise<boolean>;
-  writeFile: typeof writeFile;
+  writeFile: (file: PathOrFileDescriptor, data: string) => void;
   readDirectory: (dirPath: string) => Promise<string[]>;
   dirExists: (dirPath: string) => Promise<boolean>;
   readBinaryFile: (filePath: string) => Promise<Buffer>;

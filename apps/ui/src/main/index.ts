@@ -5,7 +5,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { exec } from 'child_process';
 import { spawn } from 'child_process';
-import { promises as fs, writeFile, existsSync, readFile, writeFileSync } from 'fs';
+import { promises as fs, existsSync, readFile, writeFileSync, PathOrFileDescriptor } from 'fs';
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 // @ts-ignore
@@ -78,8 +78,8 @@ ipcMain.handle(ElectronApi.FileExists, async (_, filePath: string) => {
   }
 });
 
-ipcMain.handle(ElectronApi.WriteFile, async (_, ...args: Parameters<typeof writeFile>) =>
-  writeFile(...args)
+ipcMain.handle(ElectronApi.WriteFile, async (_, file: PathOrFileDescriptor, data: string) =>
+  writeFileSync(file, data)
 );
 
 ipcMain.handle(ElectronApi.ReadDirectory, async (_, dirPath: string) => {

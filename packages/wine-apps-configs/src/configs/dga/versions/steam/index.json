@@ -8,7 +8,7 @@
     {
       "main": true,
       "path": "/drive_c/Program Files (x86)/Steam/Steam.exe",
-      "flags": "-noreactlogin -allosarches -cef-force-32bit -udpforce -no-cef-sandbox -applaunch 2187290"
+      "flags": "-noreactlogin -allosarches -cef-force-32bit -udpforce -no-cef-sandbox -applaunch 356650"
     }
   ]
 }

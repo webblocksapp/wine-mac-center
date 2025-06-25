@@ -17,6 +17,8 @@ export type Api = {
   }>;
   pathJoin: (...paths: string[]) => Promise<string>;
   spawnProcess: (command: string) => Promise<{ pid: number }>;
+  spawnStdin: (args: { pid: number; data: string }) => void;
+  spawnStdinEnd: (args: { pid: number }) => void;
   fileExists: (path: string) => Promise<boolean>;
   writeFile: (file: PathOrFileDescriptor, data: string) => void;
   readDirectory: (dirPath: string) => Promise<string[]>;
@@ -68,6 +70,9 @@ const api: RendererApi = {
     };
     ipcRenderer.on(ElectronApi.SpawnExit, cleanupOnExit);
   },
+  spawnStdin: (args: { pid: number; data: string }) =>
+    ipcRenderer.send(ElectronApi.SpawnStdin, args),
+  spawnStdinEnd: (args: { pid: number }) => ipcRenderer.send(ElectronApi.SpawnStdin, args),
   fileExists: (...args) => ipcRenderer.invoke(ElectronApi.FileExists, ...args),
   writeFile: (...args) => ipcRenderer.invoke(ElectronApi.WriteFile, ...args),
   readDirectory: (...args) => ipcRenderer.invoke(ElectronApi.ReadDirectory, ...args),

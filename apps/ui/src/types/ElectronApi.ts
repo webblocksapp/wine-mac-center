@@ -14,5 +14,7 @@ export enum ElectronApi {
   ShowOpenDialog = 'show-open-dialog',
   SpawnStdout = 'spawn-stdout',
   SpawnStderr = 'spawn-stderr',
-  SpawnExit = 'spawn-exit'
+  SpawnExit = 'spawn-exit',
+  SpawnStdin = 'spawn-stdin',
+  SpawnStdinEnd = 'spawn-stdin-end'
 }

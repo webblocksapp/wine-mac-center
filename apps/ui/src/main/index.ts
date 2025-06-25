@@ -43,19 +43,6 @@ ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProces
   const processId = String(child.pid || uuid());
   child.pid && processMap.set(processId, child);
 
-  const updateProcess: UpdateProcess = async (action, data) => {
-    if (action === 'stdIn') {
-      child.stdin.write(data);
-    }
-    if (action === 'stdInEnd') {
-      child.stdin.write(data);
-    }
-    if (action === 'exit') {
-      child.stdin.write(data);
-    }
-  };
-  args?.action && updateProcess(args.action.type, args.action.data);
-
   return new Promise((resolve) => {
     child.stdout.on('data', async (data) => {
       mainWindow.webContents.send('spawn-stdout', data.toString());
@@ -71,6 +58,20 @@ ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProces
       resolve({ pid: child.pid });
     });
   });
+});
+
+ipcMain.on(ElectronApi.SpawnStdin, (_, { pid, data }) => {
+  const child = processMap.get(pid);
+  if (child) {
+    child.stdin.write(data);
+  }
+});
+
+ipcMain.on(ElectronApi.SpawnStdinEnd, (_, { pid }) => {
+  const child = processMap.get(pid);
+  if (child) {
+    child.stdin.end();
+  }
 });
 
 ipcMain.handle(ElectronApi.FileExists, async (_, filePath: string) => {

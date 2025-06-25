@@ -31,48 +31,41 @@ ipcMain.handle(ElectronApi.ExecCommand, async (_, cmd: string) => {
   });
 });
 ipcMain.handle(ElectronApi.PathJoin, (_, ...paths: string[]) => path.join(...paths));
-ipcMain.handle(ElectronApi.SpawnProcess, (_, command: string, args?: SpawnProcessArgs) => {
-  if (args?.debug) {
-    console.log('Spawn process command:', { command, args });
-  }
-  const child = spawn(command, {
-    stdio: 'pipe',
-    shell: true // Required to run the whole string in a shell
-  });
-
-  const processId = String(child.pid || uuid());
-  child.pid && processMap.set(processId, child);
-
-  return new Promise((resolve) => {
-    child.stdout.on('data', async (data) => {
-      mainWindow.webContents.send(ElectronApi.SpawnStdout, data.toString());
+ipcMain.handle(
+  ElectronApi.SpawnProcess,
+  (_, command: string, action?: { type: string; data: string }) => {
+    const child = spawn(command, {
+      stdio: 'pipe',
+      shell: true // Required to run the whole string in a shell
     });
 
-    child.stderr.on('data', async (data) => {
-      mainWindow.webContents.send(ElectronApi.SpawnStderr, data.toString());
+    const processId = String(child.pid || uuid());
+    child.pid && processMap.set(processId, child);
+
+    if (action?.type === 'stdIn') {
+      child.stdin.write(action?.data);
+      child.stdin.end();
+    } else if (action?.type === 'stdInEnd' || action?.type === 'exit') {
+      child.stdin.end();
+    }
+
+    return new Promise((resolve) => {
+      child.stdout.on('data', async (data) => {
+        mainWindow.webContents.send(ElectronApi.SpawnStdout, data.toString());
+      });
+
+      child.stderr.on('data', async (data) => {
+        mainWindow.webContents.send(ElectronApi.SpawnStderr, data.toString());
+      });
+
+      child.on('exit', async (code) => {
+        mainWindow.webContents.send(ElectronApi.SpawnExit, code);
+        processMap.delete(processId);
+        resolve({ pid: child.pid });
+      });
     });
-
-    child.on('exit', async (code) => {
-      mainWindow.webContents.send(ElectronApi.SpawnExit, code);
-      processMap.delete(processId);
-      resolve({ pid: child.pid });
-    });
-  });
-});
-
-ipcMain.on(ElectronApi.SpawnStdin, (_, { pid, data }) => {
-  const child = processMap.get(pid);
-  if (child) {
-    child.stdin.write(data);
   }
-});
-
-ipcMain.on(ElectronApi.SpawnStdinEnd, (_, { pid }) => {
-  const child = processMap.get(pid);
-  if (child) {
-    child.stdin.end();
-  }
-});
+);
 
 ipcMain.handle(ElectronApi.FileExists, async (_, filePath: string) => {
   try {

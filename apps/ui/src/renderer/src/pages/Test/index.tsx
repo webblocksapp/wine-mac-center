@@ -24,7 +24,7 @@ export const Test: React.FC = () => {
   const [wineApp, setWineApp] = useState<WineApp>(null as any);
 
   return (
-    <Stack p={2}>
+    <Stack p={2} height="1200px" overflow="auto">
       <WineAppContext.Provider value={{ wineApp, setWineApp }}>
         {wineApp ? (
           <Stack spacing={1}>

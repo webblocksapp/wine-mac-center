@@ -82,5 +82,11 @@
     "keyName": "dga",
     "name": "Death's Gambit Afterlife",
     "version": "steam"
+  },
+  {
+    "appConfigId": "5794e76f-1b2f-4c33-a5bc-01fbee9cf798",
+    "keyName": "dide",
+    "name": "Dead Island Definitive Edition",
+    "version": "steam"
   }
 ]

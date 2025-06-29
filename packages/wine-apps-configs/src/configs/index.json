@@ -88,5 +88,11 @@
     "keyName": "dide",
     "name": "Dead Island Definitive Edition",
     "version": "steam"
+  },
+  {
+    "appConfigId": "3cafb03d-88fb-4d60-98f3-47ff7e3c3cc8",
+    "keyName": "dkas",
+    "name": "Door Kickers Action Squad",
+    "version": "steam"
   }
 ]

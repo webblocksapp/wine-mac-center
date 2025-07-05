@@ -11,12 +11,14 @@ import {
   Body1,
   Box,
   Button,
+  Card,
+  CardContent,
   ContentsArea,
   ContentsAreaHandle,
   ContentsClass,
-  Grid,
   H6,
   Icon,
+  Stack,
   TableOfContents
 } from 'reactjs-ui-core';
 import { ChangeWineEngineDialog } from '../ChangeWineEngineDialog';
@@ -30,12 +32,18 @@ export const AppConfig: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showChangeWineEngineDialog, setShowChangeWineEngineDialog] = useState(false);
   const [wineApp, setWineApp] = useState<WineApp>();
-  const { realAppName, ...rest } = useParams();
+  const { realAppName } = useParams();
   const navigate = useNavigate();
   const options = [
     {
       label: 'Wine Config',
       icon: Cog6ToothIcon,
+      description: (
+        <Body1>
+          Opens Wine&apos;s configuration tool to set Windows version, drives, libraries, and audio
+          settings.
+        </Body1>
+      ),
       method: () => {
         setLoading(true);
         wineApp?.winecfg({
@@ -48,6 +56,11 @@ export const AppConfig: React.FC = () => {
     {
       label: 'Registry Editor',
       icon: RegeditIcon,
+      description: (
+        <Body1>
+          Launches Wine&apos;s Registry Editor to view and modify the Windows-like registry.
+        </Body1>
+      ),
       method: () => {
         setLoading(true);
         wineApp?.regedit({
@@ -60,6 +73,9 @@ export const AppConfig: React.FC = () => {
     {
       label: 'Task Manager',
       icon: RectangleStackIcon,
+      description: (
+        <Body1>Opens Wine&apos;s Task Manager to monitor and manage running Wine processes.</Body1>
+      ),
       method: () => {
         setLoading(true);
         wineApp?.taskmgr({
@@ -72,6 +88,11 @@ export const AppConfig: React.FC = () => {
     {
       label: 'Command Line',
       icon: CommandLineIcon,
+      description: (
+        <Body1>
+          Starts a Windows-like command prompt for running commands and scripts in Wine.
+        </Body1>
+      ),
       method: () => {
         setLoading(true);
         wineApp?.cmd({
@@ -84,6 +105,11 @@ export const AppConfig: React.FC = () => {
     {
       label: 'Control Panel',
       icon: WrenchScrewdriverIcon,
+      description: (
+        <Body1>
+          Opens Wine&apos;s Control Panel to adjust settings like fonts and installed programs.
+        </Body1>
+      ),
       method: () => {
         setLoading(true);
         wineApp?.control({
@@ -96,13 +122,11 @@ export const AppConfig: React.FC = () => {
     {
       label: 'Change Engine',
       icon: CpuChipIcon,
-      method: () => {
-        setShowChangeWineEngineDialog(true);
-      }
+      content: <Box>Content Works!</Box>
     }
   ];
 
-  console.log(realAppName, rest);
+  const ITEM_STYLE = { px: '20px !important' };
 
   useEffect(() => {
     (async () => {
@@ -143,7 +167,7 @@ export const AppConfig: React.FC = () => {
             }}
           ></Box>
         </Box>
-        <Box display="grid" gridTemplateColumns="1fr 220px" overflow="auto">
+        <Box display="grid" gridTemplateColumns="1fr 250px" overflow="auto">
           <Box
             overflow="auto"
             display="grid"
@@ -153,44 +177,66 @@ export const AppConfig: React.FC = () => {
               }
             }}
           >
-            <Box
+            <Stack
               className={ContentsClass.ScrollableArea}
-              display="grid"
               overflow="auto"
-              pb={2}
+              spacing={1}
               sx={{
                 overflowX: 'hidden !important'
               }}
+              pb={2}
+              alignItems="center"
             >
-              <Box height={5000}>
-                <Grid p={2} container bgcolor="secondary.main" spacing={3}>
-                  {options.map((item, index) => (
-                    <Grid key={index} item xs={6}>
-                      <Button
-                        disabled={wineApp === undefined || loading}
-                        color="secondary"
-                        sx={{
-                          border: (theme) => `1px solid ${theme.palette.primary.main}`
-                        }}
-                        fullWidth
-                        onClick={() => item.method?.()}
-                      >
-                        <Icon strokeWidth={0} size={34} render={item.icon} pr={1} />
-                        <H6>{item.label}</H6>
-                      </Button>
-                    </Grid>
-                  ))}
-                </Grid>
-                <ChangeWineEngineDialog
-                  wineApp={wineApp}
-                  open={showChangeWineEngineDialog}
-                  setOpen={setShowChangeWineEngineDialog}
-                  onClose={() => {
-                    setShowChangeWineEngineDialog(false);
-                  }}
-                />
-              </Box>
-            </Box>
+              {options.map((item, index) => (
+                <Box
+                  width="100%"
+                  maxWidth={800}
+                  key={index}
+                  pt={2}
+                  sx={ITEM_STYLE}
+                  className={ContentsClass.Item}
+                >
+                  <Card>
+                    <CardContent>
+                      {item.content ? (
+                        item.content
+                      ) : (
+                        <Stack direction="row" spacing={1} justifyContent="space-between">
+                          <Stack direction="row" spacing={1}>
+                            <Stack direction="row" minWidth={210} pb={1}>
+                              <Icon strokeWidth={0} size={34} render={item.icon} pr={1} />
+                              <H6 className={ContentsClass.ItemTitle}>{item.label}</H6>
+                            </Stack>
+                            <Box pr={2}>{item.description}</Box>
+                          </Stack>
+                          <Button
+                            title={`Run ${item.label}`}
+                            disabled={wineApp === undefined || loading}
+                            color="secondary"
+                            sx={{
+                              width: 90,
+                              height: 60,
+                              border: (theme) => `1px solid ${theme.palette.primary.main}`
+                            }}
+                            onClick={() => item.method?.()}
+                          >
+                            <Body1>Run</Body1>
+                          </Button>
+                        </Stack>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Box>
+              ))}
+              <ChangeWineEngineDialog
+                wineApp={wineApp}
+                open={showChangeWineEngineDialog}
+                setOpen={setShowChangeWineEngineDialog}
+                onClose={() => {
+                  setShowChangeWineEngineDialog(false);
+                }}
+              />
+            </Stack>
           </Box>
           <Box borderLeft={(theme) => `1px solid ${theme.palette.primary.main}`}>
             <TableOfContents pt={1} />

@@ -100,5 +100,11 @@
     "keyName": "baa",
     "name": "Batman Arkham Asylum",
     "version": "steam"
+  },
+  {
+    "appConfigId": "86de95f3-911a-40c6-b318-a8bdda0b5ba4",
+    "keyName": "ra3",
+    "name": "Command & Conquer Red Alert 3",
+    "version": "steam"
   }
 ]

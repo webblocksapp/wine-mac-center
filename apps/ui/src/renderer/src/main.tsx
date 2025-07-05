@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import { DialogFactoryProvider, ThemeProvider } from 'reactjs-ui-core';
+import { ThemeProvider } from 'reactjs-ui-core';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '@store';
@@ -11,16 +11,14 @@ import { WineAppPipelineProvider } from '@components/WineAppPipelineProvider';
 import './main.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ThemeProvider>
+  <ThemeProvider themeName="steamDark">
     <Provider store={store}>
       <NotificationsProvider>
         <EnvProvider>
           <WineAppPipelineProvider>
             <BrowserRouter>
               <AppSetup>
-                <DialogFactoryProvider>
-                  <App />
-                </DialogFactoryProvider>
+                <App />
               </AppSetup>
             </BrowserRouter>
           </WineAppPipelineProvider>

@@ -16,7 +16,11 @@ export default defineConfig({
   renderer: {
     resolve: {
       alias: {
-        '@renderer': resolve('src/renderer/src')
+        '@renderer': resolve('src/renderer/src'),
+        'reactjs-ui-core.css': resolve(
+          __dirname,
+          'node_modules/reactjs-ui-core/dist/reactjs-ui-core.css'
+        )
       }
     },
     plugins: [

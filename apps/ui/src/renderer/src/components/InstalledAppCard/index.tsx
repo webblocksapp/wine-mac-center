@@ -2,12 +2,12 @@ import { Body1, Box, Button, Card, CardProps, Icon, Image } from 'reactjs-ui-cor
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
-import defaultArtwork from '@assets/imgs/header.jpg';
 import { UpdateAppConfigDialog } from '@components/UpdateAppConfigDialog';
 import { RootState } from '@interfaces/RootState';
 import { useWineAppModel } from '@models/useWineAppModel';
 import { useWineInstalledAppModel } from '@models/useWineInstalledAppModel';
 import { getAppArtwork } from '@utils/getAppArtwork';
+import defaultArtwork from '@assets/imgs/header.jpg';
 
 export interface InstalledAppCardProps extends CardProps {
   appId?: string;

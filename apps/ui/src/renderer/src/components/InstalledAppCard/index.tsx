@@ -2,29 +2,33 @@ import { Body1, Box, Button, Card, CardProps, Icon, Image } from 'reactjs-ui-cor
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
-import { UpdateAppConfigDialog } from '@components/UpdateAppConfigDialog';
 import { RootState } from '@interfaces/RootState';
 import { useWineAppModel } from '@models/useWineAppModel';
 import { useWineInstalledAppModel } from '@models/useWineInstalledAppModel';
 import { getAppArtwork } from '@utils/getAppArtwork';
 import defaultArtwork from '@assets/imgs/header.jpg';
+import { useNavigate } from 'react-router-dom';
 
 export interface InstalledAppCardProps extends CardProps {
-  appId?: string;
+  realAppName?: string;
 }
 
-export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({ appId, ...rest }) => {
-  const [showConfigDialog, setShowConfigDialog] = useState(false);
+export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({ realAppName, ...rest }) => {
   const wineInstalledAppModel = useWineInstalledAppModel();
   const wineAppModel = useWineAppModel();
   const installedWineApp = useSelector((state: RootState) =>
-    wineInstalledAppModel.selectWineInstalledApp(state, appId)
+    wineInstalledAppModel.selectWineInstalledAppByRealName(state, realAppName)
   );
   const wineApp = useSelector((state: RootState) =>
     wineAppModel.selectWineApp(state, installedWineApp?.configId)
   );
   const [artWorkSrc, setArtWorkSrc] = useState(wineApp?.imgSrc);
   const [noArtWork, setNoArtWork] = useState(false);
+  const navigate = useNavigate();
+
+  const navigateToAppConfig = () => {
+    navigate(`/app-config/${installedWineApp?.realAppName}`);
+  };
 
   useEffect(() => {
     (async () => {
@@ -81,17 +85,12 @@ export const InstalledAppCard: React.FC<InstalledAppCardProps> = ({ appId, ...re
             sx={{ borderRadius: 2 }}
             equalSize={40}
             color="secondary"
-            onClick={() => setShowConfigDialog(true)}
             title="Configure App"
+            onClick={navigateToAppConfig}
           >
             <Icon render={Cog6ToothIcon} />
           </Button>
         </Box>
-        <UpdateAppConfigDialog
-          appName={installedWineApp?.realAppName || ''}
-          open={showConfigDialog}
-          setOpen={setShowConfigDialog}
-        />
       </Box>
     </Card>
   );

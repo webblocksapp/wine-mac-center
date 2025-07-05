@@ -7,23 +7,16 @@ import {
   WrenchScrewdriverIcon
 } from '@heroicons/react/24/solid';
 import { useEffect, useState } from 'react';
-import { Body1, Button, Dialog, DialogProps, Grid, H6, Icon, Stack } from 'reactjs-ui-core';
+import { Body1, Button, Grid, H6, Icon } from 'reactjs-ui-core';
 import { ChangeWineEngineDialog } from '../ChangeWineEngineDialog';
 import { WineApp } from '@interfaces/WineApp';
+import { useParams } from 'react-router-dom';
 import { createWineApp } from '@utils/createWineApp';
 
-export interface UpdateAppConfigDialogProps extends DialogProps {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  appName: string;
-}
-
-export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
-  setOpen,
-  appName,
-  ...rest
-}) => {
+export const AppConfig: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showChangeWineEngineDialog, setShowChangeWineEngineDialog] = useState(false);
+  const { realAppName, ...rest } = useParams();
   const [wineApp, setWineApp] = useState<WineApp>();
   const options = [
     {
@@ -95,17 +88,19 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
     }
   ];
 
+  console.log(realAppName, rest);
+
   useEffect(() => {
     (async () => {
-      setWineApp(await createWineApp(appName));
+      realAppName && setWineApp(await createWineApp(realAppName));
     })();
-  }, []);
+  }, [realAppName]);
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth="md" {...rest}>
+    <>
       <Grid p={2} container bgcolor="secondary.main" spacing={3}>
         <Grid xs={12} item>
-          <Body1 fontWeight={500}>{appName}</Body1>
+          <Body1 fontWeight={500}>{realAppName}</Body1>
         </Grid>
         {options.map((item, index) => (
           <Grid key={index} item xs={6}>
@@ -123,18 +118,6 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
             </Button>
           </Grid>
         ))}
-        <Grid xs={12} item>
-          <Stack direction="row" justifyContent="flex-end">
-            <Button
-              focusRipple={false}
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Close
-            </Button>
-          </Stack>
-        </Grid>
       </Grid>
       <ChangeWineEngineDialog
         wineApp={wineApp}
@@ -144,6 +127,6 @@ export const UpdateAppConfigDialog: React.FC<UpdateAppConfigDialogProps> = ({
           setShowChangeWineEngineDialog(false);
         }}
       />
-    </Dialog>
+    </>
   );
 };

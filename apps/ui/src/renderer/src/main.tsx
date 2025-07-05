@@ -11,7 +11,7 @@ import { WineAppPipelineProvider } from '@components/WineAppPipelineProvider';
 import './main.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ThemeProvider themeName="steamDark">
+  <ThemeProvider>
     <Provider store={store}>
       <NotificationsProvider>
         <EnvProvider>

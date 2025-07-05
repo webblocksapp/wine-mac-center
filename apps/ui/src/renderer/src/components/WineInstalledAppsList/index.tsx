@@ -105,7 +105,10 @@ export const WineInstalledAppsList: React.FC = () => {
           data={wineInstalledApps}
           components={{ List, Item }}
           itemContent={(_, installedWineApp) => (
-            <InstalledAppCard key={installedWineApp.id} appId={installedWineApp.id} />
+            <InstalledAppCard
+              key={installedWineApp.realAppName}
+              realAppName={installedWineApp.realAppName}
+            />
           )}
         />
       </SkeletonLoader>

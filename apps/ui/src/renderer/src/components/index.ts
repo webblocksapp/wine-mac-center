@@ -16,7 +16,7 @@ export * from './Sidebar';
 export * from './SidebarItem';
 export * from './SortDirectionSelect';
 export * from './StatusBox';
-export * from './UpdateAppConfigDialog';
+export * from './AppConfig';
 export * from './WineAppPipelineProvider';
 export * from './WineAppsList';
 export * from './WineEnginesSelect';

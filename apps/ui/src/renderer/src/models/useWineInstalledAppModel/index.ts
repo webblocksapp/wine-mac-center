@@ -33,7 +33,7 @@ export const useWineInstalledAppModel = () => {
 
   const runApp = async (appId?: string) => {
     try {
-      const wineInstalledApp = selectWineInstalledApp(store.getState(), appId);
+      const wineInstalledApp = selectWineInstalledAppById(store.getState(), appId);
 
       if (wineInstalledApp === undefined) {
         throw new Error('No installed app found.');
@@ -51,7 +51,7 @@ export const useWineInstalledAppModel = () => {
 
   const killApp = async (appId?: string) => {
     try {
-      const wineInstalledApp = selectWineInstalledApp(store.getState(), appId);
+      const wineInstalledApp = selectWineInstalledAppById(store.getState(), appId);
 
       if (wineInstalledApp === undefined) {
         throw new Error('No installed app found.');
@@ -123,9 +123,20 @@ export const useWineInstalledAppModel = () => {
       }));
     }
   );
-  const selectWineInstalledApp = createSelector(
+  const selectWineInstalledAppById = createSelector(
     [(state: RootState) => selectWineInstalledApps(state), (_: RootState, id?: string) => id],
     (wineInstalledApps, id) => wineInstalledApps?.find((item) => item.id == id)
+  );
+
+  const selectWineInstalledAppByRealName = createSelector(
+    [
+      (state: RootState) => selectWineInstalledApps(state),
+      (_: RootState, realAppName?: string) => realAppName
+    ],
+    (wineInstalledApps, realAppName) =>
+      wineInstalledApps?.find(
+        (item) => item.realAppName?.toLowerCase() == realAppName?.toLowerCase()
+      )
   );
 
   return {
@@ -136,6 +147,7 @@ export const useWineInstalledAppModel = () => {
     killApp,
     selectWineInstalledAppState,
     selectWineInstalledApps,
-    selectWineInstalledApp
+    selectWineInstalledAppById,
+    selectWineInstalledAppByRealName
   };
 };

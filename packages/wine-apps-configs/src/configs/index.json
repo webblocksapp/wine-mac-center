@@ -94,5 +94,11 @@
     "keyName": "dkas",
     "name": "Door Kickers Action Squad",
     "version": "steam"
+  },
+  {
+    "appConfigId": "3d5703bb-9104-40cb-9a23-fcd87e2164f5",
+    "keyName": "baa",
+    "name": "Batman Arkham Asylum",
+    "version": "steam"
   }
 ]

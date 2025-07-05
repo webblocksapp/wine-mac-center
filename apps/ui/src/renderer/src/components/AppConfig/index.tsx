@@ -155,7 +155,9 @@ export const AppConfig: React.FC = () => {
               boxShadow: (theme) => `inset 0 -1px ${theme.palette.secondary.main}`
             }}
           >
-            <Body1 fontWeight={500}>{realAppName}</Body1>
+            <H6 color="text.secondary" fontWeight={500}>
+              {realAppName}
+            </H6>
             <Button color="secondary" onClick={() => navigate('/apps')}>
               Back
             </Button>

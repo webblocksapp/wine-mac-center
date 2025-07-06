@@ -187,10 +187,9 @@ export const createWineAppPipeline = async (options: {
           {
             name: 'Running setup executable',
             script: (args) => {
-              return wineApp.runExe(
-                wineApp.getAppConfig().setupExecutablePath || setupExecutablePath || '',
-                args
-              );
+              setupExecutablePath && wineApp.setSetupExe(setupExecutablePath);
+              console.log({ setupExePath: wineApp.getAppConfig().setupExecutablePath });
+              return wineApp.runExe(wineApp.getAppConfig().setupExecutablePath || '', args);
             },
             status: ProcessStatus.Pending,
             output: ''

@@ -261,8 +261,6 @@ export const createWineApp = async (appName: string) => {
       }
     }
 
-    console.log(exePath);
-
     //TODO: logic to detect if fileURL is down
     updateAppConfig({ setupExecutablePath: exePath });
   };
@@ -271,7 +269,7 @@ export const createWineApp = async (appName: string) => {
    * Run executable with wine.
    */
   const runExe = (args: string, processArgs?: SpawnProcessArgs) => {
-    return spawnScript('wine', args, processArgs);
+    return spawnScript('wine', args.replace(/( |\\ )/g, '\\ '), processArgs);
   };
 
   /**

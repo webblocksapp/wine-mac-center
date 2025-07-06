@@ -18,6 +18,7 @@ import { readFileAsString } from '@utils/readFileAsString';
 import { createDirectory } from '@utils/createDirectory';
 import { execCommand as baseExecCommand } from '@utils/execCommand';
 import { writeBinaryFile } from '@utils/writeBinaryFile';
+import { isURL } from '@utils/isURL';
 
 export const createWineApp = async (appName: string) => {
   const env = createEnv();
@@ -243,31 +244,27 @@ export const createWineApp = async (appName: string) => {
   /**
    * Search provided executable.
    */
-  const setSetupExe = async (exeURLs: string[]) => {
-    let downloadedExe = false;
-    let setupExecutablePath = '';
+  const setSetupExe = async (exePath: string) => {
+    const fileName = exePath.split('/').pop();
 
-    for (let i = 0; i < exeURLs.length; i++) {
-      if (downloadedExe) continue;
-      const exeURL = exeURLs[i];
-      const fileName = exeURL.split('/').pop();
-      setupExecutablePath = `${WINE_ENV.WINE_TMP_PATH}/${fileName}`;
+    if (fileName === undefined) throw new Error('Invalid filename');
 
-      if (fileName === undefined) throw new Error('Invalid filename');
-
-      try {
-        writeBinaryFile(setupExecutablePath, await downloadFile(exeURL));
-        downloadedExe = true;
-      } catch (error) {
-        console.error(error);
+    if (isURL(exePath)) {
+      const fileURL = exePath;
+      exePath = `${WINE_ENV.WINE_TMP_PATH}/${fileName}`;
+      if ((await fileExists(exePath)) === false) {
+        try {
+          writeBinaryFile(exePath, await downloadFile(fileURL));
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
 
-    if (downloadedExe === false) {
-      alert('Please provide a setup executable');
-    } else {
-      updateAppConfig({ setupExecutablePath });
-    }
+    console.log(exePath);
+
+    //TODO: logic to detect if fileURL is down
+    updateAppConfig({ setupExecutablePath: exePath });
   };
 
   /**

@@ -29,7 +29,7 @@ export const createWineAppPipeline = async (options: {
     engineURLs,
     dxvkEnabled,
     winetricks,
-    setupExecutableURLs,
+    setupExecutableURL,
     setupExecutablePath
   } = options.appConfig;
 
@@ -174,11 +174,11 @@ export const createWineAppPipeline = async (options: {
               ]
             : []),
           ...buildWinetricksSteps(),
-          ...(setupExecutableURLs
+          ...(setupExecutableURL
             ? [
                 {
                   name: 'Downloading setup executable',
-                  script: () => wineApp.setSetupExe(setupExecutableURLs),
+                  script: () => wineApp.setSetupExe(setupExecutableURL),
                   status: ProcessStatus.Pending,
                   output: ''
                 }

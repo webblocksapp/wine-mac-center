@@ -5,7 +5,14 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { ChildProcessWithoutNullStreams, exec } from 'child_process';
 import { spawn } from 'child_process';
-import { promises as fs, existsSync, readFile, writeFileSync, PathOrFileDescriptor } from 'fs';
+import {
+  promises as fs,
+  existsSync,
+  readFile,
+  writeFileSync,
+  mkdirSync,
+  PathOrFileDescriptor
+} from 'fs';
 // @ts-ignore (renderer type)
 import { SpawnProcessArgs, UpdateProcess } from '../renderer/src/interfaces';
 // @ts-ignore
@@ -125,6 +132,8 @@ ipcMain.handle(
   ElectronApi.WriteBinaryFile,
   async (_, filePath: string, arrayBuffer: ArrayBuffer) => {
     const buffer = Buffer.from(arrayBuffer);
+    const dirPath = path.dirname(filePath);
+    dirPath && mkdirSync(dirPath, { recursive: true });
     writeFileSync(filePath, buffer);
   }
 );

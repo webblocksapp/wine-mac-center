@@ -10,7 +10,7 @@ export type WineAppConfig = {
   name: string;
   engineVersion: string;
   engineURLs: string[];
-  setupExecutableURLs?: string[];
+  setupExecutableURL?: string;
   setupExecutablePath?: string;
   winetricks?: { verbs: string[]; options?: WinetricksOptions };
   dxvkEnabled: boolean;

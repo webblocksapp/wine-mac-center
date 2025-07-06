@@ -1,26 +1,64 @@
 import { useState } from 'react';
 import { useWineAppContext } from '..';
+import { TextField } from 'reactjs-ui-core';
+
+/**
+ * Examples:
+ * - Setup executable from URL
+ * https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/downloadables/setup-executables/SteamSetup.exe
+ *
+ */
 
 export const SetSetupExe: React.FC = () => {
   const { wineApp } = useWineAppContext();
+  const configuredSetupExecutablePath = wineApp.getAppConfig().setupExecutablePath || '';
+  const [setupExecutablePath, setSetupExecutablePath] = useState(
+    configuredSetupExecutablePath || ''
+  );
   const [loading, setLoading] = useState(false);
 
   const setSetupExe = async () => {
     setLoading(true);
-    await wineApp.setSetupExe([
-      'https://raw.githubusercontent.com/webblocksapp/wine-mac-center/master/packages/wine-apps-configs/src/downloadables/setup-executables/SteamSetup.exe',
-    ]);
+    await wineApp.setSetupExe(setupExecutablePath);
     setLoading(false);
+  };
+
+  const runSetupExe = () => {
+    setLoading(true);
+    wineApp.runExe(configuredSetupExecutablePath, {
+      onStdOut: (data) => {
+        console.log(data);
+      },
+      onStdErr: (data) => {
+        console.log(data);
+      },
+      onExit: () => {
+        setLoading(false);
+      }
+    });
   };
 
   return (
     <div style={{ marginBottom: 10 }}>
       <div style={{ marginBottom: 10 }}>
-        <h3>Set Setup Exe</h3>
+        <h3>Set Setup Executable</h3>
+        <TextField
+          value={setupExecutablePath}
+          onChange={(event) => setSetupExecutablePath(event.target.value)}
+        />
+      </div>
+      <button disabled={loading || !Boolean(setupExecutablePath)} onClick={setSetupExe}>
+        Set Setup Exe
+      </button>
+      <div style={{ marginBottom: 10 }}>
+        <h3>Run Setup Executable</h3>
         <hr />
       </div>
-      <button disabled={loading} onClick={setSetupExe}>
-        {loading ? 'Downloading' : 'Download'} Setup Exe
+      <div>
+        <TextField InputProps={{ readOnly: true }} value={configuredSetupExecutablePath} />
+      </div>
+      <button disabled={loading || !Boolean(configuredSetupExecutablePath)} onClick={runSetupExe}>
+        Run Setup Executable
       </button>
     </div>
   );

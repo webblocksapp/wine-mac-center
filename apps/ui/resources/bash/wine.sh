@@ -6,14 +6,32 @@ wine() {
     WINE_ARCH=wine64
   fi
 
-  EXE_PATH=$(printf "%b" "$1")   # unescape if needed
-  EXE_FLAGS="$2"
+  WINDOWS_EXE=$(printf "%b" "$1")
 
-  EXE_DIR=$(dirname "$EXE_PATH")
-  EXE_FILE=$(basename "$EXE_PATH")
+  if [ "$WINDOWS_EXE" = "WINDOWS_EXE" ]; then
+    EXE_PATH=$(printf "%b" "$2")   # unescape if needed
+    EXE_FLAGS="$3"
 
-  cd "$EXE_DIR" || exit 1
-  "$WINE_APP_SCRIPTS_PATH/wineEnv.sh" "$WINE_ARCH" "$EXE_FILE" "$EXE_FLAGS"
+    EXE_DIR=$(dirname "$EXE_PATH")
+    EXE_FILE=$(basename "$EXE_PATH")
+
+    cd "$EXE_DIR" || exit 1
+    "$WINE_APP_SCRIPTS_PATH/wineEnv.sh" "$WINE_ARCH" "$EXE_FILE" "$EXE_FLAGS"
+    
+    wine_pids=$(ps -eo pid,command | grep -i "wine.*$EXE_FILE" | grep -v grep | awk '{print $1}')
+    wine_pid=$(ps -eo pid,command | grep -i "wine.*$EXE_FILE" | grep -v grep | awk '{print $1}' | head -n 1)
+
+    echo "WINE LAUNCH PID: $launch_wine_pid"
+    echo "WINE PIDS: $wine_pids"  
+    echo "Tracking PID: $wine_pid"
+
+    # Wait for that PID to exit
+    while ps -p "$wine_pid" > /dev/null; do
+      sleep 1
+    done
+  else
+    "$WINE_APP_SCRIPTS_PATH/wineEnv.sh" "$@"
+  fi
 }
 
 wine "$@"

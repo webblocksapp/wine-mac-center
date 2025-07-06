@@ -269,7 +269,7 @@ export const createWineApp = async (appName: string) => {
    * Run executable with wine.
    */
   const runExe = (args: string, processArgs?: SpawnProcessArgs) => {
-    return spawnScript('wine', args.replace(/( |\\ )/g, '\\ '), processArgs);
+    return spawnScript('wine', `WINDOWS_EXE ${args.replace(/( |\\ )/g, '\\ ')}`, processArgs);
   };
 
   /**

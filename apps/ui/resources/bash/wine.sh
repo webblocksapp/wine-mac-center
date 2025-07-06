@@ -30,7 +30,7 @@ wine() {
       sleep 1
     done
   else
-    "$WINE_APP_SCRIPTS_PATH/wineEnv.sh" "$@"
+    "$WINE_APP_SCRIPTS_PATH/wineEnv.sh" "$WINE_ARCH" "$@"
   fi
 }
 

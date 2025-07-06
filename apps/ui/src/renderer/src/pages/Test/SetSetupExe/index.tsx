@@ -32,7 +32,8 @@ export const SetSetupExe: React.FC = () => {
       onStdErr: (data) => {
         console.log(data);
       },
-      onExit: () => {
+      onExit: (data) => {
+        console.log(data);
         setLoading(false);
       }
     });

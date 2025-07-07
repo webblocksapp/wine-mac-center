@@ -9,13 +9,8 @@ export const useWineAppConfigApiClient = () => {
   ): Omit<WineAppConfig, 'engineURLs'> => {
     return {
       ...data,
-      setupExecutableURLs: data?.setupExecutableURLs?.map?.((url) => {
-        if (DOWNLOADABLES_URLS[url]) {
-          return DOWNLOADABLES_URLS[url];
-        }
-
-        return url;
-      })
+      setupExecutableURL:
+        DOWNLOADABLES_URLS[data.setupExecutableURL || ''] || data?.setupExecutableURL
     };
   };
 

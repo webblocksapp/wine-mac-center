@@ -2,8 +2,8 @@ import { RegeditIcon } from '@assets/icons';
 import {
   Cog6ToothIcon,
   CommandLineIcon,
-  CpuChipIcon,
   RectangleStackIcon,
+  SparklesIcon,
   WrenchScrewdriverIcon
 } from '@heroicons/react/24/solid';
 import { useEffect, useRef, useState } from 'react';
@@ -26,6 +26,9 @@ import { WineApp } from '@interfaces/WineApp';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createWineApp } from '@utils/createWineApp';
 import { alpha } from '@mui/material';
+import { WinetricksSelector } from '@components/WinetricksSelector';
+import { useSchema } from './useSchema';
+import { useForm } from 'reactjs-ui-form-fields';
 
 export const AppConfig: React.FC = () => {
   const contentsAreaRef = useRef<ContentsAreaHandle>(null);
@@ -34,6 +37,11 @@ export const AppConfig: React.FC = () => {
   const [wineApp, setWineApp] = useState<WineApp>();
   const { realAppName } = useParams();
   const navigate = useNavigate();
+  const schema = useSchema();
+  const form = useForm(schema);
+  const appName = wineApp?.getAppConfig()?.name;
+  const defaultWinetricksVerbs = wineApp?.getAppConfig()?.winetricks?.verbs;
+
   const options = [
     {
       label: 'Wine Config',
@@ -121,8 +129,15 @@ export const AppConfig: React.FC = () => {
     },
     {
       label: 'Change Engine',
-      icon: CpuChipIcon,
-      content: <Box>Content Works!</Box>
+      content: (
+        <Stack spacing={1}>
+          <Stack direction="row" minWidth={210} pb={1}>
+            <Icon strokeWidth={0} size={34} render={SparklesIcon} pr={1} />
+            <H6 className={ContentsClass.ItemTitle}>Winetricks</H6>
+          </Stack>
+          <WinetricksSelector name="winetricksVerbs" control={form.control} />
+        </Stack>
+      )
     }
   ];
 
@@ -133,6 +148,10 @@ export const AppConfig: React.FC = () => {
       realAppName && setWineApp(await createWineApp(realAppName));
     })();
   }, [realAppName]);
+
+  useEffect(() => {
+    appName && form.fill({ winetricksVerbs: defaultWinetricksVerbs });
+  }, [appName]);
 
   return (
     <Box display="grid" overflow="auto">

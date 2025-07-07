@@ -6,7 +6,7 @@ wine() {
     WINE_ARCH=wine64
   fi
 
-  WINDOWS_EXE=$(printf "%b" "$1")
+  WINDOWS_EXE=$1
 
   if [ "$WINDOWS_EXE" = "WINDOWS_EXE" ]; then
     EXE_PATH=$(printf "%b" "$2")   # unescape if needed
@@ -17,11 +17,14 @@ wine() {
 
     cd "$EXE_DIR" || exit 1
     "$WINE_APP_SCRIPTS_PATH/wineEnv.sh" "$WINE_ARCH" "$EXE_FILE" "$EXE_FLAGS"
-    
-    wine_pids=$(ps -eo pid,command | grep -i "wine.*$EXE_FILE" | grep -v grep | awk '{print $1}')
-    wine_pid=$(ps -eo pid,command | grep -i "wine.*$EXE_FILE" | grep -v grep | awk '{print $1}' | head -n 1)
+    script_pid=$!
+    wait $script_pid
 
-    echo "WINE LAUNCH PID: $launch_wine_pid"
+    echo "Checking PIDS"
+
+    wine_pids=$(ps -eo pid,command | grep -i "wine.*$EXE_FILE" | grep -v grep | grep -v "wine.sh" | awk '{print $1}' )
+    wine_pid=$(ps -eo pid,command | grep -i "wine.*$EXE_FILE" | grep -v grep | grep -v "wine.sh" | awk '{print $1}' | head -n 1 )
+
     echo "WINE PIDS: $wine_pids"  
     echo "Tracking PID: $wine_pid"
 

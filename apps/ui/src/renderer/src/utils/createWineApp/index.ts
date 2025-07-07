@@ -240,9 +240,8 @@ export const createWineApp = async (appName: string) => {
     const flags = winetricksOptionsToFlags(options);
     const winetricks = getAppConfig();
     updateAppConfig({
-      ...winetricks.winetricks,
       winetricks: {
-        verbs: { ...winetricks.winetricks?.verbs, ...verbs.split(' ') },
+        verbs: [...(winetricks.winetricks?.verbs || []), ...verbs.split(' ')],
         options: { ...winetricks.winetricks?.options, ...options }
       }
     });

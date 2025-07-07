@@ -44,8 +44,8 @@ importers:
         specifier: ^0.0.24
         version: 0.0.24(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.17.1)(@mui/material@5.17.1)(i18next@23.16.8)(notistack@3.0.2)(react-i18next@15.6.0)(react-router-dom@6.30.0)(react-syntax-highlighter@15.6.1)
       reactjs-ui-form-fields:
-        specifier: ^0.0.0
-        version: 0.0.0(react@18.3.1)(reactjs-ui-core@0.0.24)
+        specifier: ^0.0.5
+        version: 0.0.5(react@18.3.1)(reactjs-ui-core@0.0.24)
     devDependencies:
       '@electron-toolkit/eslint-config-prettier':
         specifier: ^3.0.0
@@ -5755,8 +5755,8 @@ packages:
       uuid: 9.0.1
     dev: false
 
-  /reactjs-ui-form-fields@0.0.0(react@18.3.1)(reactjs-ui-core@0.0.24):
-    resolution: {integrity: sha512-WUFN9RPDV+7mCnKwo2sW267mymOId6gRIra1DQA9cFvCo3XhTboLY9QidwoLqxbk6lX3IP00kSHQmxpKw+BVXg==}
+  /reactjs-ui-form-fields@0.0.5(react@18.3.1)(reactjs-ui-core@0.0.24):
+    resolution: {integrity: sha512-reDnHauBNugwljJIHVjkgdqOYrnAnx7H77kGqc/9GaFBqaO90Z/7/w88kKCxPVBiene4wdw+PaobVooxIQXOsg==}
     peerDependencies:
       reactjs-ui-core: '*'
     dependencies:

@@ -10,6 +10,7 @@ import { Winetricks } from '@interfaces/Winetricks';
 
 export interface WinetricksSelectorProps extends FieldProps {
   name?: string;
+  disabled?: boolean;
 }
 
 const CATEGORIES = [
@@ -32,7 +33,8 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
   name,
   control,
   fieldOptions,
-  value
+  value,
+  disabled
 }) => {
   const winetrickModel = useWinetrickModel();
   const [filters, setFilters] = useState({ verb: '' });
@@ -94,6 +96,7 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
                                     field.props.onChange(event);
                                   }}
                                   onBlur={field.props.onBlur}
+                                  disabled={disabled}
                                 />
                               </Grid>
                             )}

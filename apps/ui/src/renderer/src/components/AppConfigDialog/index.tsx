@@ -105,7 +105,7 @@ export const AppConfigDialog: React.FC<AppConfigDialogProps> = ({ setOpen, ...re
             <Button color="primary" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button disabled={form.isInvalid} type="submit" color="primary">
+            <Button disabled={form.isInvalid()} type="submit" color="primary">
               Create
             </Button>
           </Stack>

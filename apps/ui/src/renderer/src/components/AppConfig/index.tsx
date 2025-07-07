@@ -21,26 +21,24 @@ import {
   Stack,
   TableOfContents
 } from 'reactjs-ui-core';
-import { ChangeWineEngineDialog } from '../ChangeWineEngineDialog';
 import { WineApp } from '@interfaces/WineApp';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createWineApp } from '@utils/createWineApp';
 import { alpha } from '@mui/material';
 import { WinetricksSelector } from '@components/WinetricksSelector';
-import { useSchema } from './useSchema';
+import { FormSchema, useSchema } from './useSchema';
 import { useForm } from 'reactjs-ui-form-fields';
 
 export const AppConfig: React.FC = () => {
   const contentsAreaRef = useRef<ContentsAreaHandle>(null);
   const [loading, setLoading] = useState(false);
-  const [showChangeWineEngineDialog, setShowChangeWineEngineDialog] = useState(false);
   const [wineApp, setWineApp] = useState<WineApp>();
   const { realAppName } = useParams();
   const navigate = useNavigate();
   const schema = useSchema();
   const form = useForm(schema);
   const appName = wineApp?.getAppConfig()?.name;
-  const defaultWinetricksVerbs = wineApp?.getAppConfig()?.winetricks?.verbs;
+  const defaultWinetricksVerbs = wineApp?.getAppConfig()?.winetricks?.verbs || [];
 
   const options = [
     {
@@ -135,11 +133,43 @@ export const AppConfig: React.FC = () => {
             <Icon strokeWidth={0} size={34} render={SparklesIcon} pr={1} />
             <H6 className={ContentsClass.ItemTitle}>Winetricks</H6>
           </Stack>
-          <WinetricksSelector name="winetricksVerbs" control={form.control} />
+          <WinetricksSelector disabled={loading} name="winetricksVerbs" control={form.control} />
+          <Stack width="100%" pt={1} alignItems="flex-end">
+            <Button
+              title={`Run Winetricks`}
+              disabled={wineApp === undefined || !form.hasChanges() || loading}
+              color="secondary"
+              sx={{
+                width: 90,
+                height: 60,
+                border: (theme) => `1px solid ${theme.palette.primary.main}`
+              }}
+              onClick={async () => {
+                let verbs = (form.getValues() as FormSchema).winetricksVerbs;
+                verbs =
+                  verbs?.filter?.((item) => !Boolean(defaultWinetricksVerbs?.includes?.(item))) ||
+                  [];
+                const verbsString = verbs.join(' ');
+                setLoading(true);
+
+                if (verbsString) {
+                  await wineApp?.winetrick(verbsString);
+                  form.fill(form.getValues());
+                  setLoading(false);
+                } else {
+                  setLoading(false);
+                }
+              }}
+            >
+              <Body1>Run</Body1>
+            </Button>
+          </Stack>
         </Stack>
       )
     }
   ];
+
+  console.log(loading);
 
   const ITEM_STYLE = { px: '20px !important' };
 
@@ -249,14 +279,6 @@ export const AppConfig: React.FC = () => {
                   </Card>
                 </Box>
               ))}
-              <ChangeWineEngineDialog
-                wineApp={wineApp}
-                open={showChangeWineEngineDialog}
-                setOpen={setShowChangeWineEngineDialog}
-                onClose={() => {
-                  setShowChangeWineEngineDialog(false);
-                }}
-              />
             </Stack>
           </Box>
           <Box borderLeft={(theme) => `1px solid ${theme.palette.primary.main}`}>

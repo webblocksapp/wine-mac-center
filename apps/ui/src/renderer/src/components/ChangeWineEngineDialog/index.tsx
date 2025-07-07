@@ -94,7 +94,7 @@ export const ChangeWineEngineDialog: React.FC<ChangeWineEngineDialogProps> = ({
                 <Button type="submit" onClick={close}>
                   Cancel
                 </Button>
-                <Button type="submit" disabled={form.isInvalid}>
+                <Button type="submit" disabled={form.isInvalid()}>
                   Change
                 </Button>
               </Stack>

@@ -31,7 +31,7 @@
     "react-redux": "^9.2.0",
     "react-virtuoso": "^4.12.6",
     "reactjs-ui-core": "^0.0.24",
-    "reactjs-ui-form-fields": "^0.0.0"
+    "reactjs-ui-form-fields": "^0.0.5"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",

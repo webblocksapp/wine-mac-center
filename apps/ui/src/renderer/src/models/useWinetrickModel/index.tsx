@@ -6,6 +6,7 @@ import { RootState } from '@interfaces/RootState';
 import { WinetrickAction } from '@interfaces/WinetrickAction';
 import { WinetrickState } from '@interfaces/WinetrickState';
 import { useAppModel } from '@models/useAppModel';
+import { objectMatchCriteria } from '@utils/objectMatchCriteria';
 
 export const useWinetrickModel = () => {
   const appModel = useAppModel();
@@ -32,8 +33,27 @@ export const useWinetrickModel = () => {
 
   const selectWinetrickState = (state: RootState) => state.winetrickState;
   const selectWinetricks = createSelector(
-    [selectWinetrickState],
-    (winetrickState) => winetrickState.winetricks
+    [
+      selectWinetrickState,
+      (_: RootState, filters: { verb: string }) => {
+        return filters;
+      }
+    ],
+    (winetrickState, filters) => {
+      const verb = filters.verb;
+      if (filters.verb) {
+        const winetricks: Partial<typeof winetrickState.winetricks> = {};
+        for (const [key, value] of Object.entries(winetrickState.winetricks)) {
+          const foundVerbs = value.filter((item) => objectMatchCriteria(item, verb));
+          if (foundVerbs.length) {
+            winetricks[key] = foundVerbs;
+          }
+        }
+        return winetricks;
+      } else {
+        return winetrickState.winetricks as Partial<typeof winetrickState.winetricks>;
+      }
+    }
   );
 
   return {

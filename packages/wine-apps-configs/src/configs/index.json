@@ -106,5 +106,11 @@
     "keyName": "ra3",
     "name": "Command & Conquer Red Alert 3",
     "version": "steam"
+  },
+  {
+    "appConfigId": "3b9334cb-a053-4ed7-9a4b-3e6f0331738b",
+    "keyName": "gh",
+    "name": "Green Hell",
+    "version": "steam"
   }
 ]

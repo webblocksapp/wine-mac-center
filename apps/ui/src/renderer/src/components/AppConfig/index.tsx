@@ -37,8 +37,6 @@ export const AppConfig: React.FC = () => {
   const navigate = useNavigate();
   const schema = useSchema();
   const form = useForm(schema);
-  const appName = wineApp?.getAppConfig()?.name;
-  const defaultWinetricksVerbs = wineApp?.getAppConfig()?.winetricks?.verbs || [];
 
   const options = [
     {
@@ -137,7 +135,7 @@ export const AppConfig: React.FC = () => {
           <Stack width="100%" pt={1} alignItems="flex-end">
             <Button
               title={`Run Winetricks`}
-              disabled={wineApp === undefined || !form.hasChanges() || loading}
+              disabled={wineApp === undefined || loading}
               color="secondary"
               sx={{
                 width: 90,
@@ -145,16 +143,12 @@ export const AppConfig: React.FC = () => {
                 border: (theme) => `1px solid ${theme.palette.primary.main}`
               }}
               onClick={async () => {
-                let verbs = (form.getValues() as FormSchema).winetricksVerbs;
-                verbs =
-                  verbs?.filter?.((item) => !Boolean(defaultWinetricksVerbs?.includes?.(item))) ||
-                  [];
+                const verbs = (form.getValues() as FormSchema).winetricksVerbs || [];
                 const verbsString = verbs.join(' ');
                 setLoading(true);
 
                 if (verbsString) {
                   await wineApp?.winetrick(verbsString);
-                  form.fill(form.getValues());
                   setLoading(false);
                 } else {
                   setLoading(false);
@@ -178,10 +172,6 @@ export const AppConfig: React.FC = () => {
       realAppName && setWineApp(await createWineApp(realAppName));
     })();
   }, [realAppName]);
-
-  useEffect(() => {
-    appName && form.fill({ winetricksVerbs: defaultWinetricksVerbs });
-  }, [appName]);
 
   return (
     <Box display="grid" overflow="auto">

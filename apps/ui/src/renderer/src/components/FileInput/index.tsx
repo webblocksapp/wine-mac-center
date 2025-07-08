@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, TextField } from 'reactjs-ui-core';
 import { Field, TextFieldProps } from 'reactjs-ui-form-fields';
 import { InputAdornment } from '@mui/material';
 import { openFile } from '@utils/openFile';
 
-export type FileInputProps = Omit<TextFieldProps, 'type' | 'label' | 'accept' | 'onInput'> & {
+export type FileInputProps = Omit<
+  TextFieldProps,
+  'type' | 'label' | 'accept' | 'onInput' | 'value'
+> & {
   noSelectedFileLabel?: string;
   selectedFileLabel?: string;
   dialogText?: string;
   filters?: Array<{ name: string; extensions: string[] }>;
   onInput?: (file: File | undefined) => void;
+  value?: string;
 };
 
 export const FileInput: React.FC<FileInputProps> = ({
@@ -17,7 +21,7 @@ export const FileInput: React.FC<FileInputProps> = ({
   control,
   fieldOptions,
   name,
-  value: _,
+  value = '',
   noSelectedFileLabel,
   selectedFileLabel,
   dialogText = 'Select file',
@@ -25,6 +29,10 @@ export const FileInput: React.FC<FileInputProps> = ({
   ...rest
 }) => {
   const [fileName, setFileName] = useState('');
+
+  useEffect(() => {
+    value && setFileName(value);
+  }, [value]);
 
   return (
     <Field

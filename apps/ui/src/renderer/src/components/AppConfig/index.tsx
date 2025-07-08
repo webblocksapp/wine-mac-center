@@ -2,6 +2,7 @@ import { RegeditIcon } from '@assets/icons';
 import {
   Cog6ToothIcon,
   CommandLineIcon,
+  PlayIcon,
   RectangleStackIcon,
   SparklesIcon,
   WrenchScrewdriverIcon
@@ -18,8 +19,10 @@ import {
   ContentsClass,
   H6,
   Icon,
+  Select,
   Stack,
-  TableOfContents
+  TableOfContents,
+  TextField
 } from 'reactjs-ui-core';
 import { WineApp } from '@interfaces/WineApp';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -28,11 +31,17 @@ import { alpha } from '@mui/material';
 import { WinetricksSelector } from '@components/WinetricksSelector';
 import { FormSchema, useSchema } from './useSchema';
 import { useForm } from 'reactjs-ui-form-fields';
+import { AppExecutable } from '@interfaces/AppExecutable';
+
+const ITEM_STYLE = { px: '20px !important' };
 
 export const AppConfig: React.FC = () => {
   const contentsAreaRef = useRef<ContentsAreaHandle>(null);
   const [loading, setLoading] = useState(false);
   const [wineApp, setWineApp] = useState<WineApp>();
+  const [appExecutables, setAppExecutables] = useState<AppExecutable[]>([]);
+  const [mainExecutablePath, setMainExecutablePath] = useState<string>('');
+  const [mainExecutableFlags, setMainExecutableFlags] = useState<string>('');
   const { realAppName } = useParams();
   const navigate = useNavigate();
   const schema = useSchema();
@@ -160,16 +169,66 @@ export const AppConfig: React.FC = () => {
           </Stack>
         </Stack>
       )
+    },
+    {
+      label: 'Executable Config',
+      content: (
+        <Stack spacing={1.5}>
+          <Stack direction="row" minWidth={210} pb={1}>
+            <Icon strokeWidth={0} size={34} render={PlayIcon} pr={1} />
+            <H6 className={ContentsClass.ItemTitle}>Executable Config</H6>
+          </Stack>
+          <Select
+            label="Select the main executable"
+            value={mainExecutablePath}
+            options={appExecutables.map((item) => ({
+              value: item.path,
+              label: item.name
+            }))}
+            onChange={async (event) => {
+              const path = event.target.value as string;
+              setMainExecutablePath(event.target.value as string);
+              setLoading(true);
+              await wineApp?.updateMainExecutablePath?.(path);
+              setLoading(false);
+            }}
+            disabled={!Boolean(mainExecutablePath)}
+          />
+          <TextField
+            label="Exe flags"
+            value={mainExecutableFlags}
+            onChange={(event) => {
+              const flags = event.currentTarget.value;
+              setMainExecutableFlags(flags);
+            }}
+            onBlur={async () => {
+              setLoading(true);
+              await wineApp?.updateMainExecutableFlags?.(mainExecutableFlags);
+              setLoading(false);
+            }}
+          />
+        </Stack>
+      )
     }
   ];
 
-  console.log(loading);
-
-  const ITEM_STYLE = { px: '20px !important' };
+  const loadMainExecutable = () => {
+    const appConfig = wineApp?.getAppConfig();
+    const mainExecutable = appConfig?.executables?.find((item) => item.main);
+    const mainExecutablePath = mainExecutable?.path || '';
+    const mainExecutableFlags = mainExecutable?.flags || '';
+    setMainExecutablePath(mainExecutablePath);
+    setMainExecutableFlags(mainExecutableFlags);
+  };
 
   useEffect(() => {
     (async () => {
-      realAppName && setWineApp(await createWineApp(realAppName));
+      if (realAppName) {
+        const wineApp = await createWineApp(realAppName);
+        setWineApp(wineApp);
+        setAppExecutables(await wineApp.listAppExecutables());
+        loadMainExecutable();
+      }
     })();
   }, [realAppName]);
 

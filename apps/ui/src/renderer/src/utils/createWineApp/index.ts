@@ -19,6 +19,7 @@ import { createDirectory } from '@utils/createDirectory';
 import { execCommand as baseExecCommand } from '@utils/execCommand';
 import { writeBinaryFile } from '@utils/writeBinaryFile';
 import { isURL } from '@utils/isURL';
+import { AppExecutable } from '@interfaces/AppExecutable';
 
 export const createWineApp = async (appName: string) => {
   const env = createEnv();
@@ -357,7 +358,7 @@ export const createWineApp = async (appName: string) => {
   /**
    * List app executables
    */
-  const listAppExecutables = async () => {
+  const listAppExecutables = async (): Promise<AppExecutable[]> => {
     const { stdOut } = await execScript('listAppExecutables');
 
     return (
@@ -366,6 +367,34 @@ export const createWineApp = async (appName: string) => {
         name: item.split('/').pop() || ''
       })) || []
     );
+  };
+
+  /**
+   * Updates main executable path.
+   */
+  const updateMainExecutablePath = async (path: string) => {
+    const config = getAppConfig();
+    const executables = config.executables?.map((item) => {
+      if (item.main) {
+        return { ...item, path };
+      }
+      return item;
+    });
+    await updateAppConfig({ executables });
+  };
+
+  /**
+   * Updates main executable flags.
+   */
+  const updateMainExecutableFlags = async (flags: string) => {
+    const config = getAppConfig();
+    const executables = config.executables?.map((item) => {
+      if (item.main) {
+        return { ...item, flags };
+      }
+      return item;
+    });
+    await updateAppConfig({ executables });
   };
 
   /**
@@ -429,6 +458,8 @@ export const createWineApp = async (appName: string) => {
     setSetupExe,
     bundleApp,
     listAppExecutables,
-    getAppConfig
+    getAppConfig,
+    updateMainExecutablePath,
+    updateMainExecutableFlags
   };
 };

@@ -2,6 +2,7 @@ import { RegeditIcon } from '@assets/icons';
 import {
   Cog6ToothIcon,
   CommandLineIcon,
+  CpuChipIcon,
   PlayIcon,
   RectangleStackIcon,
   SparklesIcon,
@@ -32,6 +33,8 @@ import { WinetricksSelector } from '@components/WinetricksSelector';
 import { FormSchema, useSchema } from './useSchema';
 import { useForm } from 'reactjs-ui-form-fields';
 import { AppExecutable } from '@interfaces/AppExecutable';
+import { ExitCode } from '@constants/enums';
+import { WineEnginesSelect } from '@components/WineEnginesSelect';
 
 const ITEM_STYLE = { px: '20px !important' };
 
@@ -42,10 +45,53 @@ export const AppConfig: React.FC = () => {
   const [appExecutables, setAppExecutables] = useState<AppExecutable[]>([]);
   const [mainExecutablePath, setMainExecutablePath] = useState<string>('');
   const [mainExecutableFlags, setMainExecutableFlags] = useState<string>('');
+  const [engineVersion, setEngineVersion] = useState<string>('');
   const { realAppName } = useParams();
   const navigate = useNavigate();
   const schema = useSchema();
   const form = useForm(schema);
+  const appConfig = wineApp?.getAppConfig();
+
+  const loadMainExecutable = () => {
+    const appConfig = wineApp?.getAppConfig();
+    const mainExecutable = appConfig?.executables?.find((item) => item.main);
+    const mainExecutablePath = mainExecutable?.path || '';
+    const mainExecutableFlags = mainExecutable?.flags || '';
+    setMainExecutablePath(mainExecutablePath);
+    setMainExecutableFlags(mainExecutableFlags);
+  };
+
+  const changeWineEngine = async () => {
+    setLoading(true);
+
+    await new Promise((resolve, reject) => {
+      wineApp?.extractEngine(engineVersion, {
+        onStdOut: console.log,
+        onStdErr: console.log,
+        onExit: (output) => {
+          if (output === ExitCode.Error) {
+            reject(`Failed to Extract the Wine Engine ${engineVersion}`);
+          }
+          resolve(undefined);
+        }
+      });
+    });
+
+    await new Promise((resolve, reject) => {
+      wineApp?.wineboot('', {
+        onStdOut: console.log,
+        onStdErr: console.log,
+        onExit: (output) => {
+          if (output === ExitCode.Error) {
+            reject(`Failed to initialize the Wine Engine ${engineVersion}`);
+          }
+          resolve(undefined);
+        }
+      });
+    });
+
+    setLoading(false);
+  };
 
   const options = [
     {
@@ -158,6 +204,7 @@ export const AppConfig: React.FC = () => {
 
                 if (verbsString) {
                   await wineApp?.winetrick(verbsString);
+                  form.reset();
                   setLoading(false);
                 } else {
                   setLoading(false);
@@ -209,17 +256,38 @@ export const AppConfig: React.FC = () => {
           />
         </Stack>
       )
+    },
+    {
+      label: 'Change Engine',
+      content: (
+        <Stack spacing={1.5}>
+          <Stack direction="row" minWidth={210} pb={1}>
+            <Icon strokeWidth={0} size={34} render={CpuChipIcon} pr={1} />
+            <H6 className={ContentsClass.ItemTitle}>Change Engine</H6>
+          </Stack>
+          <WineEnginesSelect
+            value={engineVersion}
+            onChange={(event) => setEngineVersion(event.target.value as string)}
+          />
+          <Stack width="100%" pt={1} alignItems="flex-end">
+            <Button
+              title={`Run Change Engine`}
+              disabled={wineApp === undefined || loading}
+              color="secondary"
+              sx={{
+                width: 90,
+                height: 60,
+                border: (theme) => `1px solid ${theme.palette.primary.main}`
+              }}
+              onClick={changeWineEngine}
+            >
+              <Body1>Run</Body1>
+            </Button>
+          </Stack>
+        </Stack>
+      )
     }
   ];
-
-  const loadMainExecutable = () => {
-    const appConfig = wineApp?.getAppConfig();
-    const mainExecutable = appConfig?.executables?.find((item) => item.main);
-    const mainExecutablePath = mainExecutable?.path || '';
-    const mainExecutableFlags = mainExecutable?.flags || '';
-    setMainExecutablePath(mainExecutablePath);
-    setMainExecutableFlags(mainExecutableFlags);
-  };
 
   useEffect(() => {
     (async () => {
@@ -227,10 +295,16 @@ export const AppConfig: React.FC = () => {
         const wineApp = await createWineApp(realAppName);
         setWineApp(wineApp);
         setAppExecutables(await wineApp.listAppExecutables());
-        loadMainExecutable();
       }
     })();
   }, [realAppName]);
+
+  useEffect(() => {
+    if (appConfig?.name) {
+      loadMainExecutable();
+      setEngineVersion(appConfig?.engineVersion);
+    }
+  }, [appConfig?.name]);
 
   return (
     <Box display="grid" overflow="auto">

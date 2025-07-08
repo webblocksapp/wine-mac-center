@@ -239,13 +239,6 @@ export const createWineApp = async (appName: string) => {
     options?: WinetricksOptions
   ) => {
     const flags = winetricksOptionsToFlags(options);
-    const winetricks = getAppConfig();
-    updateAppConfig({
-      winetricks: {
-        verbs: [...(winetricks.winetricks?.verbs || []), ...verbs.split(' ')],
-        options: { ...winetricks.winetricks?.options, ...options }
-      }
-    });
     return spawnScript('winetrick', `${flags} ${verbs}`, processArgs);
   };
 

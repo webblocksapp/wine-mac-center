@@ -36,6 +36,7 @@ import { AppExecutable } from '@interfaces/AppExecutable';
 import { ExitCode } from '@constants/enums';
 import { WineEnginesSelect } from '@components/WineEnginesSelect';
 import { ArtWorkInput } from '@components/ArtWorkInput';
+import { useRefresh } from '@utils/useRefresh';
 
 const ITEM_STYLE = { px: '20px !important' };
 
@@ -52,6 +53,7 @@ export const AppConfig: React.FC = () => {
   const schema = useSchema();
   const form = useForm(schema);
   const appConfig = wineApp?.getAppConfig();
+  const { signal, refresh } = useRefresh();
 
   const loadMainExecutable = () => {
     const appConfig = wineApp?.getAppConfig();
@@ -255,7 +257,15 @@ export const AppConfig: React.FC = () => {
               setLoading(false);
             }}
           />
-          <ArtWorkInput appPath={wineApp?.getWineEnv()?.WINE_APP_PATH} realAppName={realAppName} />
+          <ArtWorkInput
+            refreshImage={signal}
+            onInput={async (file) => {
+              wineApp?.setupAppArtwork({ appArtWorkFile: await file?.arrayBuffer() });
+              refresh();
+            }}
+            appPath={wineApp?.getWineEnv()?.WINE_APP_PATH}
+            realAppName={realAppName}
+          />
         </Stack>
       )
     },

@@ -18,6 +18,7 @@ export type FileInputProps = Omit<
   value?: string;
   appPath: string | undefined;
   realAppName: string | undefined;
+  refreshImage?: number;
 };
 
 export const ArtWorkInput: React.FC<FileInputProps> = ({
@@ -32,6 +33,7 @@ export const ArtWorkInput: React.FC<FileInputProps> = ({
   filters = FileFilter.Images,
   appPath,
   realAppName = '',
+  refreshImage,
   ...rest
 }) => {
   const inputRef = useRef<HTMLDivElement>(null);
@@ -45,17 +47,29 @@ export const ArtWorkInput: React.FC<FileInputProps> = ({
     setArtWorkSrc(artWork || defaultArtwork);
   };
 
+  const onClick = () => {
+    inputRef.current?.click();
+  };
+
   useEffect(() => {
     value && setFileName(value);
   }, [value]);
 
   useEffect(() => {
+    setArtWorkSrc('');
     getAppArtwork();
-  }, [appPath]);
+  }, [appPath, refreshImage]);
 
   return (
     <>
-      <Box width={130} height={200} border={1} position="relative">
+      <Box
+        width={130}
+        height={200}
+        border={1}
+        position="relative"
+        onClick={onClick}
+        sx={{ cursor: 'pointer' }}
+      >
         <Image
           width="100%"
           height="100%"
@@ -76,13 +90,9 @@ export const ArtWorkInput: React.FC<FileInputProps> = ({
             alignItems="center"
             justifyContent="center"
           >
-            {noArtWork ? (
-              <Body1 textAlign="center" p={1} fontWeight={500} fontSize={12}>
-                {realAppName}
-              </Body1>
-            ) : (
-              <></>
-            )}
+            <Body1 textAlign="center" p={1} fontWeight={500} fontSize={12}>
+              {realAppName}
+            </Body1>
           </Box>
         ) : (
           <></>
@@ -96,7 +106,7 @@ export const ArtWorkInput: React.FC<FileInputProps> = ({
         render={({ props: { onInput }, helpers }) => (
           <TextField
             fullWidth
-            ref={inputRef}
+            inputRef={inputRef}
             sx={{ display: 'none' }}
             {...rest}
             InputLabelProps={{ shrink: true }}

@@ -450,6 +450,7 @@ export const createWineApp = async (appName: string) => {
     runExe,
     setSetupExe,
     bundleApp,
+    setupAppArtwork,
     listAppExecutables,
     getAppConfig,
     updateMainExecutablePath,

@@ -85,7 +85,7 @@ export const WinetricksSelector: React.FC<WinetricksSelectorProps> = ({
                               width: '100%'
                             }}
                             data={winetricks?.[category.key]}
-                            itemContent={(_, winetrick) => (
+                            itemContent={(index, winetrick) => (
                               <Grid height={itemHeight} key={index} item xs={12}>
                                 <Checkbox
                                   name={name}

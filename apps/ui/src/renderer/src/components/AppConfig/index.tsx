@@ -35,6 +35,7 @@ import { useForm } from 'reactjs-ui-form-fields';
 import { AppExecutable } from '@interfaces/AppExecutable';
 import { ExitCode } from '@constants/enums';
 import { WineEnginesSelect } from '@components/WineEnginesSelect';
+import { ArtWorkInput } from '@components/ArtWorkInput';
 
 const ITEM_STYLE = { px: '20px !important' };
 
@@ -254,6 +255,7 @@ export const AppConfig: React.FC = () => {
               setLoading(false);
             }}
           />
+          <ArtWorkInput appPath={wineApp?.getWineEnv()?.WINE_APP_PATH} realAppName={realAppName} />
         </Stack>
       )
     },
@@ -293,7 +295,7 @@ export const AppConfig: React.FC = () => {
     (async () => {
       if (realAppName) {
         const wineApp = await createWineApp(realAppName);
-        setWineApp(wineApp);
+        setWineApp(await createWineApp(realAppName));
         setAppExecutables(await wineApp.listAppExecutables());
       }
     })();
